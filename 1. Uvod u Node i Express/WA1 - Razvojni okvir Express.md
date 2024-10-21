@@ -7,7 +7,7 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important;"></img>
 
-# (1) Uvod u Node i Express
+# (1) Uvod u HTTP, Node i Express
 
 <img src="WA_1_logo.png" style="width:9%; border-radius: 15px; float:right;"></img>
 
@@ -21,7 +21,7 @@
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
-- [(1) Uvod u Node i Express](#1-uvod-u-node-i-express)
+- [(1) Uvod u HTTP, Node i Express](#1-uvod-u-http-node-i-express)
   - [Sadržaj](#sadržaj)
 - [1. Uvod](#1-uvod)
   - [1.1 Kratak povijesni pregled](#11-kratak-povijesni-pregled)
