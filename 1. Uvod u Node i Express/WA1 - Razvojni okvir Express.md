@@ -32,12 +32,14 @@
 - [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
   - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)
-- [4. Express.js](#4-expressjs)
+- [4. Postavljanje osnovnog Express poslužitelja](#4-postavljanje-osnovnog-express-poslužitelja)
   - [4.1 Instalacija Express.js](#41-instalacija-expressjs)
   - [4.2 Osnovni Express.js poslužitelj](#42-osnovni-expressjs-poslužitelj)
   - [4.3 Kako definirati rute?](#43-kako-definirati-rute)
   - [4.4 Nodemon](#44-nodemon)
   - [4.5 Git commit](#45-git-commit)
+- [5. HTTP protokol](#5-http-protokol)
+  - [5.1 HTTP zahtjev](#51-http-zahtjev)
 
 <br>
 
@@ -271,7 +273,7 @@ Kako se mogu kretati kroz direktorije? `cd ime_direktorija` za ulazak u direktor
 
 Ok sad opet ne znam di sam? `pwd` (macOS/linux) ili `cd` (Windows) će vam reći trenutnu lokaciju. 👌🏻
 
-# 4. Express.js
+# 4. Postavljanje osnovnog Express poslužitelja
 
 ## 4.1 Instalacija Express.js
 
@@ -600,10 +602,87 @@ git push
 
 2. Način (kroz VS Code):
 
-Otvorite Source Control tab u lijevom izborniku VS Codea. Prikazat će se sve promjene u projektu. Unesite poruku i jednostavno pritisnite `✓ Commit` ikonu kako biste pohranili promjene (ovo je ekvivalentno `git add` i `git commit` naredbama).
+Otvorite Source Control tab u lijevom izborniku VS Codea. Prikazat će se sve promjene u projektu. Unesite poruku i jednostavno pritisnite `✓ Commit` ikonu kako biste pohranili promjene (ovo je ekvivalentno `git add` i `git commit` naredbama). Zatim odaberite `Sync Changes` kako biste pohranili promjene na udaljeni repozitorij (ovo je ekvivalentno `git push` naredbi).
 
 3. Način (kroz Github Desktop):
 
 Otvorite Github Desktop aplikaciju i pronađite vaš repozitorij. Vidjet ćete vizualni prikaz promjena u projektu na tabu Changes.
 
 Možete dodati opis promjena i pritisnuti `Commit to main` kako biste pohranili promjene (ovoje ekvivalentno `git commit` naredbi). Zatim pritisnite `Push origin` kako biste pohranili promjene na udaljeni repozitorij (ovo je ekvivalentno `git push` naredbi).
+
+# 5. HTTP protokol
+
+HTTP (eng. _Hypertext Transfer Protocol_) je protokol koji se koristi za prijenos podataka na webu. HTTP definira skup pravila i definicija koje omogućuju web preglednicima i poslužiteljima da komuniciraju jedni s drugima.
+
+HTTP koristi različite metode za različite vrste zahtjeva. Najčešće korištene HTTP metode su:
+
+- **GET** - koristi se za dohvaćanje podataka
+- **POST** - koristi se za slanje podataka
+- **PUT** - koristi se za ažuriranje podataka
+- **DELETE** - koristi se za brisanje podataka
+- **PATCH** - koristi se za djelomično ažuriranje podataka
+
+Ove metode koriste se za različite vrste zahtjeva. Na primjer, korisnik može poslati `GET` zahtjev kako bi dohvatio podatke s poslužitelja, ili `POST` zahtjev kako bi poslao podatke poslužitelju. Sve ove metode koriste se u web razvoju za komunikaciju između klijenta i poslužitelja. U nastavku ćemo obraditi svaku metodu posebno i pokazati kako ih implementirati u Express.js aplikaciji.
+
+Međutim, prije nego što krenemo, važno je naučiti od čega se sastoje HTTP zahtjevi i odgovori.
+
+HTTP prati klasičnu **klijent-poslužitelj** arhitekturu (_eng. client-server architecture_). Ukratko, to znači da klijent šalje zahtjev poslužitelju, a poslužitelj šalje odgovor klijentu. Preciznije, klijent otvara **TCP/IP** vezu s poslužiteljem, šalje HTTP zahtjev i onda čeka sve dok poslužitelj ne pošalje odgovor.
+
+HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zna ništa o prethodnim zahtjevima. Na primjer, kada korisnik posjeti stranicu, poslužitelj ne zna ništa o prethodnim posjetama korisnika. Ovo je korisno jer omogućava poslužitelju da bude brži i efikasniji, međutim postoje tehnike kojima možemo na klijentskoj strani zapamtiti određenu prethodnu interakciju, npr. kroz kolačiće (_eng. cookies_) ili lokalno pohranjivanje (_eng. local storage_) te na taj način imati neki oblik stanja koji šaljemo s klijenta na poslužitelj.
+
+Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor korisniku. Naravno, to ne mora biti i vrlo često i nije (1 - 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
+
+<img src="screenshots/http_requests.png" style="width:50%;"></img>
+
+## 5.1 HTTP zahtjev
+
+HTTP zahtjev predstavlja zahtjev klijenta poslužitelju, npr. klijent (web preglednik) zahtjeva određeni web resurs (npr. HTML stranicu) od poslužitelja.
+
+HTTP zahtjev sastoji se od nekoliko dijelova od kojih su neki obavezni, a neki opcionalni:
+
+Kako bi klijent poslao najjednostavniji mogući HTTP zahtjev, potrebno je navesti kome šaljemo zahtjev (_eng. Host Header_) te što želimo (_eng. Request Line_).
+
+| **Dio HTTP zahtjeva** | **Opis**                                                           | **Primjer**                |
+| --------------------- | ------------------------------------------------------------------ | -------------------------- |
+| **Request Line**      | Sastoji se od HTTP **metode**, traženog **URI** i HTTP **verzije** | `GET /index.html HTTP/1.1` |
+| **Host Header**       | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
+
+Međutim, **Host Header** je ustvari jedini obavezni dio zahtjeva, ali to u pravilu ne želimo raditi. Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev. Ovaj program je u pravilu dostupan na svakom OS-u, a koristi se za slanje HTTP zahtjeva iz terminala. Možete provjeriti imate li ga instaliranog s naredbom `curl --version`.
+
+Idemo poslati najjednostavniji mogući HTTP zahtjev prema `http://www.google.com`:
+
+```bash
+curl http://www.google.com
+```
+
+Primjetite što smo dobili - HTML stranicu koja definira Googleovu početnu stranicu. `curl` je automatski odabrao `GET` metodu, ali metodu možemo navesti i eksplicitno opcijom `-X`:
+
+```bash
+curl -X GET http://www.google.com
+```
+
+Koji smo URI (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI predstavlja jedinstveni identifikator elektroničkog resursa. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
+
+<img src="screenshots/url_uri_urn.png">
+
+U ovoj skripti će se često koristiti URI, međutim URL je uobičajeniji pojam i koristi se za identifikaciju resursa na webu.
+
+Dakle što je ovdje URI? `http://www.google.com`
+
+Sve navedeno, ali koju datoteku onda dohvaćamo? Odgovor je osnovni endpoint definiran putanjom `/`. Vidimo da je Google definirao osnovni endpoint kao početnu stranicu, to je jasno, ali sad već možemo i pretpostaviti kako se zove datoteka koju dohvaćamo - `index.html`.
+
+```bash
+curl -X GET http://www.google.com/index.html
+```
+
+Radi! 🎉
+
+Što ako probamo dohvatiti nešto što ne postoji? Na primjer, `http://www.google.com/about_me.html`:
+
+```bash
+curl -X GET http://www.google.com/about_me.html
+```
+
+Vidimo da kao odgovor dobivamo HTML stranicu s porukom "404. That’s an error. The requested URL was not found on this server. That’s all we know.". Ako otvorimo u web pregledniku, ona izgleda ovako:
+
+<img src="screenshots/google_error404.png" style="width:50%">
