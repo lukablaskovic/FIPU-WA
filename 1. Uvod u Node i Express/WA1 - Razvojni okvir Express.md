@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem internetskog preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za instalacijom na lokalnim računalima ili uređajima. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 20.10.2024.**
+**🆙 Posljednje ažurirano: 21.10.2024.**
 
 ## Sadržaj
 
@@ -35,11 +35,19 @@
 - [4. Postavljanje osnovnog Express poslužitelja](#4-postavljanje-osnovnog-express-poslužitelja)
   - [4.1 Instalacija Express.js](#41-instalacija-expressjs)
   - [4.2 Osnovni Express.js poslužitelj](#42-osnovni-expressjs-poslužitelj)
-  - [4.3 Kako definirati rute?](#43-kako-definirati-rute)
+  - [4.3 Kako definirati osnovni endpoint?](#43-kako-definirati-osnovni-endpoint)
   - [4.4 Nodemon](#44-nodemon)
   - [4.5 Git commit](#45-git-commit)
 - [5. HTTP protokol](#5-http-protokol)
-  - [5.1 HTTP zahtjev](#51-http-zahtjev)
+  - [5.1 HTTP zahtjev (eng. HTTP request)](#51-http-zahtjev-eng-http-request)
+    - [5.1.1 Obavezni dijelovi HTTP zahtjeva](#511-obavezni-dijelovi-http-zahtjeva)
+      - [Vježba 1 - HTTP zahtjev prema našem Expressu](#vježba-1---http-zahtjev-prema-našem-expressu)
+    - [5.1.2 Opcionalni dijelovi HTTP zahtjeva](#512-opcionalni-dijelovi-http-zahtjeva)
+  - [5.2 HTTP odgovor (_eng. HTTP response_)](#52-http-odgovor-eng-http-response)
+    - [5.2.1 Obavezni dijelovi HTTP odgovora](#521-obavezni-dijelovi-http-odgovora)
+    - [5.2.2 Opcionalni dijelovi HTTP odgovora](#522-opcionalni-dijelovi-http-odgovora)
+      - [Vježba 2: Kako vidjeti cijeli HTTP odgovor?](#vježba-2-kako-vidjeti-cijeli-http-odgovor)
+- [6. Samostalni zadatak za Vježbu 1](#6-samostalni-zadatak-za-vježbu-1)
 
 <br>
 
@@ -307,11 +315,11 @@ Struktura direktorija projekta trebala bi izgledati ovako:
 2 directories, 2 files
 ```
 
-U sljedećem vježbanju ćemo izraditi prvi Express.js poslužitelj.
+U sljedećem poglavlju ćemo izraditi naš prvi Express.js poslužitelj.
 
 ## 4.2 Osnovni Express.js poslužitelj
 
-Krenimo napokon s prvim Express.js poslužiteljem! 🚀 Dodat ćemo novu `js` datoteku proizvoljnog naziva, uobičajeno je koristiti `app.js`, `index.js` ili `server.js`.
+Krenimo napokon s implementacijom Express.js-a ! 🚀 Dodat ćemo novu javascript datoteku proizvoljnog naziva, uobičajeno je koristiti `app.js`, `index.js` ili `server.js`.
 Mi ćemo koristiti `index.js`.
 
 Dodajte datoteku ručno, desni klik na direktorij projekta -> `New File` -> `index.js`. Ili ako želite biti terminal ninja, upišite:
@@ -390,9 +398,9 @@ Spremite datoteku i ponovno pokrenite Express.js poslužitelj. Ovaj put ćete vi
 
 I to je to! Uspješno ste izradili prvi Express.js poslužitelj! 🎉
 
-## 4.3 Kako definirati rute?
+## 4.3 Kako definirati osnovni endpoint?
 
-Rute su putanje koje korisnici mogu posjetiti u internetskom pregledniku. Na primjer, korisnik može posjetiti putanju `/` kako bi vidio početnu stranicu aplikacije, ili putanju `/about` kako bi vidio stranicu s informacijama o aplikaciji.
+Rute (_eng. routes_) su putanje koje korisnici mogu posjetiti u internetskom pregledniku. Na primjer, korisnik može posjetiti putanju `/` kako bi vidio početnu stranicu aplikacije, ili putanju `/about` kako bi vidio stranicu s informacijama o aplikaciji.
 
 Nazivamo ih još i **endpoints** ili **API endpoints**.
 
@@ -410,11 +418,19 @@ Definirat ćemo osnovnu rutu `/` koja će korisnicima prikazati poruku "Hello, w
 app.get("/"); // definiramo rutu
 ```
 
-Zatim ćemo dodati `callback` funkciju koja će se izvršiti kada korisnik posjeti ovu rutu.
+Zatim ćemo dodati `callback` funkciju koja će se izvršiti kada korisnik pošalje zahtjev na tu rutu.
 
 Ova callback funkcija najčešće prima dva argumenta: `req` (request) i `res` (response). `req` objekt sadrži informacije o zahtjevu korisnika, dok `res` objekt koristimo za slanje odgovora korisniku (možemo ih nazvati bilo kako ali ovo je konvencija i dobro je se držati). Postoji i treći argument `next` koji koristimo za preusmjeravanje zahtjeva na sljedeću funkciju u lancu middleware-a, ali o tome ćemo kasnije.
 
-Osnovna metoda `res` objekta je `send` koja služi za slanje jednostavnog odgovora korisniku.
+Osnovna metoda `res` objekta je `send` koja služi za slanje jednostavnog odgovora korisniku. Osim nje, postoji još mnogo metoda `response` objekta: poput `json` koja šalje podatke u obliku JSON-a ili `sendFile` koja šalje datoteku.
+
+```javascript
+app.get("/", function (req, res) {
+  res.send("Hello, world!");
+});
+```
+
+ili `arrow callback`:
 
 ```javascript
 app.get("/", (req, res) => {
@@ -612,9 +628,9 @@ Možete dodati opis promjena i pritisnuti `Commit to main` kako biste pohranili 
 
 # 5. HTTP protokol
 
-HTTP (eng. _Hypertext Transfer Protocol_) je protokol koji se koristi za prijenos podataka na webu. HTTP definira skup pravila i definicija koje omogućuju web preglednicima i poslužiteljima da komuniciraju jedni s drugima.
+HTTP (eng. _Hypertext Transfer Protocol_) je protokol koji se koristi za **prijenos podataka na webu**. HTTP definira skup pravila i definicija koje omogućuju web preglednicima i poslužiteljima da komuniciraju jedni s drugima. HTTP protokol uključuje **zahtjeve** (_eng. requests_) koje klijenti šalju poslužiteljima, te **odgovore** (_eng. responses_) koje poslužitelji šalju klijentima.
 
-HTTP koristi različite metode za različite vrste zahtjeva. Najčešće korištene HTTP metode su:
+HTTP koristi različite **metode** (_eng. HTTP method_) za različite vrste zahtjeva. Najčešće korištene HTTP metode su:
 
 - **GET** - koristi se za dohvaćanje podataka
 - **POST** - koristi se za slanje podataka
@@ -630,22 +646,26 @@ HTTP prati klasičnu **klijent-poslužitelj** arhitekturu (_eng. client-server a
 
 HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zna ništa o prethodnim zahtjevima. Na primjer, kada korisnik posjeti stranicu, poslužitelj ne zna ništa o prethodnim posjetama korisnika. Ovo je korisno jer omogućava poslužitelju da bude brži i efikasniji, međutim postoje tehnike kojima možemo na klijentskoj strani zapamtiti određenu prethodnu interakciju, npr. kroz kolačiće (_eng. cookies_) ili lokalno pohranjivanje (_eng. local storage_) te na taj način imati neki oblik stanja koji šaljemo s klijenta na poslužitelj.
 
-Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor korisniku. Naravno, to ne mora biti i vrlo često i nije (1 - 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
+Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor kranjem korisniku. Naravno, to ne mora biti i vrlo često i nije (1 - 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
 
-<img src="screenshots/http_requests.png" style="width:50%;"></img>
+<img src="screenshots/http_requests.png" style="width:50%">
 
-## 5.1 HTTP zahtjev
+## 5.1 HTTP zahtjev (eng. HTTP request)
 
 HTTP zahtjev predstavlja zahtjev klijenta poslužitelju, npr. klijent (web preglednik) zahtjeva određeni web resurs (npr. HTML stranicu) od poslužitelja.
 
-HTTP zahtjev sastoji se od nekoliko dijelova od kojih su neki obavezni, a neki opcionalni:
+HTTP zahtjev sastoji se od nekoliko dijelova od kojih su neki **obavezni**, a neki **opcionalni**:
+
+<img src="screenshots/http_request.png" style="width:50%">
+
+### 5.1.1 Obavezni dijelovi HTTP zahtjeva
 
 Kako bi klijent poslao najjednostavniji mogući HTTP zahtjev, potrebno je navesti kome šaljemo zahtjev (_eng. Host Header_) te što želimo (_eng. Request Line_).
 
-| **Dio HTTP zahtjeva** | **Opis**                                                           | **Primjer**                |
-| --------------------- | ------------------------------------------------------------------ | -------------------------- |
-| **Request Line**      | Sastoji se od HTTP **metode**, traženog **URI** i HTTP **verzije** | `GET /index.html HTTP/1.1` |
-| **Host Header**       | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
+| **Obavezni dijelovi HTTP zahtjeva** | **Opis**                                                           | **Primjer**                |
+| ----------------------------------- | ------------------------------------------------------------------ | -------------------------- |
+| **Request Line**                    | Sastoji se od HTTP **metode**, traženog **URI** i HTTP **verzije** | `GET /index.html HTTP/1.1` |
+| **Host zaglavlje**                  | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
 
 Međutim, **Host Header** je ustvari jedini obavezni dio zahtjeva, ali to u pravilu ne želimo raditi. Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev. Ovaj program je u pravilu dostupan na svakom OS-u, a koristi se za slanje HTTP zahtjeva iz terminala. Možete provjeriti imate li ga instaliranog s naredbom `curl --version`.
 
@@ -669,7 +689,7 @@ U ovoj skripti će se često koristiti URI, međutim URL je uobičajeniji pojam 
 
 Dakle što je ovdje URI? `http://www.google.com`
 
-Sve navedeno, ali koju datoteku onda dohvaćamo? Odgovor je osnovni endpoint definiran putanjom `/`. Vidimo da je Google definirao osnovni endpoint kao početnu stranicu, to je jasno, ali sad već možemo i pretpostaviti kako se zove datoteka koju dohvaćamo - `index.html`.
+Sve navedeno, ali što onda dohvaćamo? Odgovor je osnovni endpoint definiran putanjom `/`. Vidimo da je Google definirao osnovni endpoint kao početnu stranicu, to je jasno, ali sad već možemo i pretpostaviti kako se zove datoteka koju dohvaćamo - `index.html`. Endpoint ili ruta `/` je u pravilu početna stranica web stranice, a datoteka `index.html` je osnovna HTML stranica koja se prikazuje korisniku.
 
 ```bash
 curl -X GET http://www.google.com/index.html
@@ -686,3 +706,155 @@ curl -X GET http://www.google.com/about_me.html
 Vidimo da kao odgovor dobivamo HTML stranicu s porukom "404. That’s an error. The requested URL was not found on this server. That’s all we know.". Ako otvorimo u web pregledniku, ona izgleda ovako:
 
 <img src="screenshots/google_error404.png" style="width:50%">
+
+Dakle, **Request Line** se sastoji od HTTP **metode**, traženog **URI** i HTTP **verzije**.
+
+| **Dijelovi Request Line komponente** | **Opis**                                                | **Primjer**   |
+| ------------------------------------ | ------------------------------------------------------- | ------------- |
+| **HTTP metoda**                      | Akcija koju klijent želi izvršiti (npr. GET, POST, PUT) | `GET`         |
+| **URI zahtjeva**                     | Specifični resurs na poslužitelju koji kljient traži    | `/index.html` |
+| **HTTP verzija**                     | Verzija HTTP-a koja se koristi u zahtjevu               | `HTTP/1.1`    |
+
+Verziju HTTP-a možemo navesti i eksplicitno, međutim u pravilu se automatski koristi `HTTP/1.1`.
+
+#### Vježba 1 - HTTP zahtjev prema našem Expressu
+
+Pokrenite Express poslužitelj koji smo izradili i pošaljite HTTP zahtjev prema njemu koristeći `curl` program. Koji odgovor očekujete?
+
+### 5.1.2 Opcionalni dijelovi HTTP zahtjeva
+
+Osim obaveznih dijelova HTTP zahtjeva, postoje i opcionalni dijelovi koji se koriste za slanje dodatnih informacija poslužitelju. Konkretno, možemo poslati **HTTP zaglavlja** (_eng. HTTP headers_) i **HTTP tijelo** (_eng. HTTP body_).
+
+| **Opcionalni dijelovi HTTP zahtjeva**                      | **Opis**                                                                                                 | **Primjer**                                                                                    |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Opcionalna zaglavlja zahtjeva (_eng. Request Headers_)** | Ključ-vrijednost parovi koji pružaju dodatne informacije o zahtjevu (zamislimo ih kao metapodatke)       | `Content-Type: application/json` <br> `Authorization: Bearer <token>` <br> `Accept: text/html` |
+| **Tijelo zahtjeva (_eng. Request Body_)**                  | Stvarni podaci koje šaljemo, često u JSON formatu, a tipično se koristi u metodama poput POST, PUT, itd. | `{ "username": "Pero", "password": "password123" }`                                            |
+
+Zaglavlja ćemo raditi detaljnije na nekim drugim vježbama, za sada morate znati samo da postoje i da se koriste za slanje dodatnih informacija poslužitelju.
+
+Tijelo se koristi u metodama poput POST, PUT, DELETE, PATCH, itd. gdje šaljemo podatke poslužitelju. Na primjer, kada se korisnik registrira na web stranici, šaljemo podatke kao što su **korisničko ime**, **lozinka**, **e-mail**, itd. u <ins> tijelu zahtjeva </ins>. Tijelo se može poslati u različitim formatima podataka, za sada neka nas zanima **JSON format**.
+
+Kako ćemo definirati tijelo zahtjeva iznad kao JSON?
+
+```json
+{
+  "korisniko_ime": "pero_peric",
+  "lozinka": "password123",
+  "email": "pperic@gmail.com"
+}
+```
+
+Recimo da naš poslužitelj ima definirani endpoint `/registracija` koji očekuje ove podatke. Dakle, korisnik ne traži nikakav resurs od poslužitelja pa niti HTML stranicu, već isključivo šalje podatke poslužitelju i očekuje nekakav odgovor (ne resurs). Ovakav endpoint moramo definirati kao `POST` metodu koja nam dozvoljava slanje podataka kroz tijelo zahtjeva, za razliku od `GET` metode.
+
+Koristeći `curl` program, možemo poslati tijelo zahtjeva kroz opciju `-d`:
+
+```bash
+curl -X POST http://www.nas-super-server.com/registracija -d '{"korisniko_ime": "pero_peric", "lozinka": "password123", "email": "pperic@gmail.com"}'
+```
+
+Naravno, ovo neće raditi.
+
+Više o HTTP zahtjevima možete pročitati na [MDN web dokumentaciji](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview).
+
+## 5.2 HTTP odgovor (_eng. HTTP response_)
+
+HTTP odgovor predstavlja odgovor poslužitelja klijentu, npr. poslužitelj šalje HTML stranicu klijentu ili JSON podatke. HTTP odgovor sastoji se od nekoliko dijelova od kojih su, kao i kod zahtjeva, neki **obavezni**, a neki **opcionalni**:
+
+<img src="screenshots/http_response.png" style="width:50%">
+
+### 5.2.1 Obavezni dijelovi HTTP odgovora
+
+Kako bi poslužitelj poslao najjednostavniji mogući HTTP odgovor, potrebno je navesti **HTTP verziju**, **statusni kod** i **statusni tekst** kao i obavezna zaglavlja odgovora (_eng. Response headers_).
+
+| **Obavezni dijelovi HTTP odgovora**                       | **Opis**                                                                             | **Primjer**                                                                 |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| **Status Line**                                           | Sadrži HTTP **verziju**, **statusni kod** (_eng. status code_) i **_reason phrase_** | `HTTP/1.1 200 OK` <br> `HTTP/1.1 404 Not Found`                             |
+| **Obavezna zaglavlja odgovora (_eng. Response headers_)** | Pruža obavezne metapodatke o odgovoru (npr. Content-Type)                            | `Content-Type: application/json` <br> `Date: Mon, 21 Oct 2024 10:32:45 GMT` |
+
+Kod **Status Line** komponente, najzanimljiviji nam je **statusni kod**. Vjerojatno smo se svi do sad susreli sa statusnim kodovima koje vraća određeni poslužitelj.
+
+Primjerice, poznati statusni kod `404` označava da traženi resurs nije pronađen, odnosno da je korisnik poslao zahtjev za resurs koji ne postoji.
+
+Statusni kod `503` označava grešku na poslužitelju, odnosno da poslužitelj trenutno nije dostupan.
+
+U grubo, brojevi ovih kodova označavaju različite situacije koje se mogu dogoditi prilikom slanja zahtjeva poslužitelju:
+
+- `1xx` (100 - 199) - Informacijski odgovori (eng. _Informational responses_): Poslužitelj je primio zahtjev te ga i dalje obrađuje
+- `2xx` (200 - 299) - Odgovori uspjeha (_eng. Successful responses_): Zahtjev klijenta uspješno primljen i obrađen
+- `3xx` (300 - 399) - Odgovori preusmjeravanja (_eng. Redirection messages_): Ova skupina kodova govori klijentu da mora poduzeti dodatne radnje kako bi dovršio zahtjev
+- `4xx` (400 - 499) - Greške na strani klijenta (_eng. Client error responses_): Sadrži statusne kodove koji se odnose na greške nastale na klijentskoj strani
+- `5xx` (500 - 599) - Greške na strani poslužitelja (_eng. Server error responses_): Sadrži statusne kodove koji se odnose na greške nastale na poslužiteljskoj strani
+
+Više o statusnim kodovima uskoro, a možete ih pročitati i sami na [MDN web dokumentaciji](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+
+_reason phrase_ odnosi se na kratki opis statusnog koda, npr. `OK` za statusni kod `200` ili `Not Found` za statusni kod `404`. Ovaj dio u pravilu nikad ne želimo mijenjati.
+
+### 5.2.2 Opcionalni dijelovi HTTP odgovora
+
+Osim obaveznih dijelova HTTP odgovora, postoje i opcionalni dijelovi koji se koriste za slanje dodatnih informacija klijentu. Konkretno, možemo poslati **HTTP zaglavlja** (_eng. HTTP headers_) i **HTTP tijelo** (_eng. HTTP body_).
+
+| **Component**                                               | **Description**                                                         | **Example**                                                     |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Tijelo odgovora (_eng. Response body_)**                  | Stvarni podaci koji se vraćaju korisniku, npr. u JSON ili XML formatima | `{ "message": "Success", "data": { "id": 1, "name": "John" } }` |
+| **Opcionalna zaglavlja odgovora (_eng. Response headers_)** | Pruža opcionalne metapodatke o odgovoru (npr. Set-Cookie)               | `Set-Cookie: sessionId=abc123` <br> `Cache-Control: no-cache`   |
+
+#### Vježba 2: Kako vidjeti cijeli HTTP odgovor?
+
+Pošaljite ponovo zahtjev programom `curl` na Express poslužitelj koji smo definirali.
+
+```bash
+curl http://localhost:3000
+```
+
+Kao odgovor dobili smo tijelo s porukom "Hello, world!". Koji statusni kod očekujete? 🤔
+
+Provjerit ćemo obavezna zaglavlja i statusni kod koji smo dobili kao odgovor kako bi vidjeli što Express radi u pozadini. Možemo koristiti opciju `-i` kako bismo dobili zaglavlja odgovora:
+
+```bash
+curl -i http://localhost:3000
+```
+
+Možemo vidjeti da cijeli HTTP odgovor ustvari izgleda ovako:
+
+```
+HTTP/1.1 200 OK
+
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 13
+ETag: W/"d-lDpwLQbzRZmu4fjajvn3KWAx1pk"
+Date: Mon, 21 Oct 2024 13:37:34 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+Hello, world!
+```
+
+- Prvi dio je **Status Line** koji sadrži HTTP **verziju**, **statusni kod** i **_reason phrase_**.
+
+- Drugi dio sadrži **zaglavlja odgovora** koja pružaju metapodatke o odgovoru.
+
+- Treći dio je **tijelo odgovora** koje sadrži stvarni sadržaj koji se šalje klijentu.
+
+Više o zaglavljima HTTP odgovora soon! 😎
+
+# 6. Samostalni zadatak za Vježbu 1
+
+Nadgoradite vaš Express poslužitelj tako da:
+
+1. Nadgoradite postojeću GET rutu `/` koja sad mora vratiti HTML stranicu s porukom "Hello, Express!".
+2. Dodajte još jednu GET rutu `/about` koja će vratiti HTML stranicu s porukom "Ovo je stranica o nama!".
+
+Obje HTML stranice pohranite u direktorij `/public`.
+Kako biste vratili podatke u obliku HTML stranice, koristite `res.sendFile()` metodu.
+
+Sintaksa:
+
+```javascript
+res.sendFile(__dirname + "putanja_do_datoteke");
+```
+
+3. Dodajte i posljednju GET rutu `/users` koja će vratiti korisnike u JSON formatu. Korisnike pohranite u polju kao objekte s atributima `id`, `ime` i `prezime`. Dodajte barem 3 korisnika. Kako biste vratili korisnike u JSON formatu, koristite `res.json()` metodu.
+
+Testirajte u web pregledniku i s programom `curl` sve tri rute.
+Kada završite, pohranite promjene na Github repozitorij s komentarom "Samostalni zadatak za vježbu 1".
