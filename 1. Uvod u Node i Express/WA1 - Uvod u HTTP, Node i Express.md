@@ -11,7 +11,7 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/1.%20Uvod%20u%20Node%20i%20Express/WA_1_logo.png" style="width:9%; border-radius: 15px; float:right;"></img>
 
-<div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem internetskog preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za instalacijom na lokalnim računalima ili uređajima. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
+<div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
 **🆙 Posljednje ažurirano: 21.10.2024.**
@@ -667,7 +667,7 @@ Kako bi klijent poslao najjednostavniji mogući HTTP zahtjev, potrebno je navest
 | **Obavezni dijelovi HTTP zahtjeva** | **Opis**                                                           | **Primjer**                |
 | ----------------------------------- | ------------------------------------------------------------------ | -------------------------- |
 | **Request Line**                    | Sastoji se od HTTP **metode**, traženog **URI** i HTTP **verzije** | `GET /index.html HTTP/1.1` |
-| **Host zaglavlje**                  | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
+| **Host Header**                     | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
 
 Međutim, **Host Header** je ustvari jedini obavezni dio zahtjeva, ali to u pravilu ne želimo raditi. Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev. Ovaj program je u pravilu dostupan na svakom OS-u, a koristi se za slanje HTTP zahtjeva iz terminala. Možete provjeriti imate li ga instaliranog s naredbom `curl --version`.
 
@@ -734,7 +734,7 @@ Osim obaveznih dijelova HTTP zahtjeva, postoje i opcionalni dijelovi koji se kor
 
 Zaglavlja ćemo raditi detaljnije na nekim drugim vježbama, za sada morate znati samo da postoje i da se koriste za slanje dodatnih informacija poslužitelju.
 
-Tijelo se koristi u metodama poput POST, PUT, DELETE, PATCH, itd. gdje šaljemo podatke poslužitelju. Na primjer, kada se korisnik registrira na web stranici, šaljemo podatke kao što su **korisničko ime**, **lozinka**, **e-mail**, itd. u <ins> tijelu zahtjeva </ins>. Tijelo se može poslati u različitim formatima podataka, za sada neka nas zanima **JSON format**.
+Tijelo se koristi u metodama poput POST, PUT, DELETE, PATCH, itd. gdje šaljemo podatke poslužitelju. Na primjer, kada se korisnik registrira na web stranici, šaljemo podatke kao što su **korisničko ime**, **lozinka**, **e-mail**, itd. u <ins> tijelu zahtjeva </ins>. Tijelo se može poslati u različitim formatima podataka, za sada nas zanima **JSON format**.
 
 Kako ćemo definirati tijelo zahtjeva iznad kao JSON?
 
