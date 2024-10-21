@@ -43,7 +43,7 @@
     - [5.1.1 Obavezni dijelovi HTTP zahtjeva](#511-obavezni-dijelovi-http-zahtjeva)
       - [Vježba 1 - HTTP zahtjev prema našem Expressu](#vježba-1---http-zahtjev-prema-našem-expressu)
     - [5.1.2 Opcionalni dijelovi HTTP zahtjeva](#512-opcionalni-dijelovi-http-zahtjeva)
-  - [5.2 HTTP odgovor (_eng. HTTP response_)](#52-http-odgovor-eng-http-response)
+  - [5.2 HTTP odgovor (eng. HTTP response)](#52-http-odgovor-eng-http-response)
     - [5.2.1 Obavezni dijelovi HTTP odgovora](#521-obavezni-dijelovi-http-odgovora)
     - [5.2.2 Opcionalni dijelovi HTTP odgovora](#522-opcionalni-dijelovi-http-odgovora)
       - [Vježba 2: Kako vidjeti cijeli HTTP odgovor?](#vježba-2-kako-vidjeti-cijeli-http-odgovor)
@@ -64,14 +64,14 @@ Primjeri web aplikacija:
 
 Svaka web aplikacija sastoji se od minimalno dva dijela:
 
-1. **Klijentski dio** (_eng. client side_): izvršava se na korisničkom uređaju (npr. računalo, pametni telefon) i koristi se za prikaz korisničkog sučelja. Napisan je u jezicima poput HTML-a, CSS-a i JavaScripta, odnosno razvojnih okvira poput Reacta, Angulara ili Vue.js-a.
-2. **Poslužiteljski dio** (_eng. server side_): izvršava se na web poslužitelju i koristi se za obradu zahtjeva korisnika, pristup bazi podataka i poslovnu logiku aplikacije. Napisan je u jezicima poput JavaScripta (Node.js), Pythona (Django, Flask), Rubyja (Ruby on Rails) ili Jave (Spring).
+1. **Klijentski dio** (_eng. client side_): izvršava se na korisničkom uređaju (npr. računalo, pametni telefon) i koristi se za prikaz korisničkog sučelja. Napisan je u jezicima poput HTML-a, CSS-a i JavaScripta, odnosno razvojnim okvirima poput Reacta, Angulara ili Vue.js-a.
+2. **Poslužiteljski dio** (_eng. server side_): izvršava se na web poslužitelju i koristi se za obradu zahtjeva korisnika, komunikaciji s bazom podataka i definiranje poslovne logike aplikacije. Napisan je u jezicima poput JavaScripta (Node.js), Pythona (Django, Flask), Rubyja (Ruby on Rails) ili Jave (Spring).
 
 ## 1.1 Kratak povijesni pregled
 
 Premda nije predmet ovog kolegija, **PHP** je također popularan jezik za izradu poslužiteljskog dijela web aplikacija. Glavna prednost PHP-a je generiranje dinamičkih HTML stranica na poslužiteljskoj strani, što ga čini idealnim za izradu web stranica i aplikacija. Iako je prisutan već dugi niz godina, PHP i dalje ima veliku bazu korisnika i popularan je izbor za izradu web aplikacija (posebice moderni PHP okviri poput Laravela i Symfonya).
 
-**JavaScript** je nešto mlađi programski jezik od PHP-a (svega nekoliko mjeseci), a prvi put je implementiran u Netscape Navigatoru (najpopularniji web preglednik u to vrijeme) 1995. godine. JavaScript je postao popularan zbog svoje sposobnosti stvaranja interaktivnih korisničkih sučelja na klijentskoj strani web aplikacija, što je dovelo do razvoja modernih web aplikacija poput Gmaila, Google Mapsa. Te aplikacije su imale interaktivno korisničko sučelje napisano u JavaScriptu, dok se se za poslužiteljski sloj koristili PHP i C++ jezici.
+**JavaScript** je nešto mlađi programski jezik od PHP-a (svega nekoliko mjeseci), a prvi put je implementiran u Netscape Navigatoru (najpopularniji web preglednik u to vrijeme) 1995. godine. JavaScript je postao popularan zbog svoje sposobnosti stvaranja interaktivnih korisničkih sučelja na klijentskoj strani web aplikacija, što je dovelo do razvoja modernih web aplikacija poput Gmaila i Google Mapsa. Te aplikacije su imale interaktivno korisničko sučelje napisano u JavaScriptu, dok se se za poslužiteljski sloj koristili PHP i C++ jezici.
 
 Danas gotovo 99% web stranica koristi JavaScript na klijentskoj strani za implementaciju interaktivnog ponašanja, a svaki moderni web preglednik ima ugrađen svoj JavaScript engine koji izvršava JavaScript kod.
 
@@ -88,7 +88,7 @@ A za one koji žele više, proučite [**Deno**](https://deno.com/) - novi JavaSc
 
 ### 2.1 Node.js
 
-Node.js možete preuzeti sa [službene stranice](https://nodejs.org/en/). Preuzmite LTS verziju (Long Term Support) koja je stabilna i sigurna za produkciju. Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
+**Node.js** možete preuzeti sa [službene stranice](https://nodejs.org/en/). Preuzmite LTS verziju (Long Term Support) koja je stabilna i sigurna za produkciju. Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
 
 Preporuka je preuzeti verziju LTS 20+.
 
@@ -104,7 +104,7 @@ Ako je instalacija uspješna, trebali biste vidjeti verziju Node.js-a koju ste i
 v22.9.0
 ```
 
-Instalacijom Node-a dobivate i `npm` (Node Package Manager) koji koristimo za instalaciju paketa i modula potrebnih za razvoj web aplikacija.
+Instalacijom Node-a dobivate i `npm` (_Node Package Manager_) koji koristimo za instalaciju paketa i modula potrebnih za razvoj web aplikacija.
 
 ```bash
 npm -v
@@ -112,7 +112,7 @@ npm -v
 
 ### 2.2 VS Code
 
-Visual Studio Code je besplatni uređivač koda koji je dostupan za Windows, macOS i Linux. Možete preuzeti Visual Studio Code sa [službene stranice](https://code.visualstudio.com/download). Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
+**Visual Studio Code** je besplatni uređivač koda koji je dostupan za Windows, macOS i Linux. Možete preuzeti Visual Studio Code sa [službene stranice](https://code.visualstudio.com/download). Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
 
 Nakon što ste uspješno instalirali Visual Studio Code, možete provjeriti je li instalacija uspješna tako da otvorite terminal i upišete sljedeću naredbu:
 
@@ -130,7 +130,7 @@ ili jednostavno pokrenite kroz grafičko sučelje.
 
 ### 2.3 Git
 
-Git je besplatni sustav za upravljanje izvornim kodom koji je dostupan za Windows, macOS i Linux. Možete preuzeti Git sa [službene stranice](https://git-scm.com/downloads). Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
+**Git** je besplatni sustav za upravljanje izvornim kodom koji je dostupan za Windows, macOS i Linux. Možete preuzeti Git sa [službene stranice](https://git-scm.com/downloads). Nakon preuzimanja, pokrenite instalacijski program i slijedite upute za instalaciju.
 
 Iako nije nužan za sam razvoj web aplikacija, Git je koristan alat koji ćemo često koristiti za verzioniranje izvornog koda.
 
@@ -146,21 +146,21 @@ Ako je instalacija uspješna, trebali biste vidjeti verziju Git-a koju ste insta
 git version 2.47.0
 ```
 
-Ako još uvijek nemate, svakako morate izraditi i [Github](https://github.com/) račun. GitHub je vrlo popularna platforma gdje developeri mogu pohranjivati, dijeliti te surađivati na kodu i projektima, a koristi Git kao sustav za verzioniranje koda.
+Ako još uvijek nemate, svakako morate izraditi i [Github](https://github.com/) račun. GitHub je vrlo popularna platforma gdje developeri mogu pohranjivati, dijeliti te surađivati na kodu i projektima, a bazira se na Gitu, kao pozadinskom sustavu za verzioniranje koda.
 
 # 3. Kako započeti novi projekt?
 
-## 3.1 Inicijalizacija novog repozitorija
-
 Nakon što ste uspješno instalirali Node.js, Visual Studio Code i Git, možete započeti raditi na novom projektu.
 
-Prvi korak je definiranje strukture projekta, budući da smo odlučili verzionirati izvorni kod, koristit ćemo Git za inicijalizaciju novog repozitorija. Međutim krenut ćemo od GitHuba: idemo na [Github izraditi novi repozitorij](https://github.com/new), a zatim ćemo ga klonirati na lokalno računalo. Klonirati (eng. _clone_) znači preuzeti udaljeni repozitorij na naše računalo (lokalno).
+## 3.1 Inicijalizacija novog repozitorija
 
-Nazovite repozitorij **"wa_vjezbe_01"** i dodajte opis po želji. Možete ga postaviti kao privatni ili javni, a svakako odaberite opciju "Add a README file" kako ne bi inicijalno bio prazan.
+Prvi korak je definiranje strukture projekta, budući da smo odlučili verzionirati izvorni kod, koristit ćemo Git za inicijalizaciju novog repozitorija. Međutim krenut ćemo od GitHuba: idemo na [Github izraditi novi repozitorij](https://github.com/new), a zatim ćemo ga klonirati na naše računalo. Klonirati (eng. _clone_) znači preuzeti udaljeni repozitorij na naše računalo (lokalno).
+
+Nazovite repozitorij **"wa_vjezbe_01"** i dodajte opis po želji. Možete ga postaviti kao privatni ili javni, a svakako odaberite opciju `"Add a README file"` kako ne bi inicijalno bio prazan.
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/1.%20Uvod%20u%20Node%20i%20Express/screenshots/new_repo.png" style="width:50%;"></img>
 
-Nakon što ste izradili repozitorij, kopirajte URL repozitorija, npr. https://github.com/lukablaskovic/FIPU-WA1-Express.git
+Nakon što ste izradili repozitorij, kopirajte URL repozitorija, npr. https://github.com/lukablaskovic/wa-vjezbe-01.git
 
 **1. Način (terminal)**
 
@@ -189,7 +189,7 @@ cd Desktop
 Zamijenite `<URL>` s URL-om repozitorija koji ste prethodno kopirali. Na primjer:
 
 ```bash
-git clone https://github.com/lukablaskovic/FIPU-WA1-Express.git
+git clone https://github.com/lukablaskovic/wa-vjezbe-01.git
 ```
 
 Kako biste se uvjerili da ste u pravom direktoriju, upišite naredbu:
@@ -216,9 +216,9 @@ Ove naredbe će vam ispisati popis datoteka i direktorija u trenutnom direktorij
 
 **2. Način (VS Code)**
 
-Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea. Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili Command Palette. Upišite "Git: Clone" i pritisnite Enter. Zatim upišite URL repozitorija i pritisnite Enter.
+Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea. Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili _Command Palette_. Upišite `Git: Clone"` i pritisnite `Enter`. Zatim upišite `URL` repozitorija i pritisnite `Enter`.
 
-Ako vam ne radi, uvjerite se da imate instaliran Git i da je dostupan u PATH-u. Dodatno, u VS Codeu morate biti prijavljeni na Github račun.
+Ako vam ne radi, uvjerite se da imate instaliran Git i da je dostupan u PATH-u. Dodatno, u VS Codeu morate biti prijavljeni na GitHub račun.
 Možete se uvjeriti da je Git dostupan u PATH-u tako da otvorite terminal i upišete:
 
 ```bash
@@ -231,7 +231,7 @@ Ako nije dobit ćete grešku neovisno o okruženju u kojem otvarate terminal. U 
 
 Treći način je kloniranje repozitorija direktno iz GitHub Desktop aplikacije. Otvorite [Github Desktop](https://desktop.github.com/download/) aplikaciju i pritisnite `Ctrl + Shift + O` (Windows) ili `Cmd + Shift + O` (macOS) kako biste otvorili Clone Repository prozor. Upišite URL repozitorija i pritisnite Clone.
 
-GitHub desktop je odlična aplikacija za početnike jer nudi jednostavan način za upravljanje repozitorijima, ali nije nužna za rad na projektu. Sve što možete napraviti u GitHub Desktopu možete napraviti i u terminalu ili Visual Studio Codeu, ali Desktop nudi vizualni prikaz promjena i jednostavno upravljanje repozitorijima, što može biti vrlo korisno.
+GitHub desktop je odlična aplikacija za početnike jer nudi jednostavan način za upravljanje repozitorijima, ali nije nužna za rad na projektu. Sve što možete napraviti u GitHub Desktopu možete napraviti i u terminalu ili Visual Studio Codeu, ali Desktop nudi vizualni prikaz promjena i jednostavno upravljanje repozitorijima, promjenama, _branchevima_, što može biti vrlo korisno.
 
 ## 3.2 Izrada Node projekta
 
@@ -255,7 +255,7 @@ Zatim upišite sljedeću naredbu:
 npm init
 ```
 
-Ova naredba pokreće inicijalizaciju novog Node projekta. Slijedite upute i unesite podatke o projektu. Ako želite preskočiti neko polje, jednostavno pritisnite Enter.
+Ova naredba pokreće inicijalizaciju novog Node projekta. Slijedite upute i unesite podatke o projektu. Ako želite preskočiti neko polje, jednostavno pritisnite `Enter`.
 Ako želite preskočiti cijeli upitnik i koristiti zadane postavke, dodajte `-y` opciju:
 
 ```bash
@@ -285,7 +285,7 @@ Ok sad opet ne znam di sam? `pwd` (macOS/linux) ili `cd` (Windows) će vam reći
 
 ## 4.1 Instalacija Express.js
 
-Express.js je popularni web okvir za Node.js koji omogućava brzo i jednostavno kreiranje web aplikacija. Express.js je jedan od najpopularnijih web okvira za Node.js, a koristi se za izradu **poslužiteljskog dijela** web aplikacija.
+Express.js je popularni web okvir za Node.js koji omogućava brzu izradu web aplikacija na poslužiteljskom sloju. Express.js je jedan od najpopularnijih web okvira za Node.js, a koristi se za izradu **poslužiteljskog dijela** web aplikacija.
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png" style="width:25%">
 
@@ -304,7 +304,7 @@ Nakon što je instalacija završena, u direktoriju projekta trebali biste vidjet
 - direktorij `node_modules` koji sadrži sve instalirane pakete i module odnosno njihov izvorni kod
 - datoteku `package-lock.json` koja sadrži informacije o verzijama paketa i modula
 
-`package-lock.json` datoteka je važna jer osigurava da svi članovi tima koriste iste verzije paketa i modula. Ova datoteka se automatski generira prilikom instalacije paketa i modula, i također ju ne smijete mijenjati ručno.
+`package-lock.json` datoteka je važna jer osigurava da svi članovi tima koriste iste verzije paketa i modula. Ova datoteka se automatski generira prilikom instalacije paketa i modula i također ju ne smijete mijenjati ručno.
 
 Struktura direktorija projekta trebala bi izgledati ovako:
 
@@ -324,13 +324,13 @@ U sljedećem poglavlju ćemo izraditi naš prvi Express.js poslužitelj.
 Krenimo napokon s implementacijom Express.js-a ! 🚀 Dodat ćemo novu JavaScript datoteku proizvoljnog naziva, uobičajeno je koristiti `app.js`, `index.js` ili `server.js`.
 Mi ćemo koristiti `index.js`.
 
-Dodajte datoteku ručno, desni klik na direktorij projekta -> `New File` -> `index.js`. Ili ako želite biti terminal ninja, upišite:
+Dodajte datoteku ručno, desni klik na direktorij projekta -> `New File` -> `index.js`. Ili ako želite biti terminal ninja🥷🏻, upišite:
 
 ```bash
 touch index.js
 ```
 
-Osnovni Express.js poslužitelj možemo definirati svega u nekoliko linija koda:
+Osnovni Express.js poslužitelj možemo definirati u svega nekoliko linija koda:
 
 Prvo ćemo uključiti Express.js modul u našu datoteku:
 
@@ -371,7 +371,7 @@ node index.js
 Što se dogodilo? 🤔
 Čini se kao da nije ništa, međutim možemo u terminalu vidjeti da je proces pokrenut budući da ne možemo više upisivati nove naredbe. To znači da je Express.js poslužitelj uspješno pokrenut i da sluša zahtjeve na portu 3000.
 
-Gdje ovo mogu vidjeti? Aplikacija pokrećemo na vlastitom računalu, tako da se ona izvodi na adresi `localhost`, odnosno `127.0.0.1`. Dodatno, sluša na portu `3000`, tako da je puna adresa `http://localhost:3000`. Otvorite internetski preglednik i upišite ovu adresu, trebali biste vidjeti poruku "Cannot GET /" ili slično. To je u redu, jer nismo definirali nikakve rute ili putanje.
+Gdje ovo mogu vidjeti? Aplikaciju pokrećemo na vlastitom računalu, tako da se ona izvodi na adresi `127.0.0.1`, odnosno `localhost`. Dodatno, sluša na portu `3000`, tako da je puna adresa `http://localhost:3000`. Otvorite internetski preglednik i upišite ovu adresu, trebali biste vidjeti poruku "Cannot GET /" ili slično. To je u redu, jer nismo definirali nikakve rute ili putanje.
 
 Kako zatvoriti Express.js poslužitelj? U terminalu pritisnite `Ctrl + C` (Windows) ili `Cmd + C` (macOS) kako biste prekinuli izvođenje programa. Ovo će zaustaviti Express.js poslužitelj i vratiti vam kontrolu nad terminalom.
 
@@ -384,7 +384,7 @@ app.listen(PORT, function () {
 ```
 
 Ova funkcija prima i `error` argument, tako da možemo uhvatiti potencijalne greške prilikom pokretanja poslužitelja:
-Skraćeno ju možemo zapisati i kao `arrow callback`:
+Možemo ju zapisati i kao `arrow callback`:
 
 ```javascript
 app.listen(PORT, (error) => {
@@ -396,7 +396,7 @@ app.listen(PORT, (error) => {
 });
 ```
 
-Spremite datoteku i ponovno pokrenite Express.js poslužitelj. Ovaj put ćete vidjeti poruku "Server je pokrenut na http://localhost:3000" u terminalu.
+Spremite datoteku i ponovno pokrenite Express.js poslužitelj. Ovaj put ćete vidjeti poruku: `"Server je pokrenut na http://localhost:3000"` u terminalu.
 
 I to je to! Uspješno ste izradili prvi Express.js poslužitelj! 🎉
 
@@ -412,7 +412,7 @@ Mi ćemo u sklopu ovog kolegija koristiti Express.js za izgradnju ukupnog poslu�
 
 Vratimo se na rute. Rekli smo da su to putanje koje korisnici mogu posjetiti u internetskom pregledniku i koje odgovaraju na određene zahtjeve korisnika.
 
-Sigurno ste dosad imali priliku vidjeti rute u internetskim preglednicima, npr. `https://moodle.srce.hr/2024-2025/` gdje je `2024-2025` ruta koja odgovara akademskoj godini, odnosno pretpostavljamo da će nas odvesti na stranicu s informacijama o akademskoj godini 2024/2025 (u pozadini: korisnik je zatražio informacije o akademskoj godini 2024/2025, a poslužitelj to mora vratiti).
+Sigurno ste dosad imali priliku vidjeti rute u internetskim preglednicima, npr. `https://moodle.srce.hr/2024-2025/` gdje je `2024-2025` ruta koja odgovara akademskoj godini, odnosno pretpostavljamo da će nas odvesti na stranicu s informacijama o akademskoj godini 2024/2025 (u pozadini: korisnik je zatražio informacije o akademskoj godini 2024/2025, a poslužitelj pokušava vratiti taj resurs).
 
 Definirat ćemo osnovnu rutu `/` koja će korisnicima prikazati poruku "Hello, world!". Koristit ćemo `get` metodu koja je obrađuje **HTTP GET** zahtjev.
 
@@ -561,7 +561,7 @@ Primjetit ćete da se promjene u `node_modules` direktoriju više ne pojavljuju 
 
 Sada smo spremni napraviti naš prvi `commit`!
 
-1. Način (kroz terminal):
+**1. Način (kroz terminal):**
 
 Prvo provjerimo stanje indeksa:
 
@@ -618,11 +618,11 @@ Ono što još trebamo napraviti je pohraniti promjene na udaljeni repozitorij. O
 git push
 ```
 
-2. Način (kroz VS Code):
+**2. Način (kroz VS Code):**
 
 Otvorite Source Control tab u lijevom izborniku VS Codea. Prikazat će se sve promjene u projektu. Unesite poruku i jednostavno pritisnite `✓ Commit` ikonu kako biste pohranili promjene (ovo je ekvivalentno `git add` i `git commit` naredbama). Zatim odaberite `Sync Changes` kako biste pohranili promjene na udaljeni repozitorij (ovo je ekvivalentno `git push` naredbi).
 
-3. Način (kroz GitHub Desktop):
+**3. Način (kroz GitHub Desktop):**
 
 Otvorite GitHub Desktop aplikaciju i pronađite vaš repozitorij. Vidjet ćete vizualni prikaz promjena u projektu na tabu `Changes`.
 
@@ -646,9 +646,9 @@ Međutim, prije nego što krenemo, važno je naučiti od čega se sastoje HTTP z
 
 HTTP prati klasičnu **klijent-poslužitelj** arhitekturu (_eng. client-server architecture_). Ukratko, to znači da klijent šalje zahtjev poslužitelju, a poslužitelj šalje odgovor klijentu. Preciznije, klijent otvara **TCP/IP** vezu s poslužiteljem, šalje HTTP zahtjev i onda čeka sve dok poslužitelj ne pošalje odgovor.
 
-HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zna ništa o prethodnim zahtjevima. Na primjer, kada korisnik posjeti stranicu, poslužitelj ne zna ništa o prethodnim posjetama korisnika. Ovo je korisno jer omogućava poslužitelju da bude brži i efikasniji, međutim postoje tehnike kojima možemo na klijentskoj strani zapamtiti određenu prethodnu interakciju, npr. kroz kolačiće (_eng. cookies_) ili lokalno pohranjivanje (_eng. local storage_) te na taj način imati neki oblik stanja koji šaljemo s klijenta na poslužitelj.
+HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zna ništa o prethodnim zahtjevima. Na primjer, kada korisnik posjeti stranicu, poslužitelj ne zna ništa o prethodnim posjetama korisnika. Ovo je korisno jer omogućava poslužitelju da bude brži i efikasniji, međutim postoje tehnike kojima možemo na klijentskoj strani zapamtiti prethodne interakcije, npr. kroz kolačiće (_eng. cookies_) ili lokalno pohranjivanje (_eng. local storage_) te na taj način imati neki oblik stanja koji šaljemo s klijenta na poslužitelj.
 
-Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor krajnjem korisniku. Naravno, to ne mora biti i vrlo često i nije (1 - 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
+Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor krajnjem korisniku. Naravno, to ne mora biti i vrlo često i nije (1 <-> 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/1.%20Uvod%20u%20Node%20i%20Express/screenshots/http_requests.png" style="width:50%">
 
@@ -683,11 +683,11 @@ Uočite što smo dobili - HTML stranicu koja definira Googleovu početnu stranic
 curl -X GET http://www.google.com
 ```
 
-Koji smo URI (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI predstavlja jedinstveni identifikator elektroničkog resursa. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
+Koji smo **URI** (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI predstavlja jedinstveni identifikator elektroničkog resursa. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/1.%20Uvod%20u%20Node%20i%20Express/screenshots/url_uri_urn.png?raw=true">
 
-U ovoj skripti će se često koristiti URI, međutim URL je uobičajeniji pojam i koristi se za identifikaciju resursa na webu.
+U ovoj skripti će se često koristiti termin URI.
 
 Dakle što je ovdje URI? `http://www.google.com`
 
@@ -699,23 +699,23 @@ curl -X GET http://www.google.com/index.html
 
 Radi! 🎉
 
-Što ako probamo dohvatiti nešto što ne postoji? Na primjer, `http://www.google.com/about_me.html`:
+Što ako probamo dohvatiti nešto što ne postoji? Na primjer, `http://www.google.com/about_me.html`
 
 ```bash
 curl -X GET http://www.google.com/about_me.html
 ```
 
-Vidimo da kao odgovor dobivamo HTML stranicu s porukom "404. That’s an error. The requested URL was not found on this server. That’s all we know.". Ako otvorimo u web pregledniku, ona izgleda ovako:
+Vidimo da kao odgovor dobivamo HTML stranicu s porukom `"404. That’s an error. The requested URL was not found on this server. That’s all we know."`. Ako otvorimo u web pregledniku, ona izgleda ovako:
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/1.%20Uvod%20u%20Node%20i%20Express/screenshots/google_error404.png?raw=true" style="width:50%">
 
 Dakle, **Request Line** se sastoji od HTTP **metode**, traženog **URI** i HTTP **verzije**.
 
-| **Dijelovi Request Line komponente** | **Opis**                                                | **Primjer**   |
-| ------------------------------------ | ------------------------------------------------------- | ------------- |
-| **HTTP metoda**                      | Akcija koju klijent želi izvršiti (npr. GET, POST, PUT) | `GET`         |
-| **URI zahtjeva**                     | Specifični resurs na poslužitelju koji klijent traži    | `/index.html` |
-| **HTTP verzija**                     | Verzija HTTP-a koja se koristi u zahtjevu               | `HTTP/1.1`    |
+| **Dijelovi Request Line komponente** | **Opis**                                                | **Primjer**                 |
+| ------------------------------------ | ------------------------------------------------------- | --------------------------- |
+| **HTTP metoda**                      | Akcija koju klijent želi izvršiti (npr. GET, POST, PUT) | `GET`                       |
+| **URI zahtjeva**                     | Specifični resurs na poslužitelju koji klijent traži    | `/over/here?name=something` |
+| **HTTP verzija**                     | Verzija HTTP-a koja se koristi u zahtjevu               | `HTTP/1.1`                  |
 
 Verziju HTTP-a možemo navesti i eksplicitno, međutim u pravilu se automatski koristi `HTTP/1.1`.
 
@@ -746,7 +746,7 @@ Kako ćemo definirati tijelo zahtjeva iznad kao JSON?
 }
 ```
 
-Recimo da naš poslužitelj ima definirani endpoint `/registracija` koji očekuje ove podatke. Dakle, korisnik ne traži nikakav resurs od poslužitelja pa niti HTML stranicu, već isključivo šalje podatke poslužitelju i očekuje nekakav odgovor (ne resurs). Ovakav endpoint moramo definirati kao `POST` metodu koja nam dozvoljava slanje podataka kroz tijelo zahtjeva, za razliku od `GET` metode.
+Recimo da naš poslužitelj ima definirani endpoint `/registracija` koji očekuje ove podatke. Dakle, korisnik ne traži nikakav resurs od poslužitelja pa niti HTML stranicu, već isključivo šalje podatke poslužitelju i očekuje nekakav odgovor (ne resurs). Ovakav endpoint definiramo `POST` metodom koja nam dozvoljava slanje podataka kroz tijelo zahtjeva, za razliku od `GET` metode.
 
 Koristeći `curl` program, možemo poslati tijelo zahtjeva kroz opciju `-d`:
 
@@ -758,7 +758,7 @@ Naravno, ovo neće raditi.
 
 Više o HTTP zahtjevima možete pročitati na [MDN web dokumentaciji](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview).
 
-## 5.2 HTTP odgovor (_eng. HTTP response_)
+## 5.2 HTTP odgovor (eng. HTTP response)
 
 HTTP odgovor predstavlja odgovor poslužitelja klijentu, npr. poslužitelj šalje HTML stranicu klijentu ili JSON podatke. HTTP odgovor sastoji se od nekoliko dijelova od kojih su, kao i kod zahtjeva, neki **obavezni**, a neki **opcionalni**:
 
@@ -773,7 +773,7 @@ Kako bi poslužitelj poslao najjednostavniji mogući HTTP odgovor, potrebno je n
 | **Status Line**                                           | Sadrži HTTP **verziju**, **statusni kod** (_eng. status code_) i **_reason phrase_** | `HTTP/1.1 200 OK` <br> `HTTP/1.1 404 Not Found`                             |
 | **Obavezna zaglavlja odgovora (_eng. Response headers_)** | Pruža obavezne metapodatke o odgovoru (npr. Content-Type)                            | `Content-Type: application/json` <br> `Date: Mon, 21 Oct 2024 10:32:45 GMT` |
 
-Kod **Status Line** komponente, najzanimljiviji nam je **statusni kod**. Vjerojatno smo se svi do sad susreli sa statusnim kodovima koje vraća određeni poslužitelj.
+Kod **Status Line** komponente, najzanimljiviji nam je **statusni kod**. Vjerojatno smo se svi do sad susreli sa statusnim kodovima koje nam je vratio neki poslužitelj.
 
 Primjerice, poznati statusni kod `404` označava da traženi resurs nije pronađen, odnosno da je korisnik poslao zahtjev za resurs koji ne postoji.
 
@@ -808,9 +808,9 @@ Pošaljite ponovo zahtjev programom `curl` na Express poslužitelj koji smo defi
 curl http://localhost:3000
 ```
 
-Kao odgovor dobili smo tijelo s porukom "Hello, world!". Koji statusni kod očekujete? 🤔
+Kao odgovor dobili smo tijelo s porukom `"Hello, world!"`. Koji statusni kod očekujete? 🤔
 
-Provjerit ćemo obavezna zaglavlja i statusni kod koji smo dobili kao odgovor kako bi vidjeli što Express radi u pozadini. Možemo koristiti opciju `-i` kako bismo dobili zaglavlja odgovora:
+Provjerit ćemo obavezna zaglavlja i statusni kod koji smo dobili kao odgovor kako bi vidjeli što Express radi u pozadini. Možemo koristiti opciju `-i` kako bismo vidjeli ukupan HTTP odgovor:
 
 ```bash
 curl -i http://localhost:3000
@@ -842,8 +842,8 @@ Hello, world!
 
 Izmijenite vaš Express poslužitelj tako da:
 
-1. Nadogradite postojeću GET rutu `/` koja sad mora vratiti HTML stranicu s porukom "Hello, Express!".
-2. Dodate još jednu GET rutu `/about` koja će vratiti HTML stranicu s porukom "Ovo je stranica o nama!".
+1. Nadogradite postojeću GET rutu `/` koja sad mora vratiti HTML stranicu s `<h1>` naslovom "Hello, Express!".
+2. Dodate još jednu GET rutu `/about` koja će vratiti HTML stranicu s `<h1>` naslovom "Ovo je stranica o nama!".
 
 Obje HTML stranice pohranite u direktorij `/public`.
 Kako biste vratili podatke u obliku HTML stranice, koristite `res.sendFile()` metodu.
