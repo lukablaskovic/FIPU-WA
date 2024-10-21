@@ -600,7 +600,7 @@ git push
 
 2. Način (kroz VS Code):
 
-Otvorite Source Control tab u lijevom izborniku VS Codea. Prikazat će se sve promjene u projektu. Postoji nekoliko oznaka uz svaku datoteku:
+Otvorite Source Control tab u lijevom izborniku VS Codea. Prikazat će se sve promjene u projektu. Unesite poruku i jednostavno pritisnite `✓ Commit` ikonu kako biste pohranili promjene (ovo je ekvivalentno `git add` i `git commit` naredbama).
 
 3. Način (kroz Github Desktop):
 
