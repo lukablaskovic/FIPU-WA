@@ -9,16 +9,14 @@
 
 # (1) Uvod u HTTP, Node i Express
 
-<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/1.%20Uvod%20u%20Node%20i%20Express/WA_1_logo.png" style="width:9%; border-radius: 11px; float:right;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/1.%20Uvod%20u%20Node%20i%20Express/WA_1_logo.png" style="width:9%; border-radius: 15px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 23.10.2024.**
+**🆙 Posljednje ažurirano: 21.10.2024.**
 
 ## Sadržaj
-
-<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(1) Uvod u HTTP, Node i Express](#1-uvod-u-http-node-i-express)
@@ -66,8 +64,6 @@ Svaka web aplikacija sastoji se od minimalno dva dijela:
 
 1. **Klijentski dio** (_eng. client side_): izvršava se na korisničkom uređaju (npr. računalo, pametni telefon) i koristi se za prikaz korisničkog sučelja. Napisan je u jezicima poput HTML-a, CSS-a i JavaScripta, odnosno razvojnim okvirima poput Reacta, Angulara ili Vue.js-a.
 2. **Poslužiteljski dio** (_eng. server side_): izvršava se na web poslužitelju i koristi se za obradu zahtjeva korisnika, komunikaciji s bazom podataka i definiranje poslovne logike aplikacije. Napisan je u jezicima poput JavaScripta (Node.js), Pythona (Django, Flask), Rubyja (Ruby on Rails) ili Jave (Spring).
-
-<br>
 
 ## 1.1 Kratak povijesni pregled
 
@@ -218,7 +214,7 @@ Ove naredbe će vam ispisati popis datoteka i direktorija u trenutnom direktorij
 
 **2. Način (VS Code)**
 
-Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea. Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili _Command Palette_. Upišite `Git: Clone` i pritisnite `Enter`. Zatim unesite `URL` repozitorija i pritisnite `Enter`.
+Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea. Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili _Command Palette_. Upišite `Git: Clone"` i pritisnite `Enter`. Zatim upišite `URL` repozitorija i pritisnite `Enter`.
 
 Ako vam ne radi, uvjerite se da imate instaliran Git i da je dostupan u PATH-u. Dodatno, u VS Codeu morate biti prijavljeni na GitHub račun.
 Možete se uvjeriti da je Git dostupan u PATH-u tako da otvorite terminal i upišete:
@@ -227,7 +223,7 @@ Možete se uvjeriti da je Git dostupan u PATH-u tako da otvorite terminal i upi�
 git --version
 ```
 
-Ako nije, dobit ćete grešku neovisno o okruženju u kojem otvarate terminal. U tom slučaju, potrebno je reinstalirati Git kroz instalacijski program i odabrati opciju koja dodaje Git u PATH.
+Ako nije dobit ćete grešku neovisno o okruženju u kojem otvarate terminal. U tom slučaju, potrebno je reinstalirati Git kroz instalacijski program i odabrati opciju koja dodaje Git u PATH.
 
 **3. Način (Github Desktop)**
 
@@ -416,7 +412,7 @@ Vratimo se na rute. Rekli smo da su to putanje koje korisnici mogu posjetiti u i
 
 Sigurno ste dosad imali priliku vidjeti rute u internetskim preglednicima, npr. `https://moodle.srce.hr/2024-2025/` gdje je `2024-2025` ruta koja odgovara akademskoj godini, odnosno pretpostavljamo da će nas odvesti na stranicu s informacijama o akademskoj godini 2024/2025 (u pozadini: korisnik je zatražio informacije o akademskoj godini 2024/2025, a poslužitelj pokušava vratiti taj resurs).
 
-Definirat ćemo osnovnu rutu `/` koja će korisnicima prikazati poruku "Hello, world!". Koristit ćemo `get` metodu koja obrađuje **HTTP GET** zahtjev.
+Definirat ćemo osnovnu rutu `/` koja će korisnicima prikazati poruku "Hello, world!". Koristit ćemo `get` metodu koja je obrađuje **HTTP GET** zahtjev.
 
 ```javascript
 app.get("/"); // definiramo rutu/endpoint
@@ -424,11 +420,7 @@ app.get("/"); // definiramo rutu/endpoint
 
 Zatim ćemo dodati `callback` funkciju koja će se izvršiti kada korisnik pošalje zahtjev na tu rutu.
 
-Ova _callback_ funkcija najčešće prima dva argumenta: `req` (request) i `res` (response).
-
-`req` objekt sadrži informacije o zahtjevu korisnika, dok `res` objekt koristimo za slanje odgovora korisniku (možemo ih nazvati bilo kako ali ovo je konvencija i dobro je se držati).
-
-Postoji i treći argument - `next` koji koristimo za preusmjeravanje zahtjeva na sljedeću funkciju u lancu middlewarea, ali o tome ćemo kasnije.
+Ova callback funkcija najčešće prima dva argumenta: `req` (request) i `res` (response). `req` objekt sadrži informacije o zahtjevu korisnika, dok `res` objekt koristimo za slanje odgovora korisniku (možemo ih nazvati bilo kako ali ovo je konvencija i dobro je se držati). Postoji i treći argument `next` koji koristimo za preusmjeravanje zahtjeva na sljedeću funkciju u lancu middlewarea, ali o tome ćemo kasnije.
 
 Osnovna metoda `res` objekta je `send` koja služi za slanje jednostavnog odgovora korisniku. Osim nje, postoji još mnogo metoda `response` objekta: poput `json` koja šalje podatke u obliku JSON-a ili `sendFile` koja šalje datoteku.
 
@@ -471,7 +463,7 @@ app.listen(PORT, (error) => {
 
 Obavezno spremite datoteku i ponovo pokrenite Express.js poslužitelj. Otvorite internetski preglednik i posjetite adresu `http://localhost:3000`. Trebali biste vidjeti poruku "Hello, world!".
 
-Međutim, što smo ustvari dobili nazad? Otvorimo konzolu u pregledniku (F12) i vidjet ćemo da smo dobili HTML stranicu s porukom `"Hello, world!"`.
+Međutim, što smo ustvari dobili nazad? Otvorimo konzolu u pregledniku (F12) i vidjet ćemo da smo dobili HTML stranicu s porukom "Hello, world!".
 
 ```html
 <html>
@@ -494,7 +486,7 @@ Kako instalirati `nodemon` kroz `npm`?
 npm install -g nodemon
 ```
 
-Opcija `-g` označava globalnu instalaciju, što znači da će `nodemon` biti dostupan u cijelom sustavu (našem računalu). Ovo je korisno jer možemo koristiti `nodemon` za pokretanje bilo koje Node.js aplikacije, a ne samo Express.js aplikacija. Ako vam `nodemon` ne radi globalno nakon instalacije, pokušajte restartirati računalo.
+Opcija `-g` označava globalnu instalaciju, što znači da će `nodemon` biti dostupan u cijelom sustavu (našem računalu). Ovo je korisno jer možemo koristiti `nodemon` za pokretanje bilo koje Node.js aplikacije, a ne samo Express.js aplikacija.
 
 Rekli smo da u `package.json` datoteci definiramo aplikacije koje naš paket koristi. Kako naša aplikacija nema direktne koristi od `nodemon` paketa, već samo mi kao developeri, možemo koristiti `--save-dev` opciju prilikom instalacije koja će dodati `nodemon` paket u `devDependencies` dio `package.json` datoteke (odnosno pakete koji su potrebni samo prilikom razvoja aplikacije).
 
@@ -766,7 +758,7 @@ Više o HTTP zahtjevima možete pročitati na [MDN web dokumentaciji](https://de
 
 ## 5.2 HTTP odgovor (eng. HTTP response)
 
-HTTP odgovor predstavlja odgovor poslužitelja klijentu, npr. poslužitelj šalje HTML stranicu ili JSON podatke klijentu. HTTP odgovor sastoji se od nekoliko dijelova od kojih su, kao i kod zahtjeva, neki **obavezni**, a neki **opcionalni**:
+HTTP odgovor predstavlja odgovor poslužitelja klijentu, npr. poslužitelj šalje HTML stranicu klijentu ili JSON podatke. HTTP odgovor sastoji se od nekoliko dijelova od kojih su, kao i kod zahtjeva, neki **obavezni**, a neki **opcionalni**:
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/1.%20Uvod%20u%20Node%20i%20Express/screenshots/http_response.png?raw=true" style="width:50%">
 
