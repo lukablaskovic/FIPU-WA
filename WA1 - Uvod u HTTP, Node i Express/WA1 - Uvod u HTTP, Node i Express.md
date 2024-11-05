@@ -24,9 +24,9 @@
 - [1. Uvod](#1-uvod)
   - [1.1 Kratak povijesni pregled](#11-kratak-povijesni-pregled)
 - [2. Instalacija potrebnih alata](#2-instalacija-potrebnih-alata)
-    - [2.1 Node.js](#21-nodejs)
-    - [2.2 VS Code](#22-vs-code)
-    - [2.3 Git](#23-git)
+  - [2.1 Node.js](#21-nodejs)
+  - [2.2 VS Code](#22-vs-code)
+  - [2.3 Git](#23-git)
 - [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
   - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)
@@ -45,7 +45,7 @@
     - [5.2.1 Obavezni dijelovi HTTP odgovora](#521-obavezni-dijelovi-http-odgovora)
     - [5.2.2 Opcionalni dijelovi HTTP odgovora](#522-opcionalni-dijelovi-http-odgovora)
       - [Vježba 2: Kako vidjeti cijeli HTTP odgovor?](#vježba-2-kako-vidjeti-cijeli-http-odgovor)
-- [6. Samostalni zadatak za Vježbu 1](#6-samostalni-zadatak-za-vježbu-1)
+- [Samostalni zadatak za Vježbu 1](#samostalni-zadatak-za-vježbu-1)
 
 <br>
 
@@ -335,7 +335,7 @@ Osnovni Express.js poslužitelj možemo definirati u svega nekoliko linija koda:
 Prvo ćemo uključiti Express.js modul u našu datoteku:
 
 ```javascript
-const express = require("express");
+const express = require('express');
 ```
 
 Zatim ćemo stvoriti novu Express aplikaciju:
@@ -355,7 +355,7 @@ app.listen(PORT); // Express aplikacija "sluša" na portu 3000
 Cijeli kod izgleda ovako:
 
 ```javascript
-const express = require("express");
+const express = require('express');
 const app = express();
 
 const PORT = 3000;
@@ -387,7 +387,7 @@ Ova funkcija prima i `error` argument, tako da možemo uhvatiti potencijalne gre
 Možemo ju zapisati i kao `arrow callback`:
 
 ```javascript
-app.listen(PORT, (error) => {
+app.listen(PORT, error => {
   if (error) {
     console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
   } else {
@@ -417,7 +417,7 @@ Sigurno ste dosad imali priliku vidjeti rute u internetskim preglednicima, npr. 
 Definirat ćemo osnovnu rutu `/` koja će korisnicima prikazati poruku "Hello, world!". Koristit ćemo `get` metodu koja obrađuje **HTTP GET** zahtjev.
 
 ```javascript
-app.get("/"); // definiramo rutu/endpoint
+app.get('/'); // definiramo rutu/endpoint
 ```
 
 Zatim ćemo dodati `callback` funkciju koja će se izvršiti kada korisnik pošalje zahtjev na tu rutu.
@@ -431,16 +431,16 @@ Postoji i treći argument - `next` koji koristimo za preusmjeravanje zahtjeva na
 Osnovna metoda `res` objekta je `send` koja služi za slanje jednostavnog odgovora korisniku. Osim nje, postoji još mnogo metoda `response` objekta: poput `json` koja šalje podatke u obliku JSON-a ili `sendFile` koja šalje datoteku.
 
 ```javascript
-app.get("/", function (req, res) {
-  res.send("Hello, world!");
+app.get('/', function (req, res) {
+  res.send('Hello, world!');
 });
 ```
 
 ili `arrow callback`:
 
 ```javascript
-app.get("/", (req, res) => {
-  res.send("Hello, world!"); // šaljemo odgovor korisniku
+app.get('/', (req, res) => {
+  res.send('Hello, world!'); // šaljemo odgovor korisniku
 });
 ```
 
@@ -449,16 +449,16 @@ To je to!
 Cijeli kod izgleda ovako:
 
 ```javascript
-const express = require("express");
+const express = require('express');
 const app = express();
 
 const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
 });
 
-app.listen(PORT, (error) => {
+app.listen(PORT, error => {
   if (error) {
     console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
   } else {
@@ -839,10 +839,10 @@ Hello, world!
 - Prvi dio je **Status Line** koji sadrži HTTP **verziju**, **statusni kod** i **_reason phrase_**.
 
 - Drugi dio sadrži **zaglavlja odgovora** koja pružaju metapodatke o odgovoru.
-
+  d
 - Treći dio je **tijelo odgovora** koje sadrži stvarni sadržaj koji se šalje klijentu.
 
-# 6. Samostalni zadatak za Vježbu 1
+# Samostalni zadatak za Vježbu 1
 
 Izmijenite vaš Express poslužitelj tako da:
 
@@ -855,7 +855,7 @@ Kako biste vratili podatke u obliku HTML stranice, koristite `res.sendFile()` me
 Sintaksa:
 
 ```javascript
-res.sendFile(__dirname + "putanja_do_datoteke");
+res.sendFile(__dirname + 'putanja_do_datoteke');
 ```
 
 3. Dodajte i posljednju GET rutu `/users` koja će vratiti korisnike u JSON formatu. Korisnike pohranite u polju kao objekte s atributima `id`, `ime` i `prezime`. Dodajte barem 3 korisnika. Kako biste vratili korisnike u JSON formatu, koristite `res.json()` metodu.

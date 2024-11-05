@@ -11,12 +11,10 @@
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/WA_2_logo.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
-<div style="float: clear; margin-right:5px;"> Usmjeravanje odnosno *routing* se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo.</div>
+<div style="float: clear; margin-right:5px;"> Usmjeravanje (eng. routing) se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 28.10.2024.**
-
-- skripta nije dovršena
+**🆙 Posljednje ažurirano: 3.11.2024.**
 
 ## Sadržaj
 
@@ -30,10 +28,19 @@
     - [2.2.1 Kako slati `POST` zahtjeve jednostavnije?](#221-kako-slati-post-zahtjeve-jednostavnije)
   - [Vježba 1 - Naručivanje više pizze 🍕🍕🍕](#vježba-1---naručivanje-više-pizze-)
   - [Vježba 2 - Zanima nas i adresa dostave 🚙🏠](#vježba-2---zanima-nas-i-adresa-dostave-)
-  - [2.3 `PUT` i `PATH` metode](#23-put-i-path-metode)
+  - [2.3 `PUT` i `PATCH` metode](#23-put-i-patch-metode)
+    - [2.3.1 `PUT` metoda](#231-put-metoda)
+    - [2.3.2 `PATCH` metoda](#232-patch-metoda)
   - [2.4 `DELETE` metoda](#24-delete-metoda)
-- [3. Router objekt](#3-router-objekt)
+  - [2.5 Kada koristiti koju `HTTP` metodu?](#25-kada-koristiti-koju-http-metodu)
+- [3. `Router` objekt](#3-router-objekt)
+  - [3.1 Kako koristiti `Router` objekt?](#31-kako-koristiti-router-objekt)
+  - [3.2 Idemo još bolje strukturirati našu aplikaciju](#32-idemo-još-bolje-strukturirati-našu-aplikaciju)
+  - [Vježba 3 - Strukturiranje narudžbi ➡️🍕](#vježba-3---strukturiranje-narudžbi-️)
 - [4. Statusni kodovi u odgovorima](#4-statusni-kodovi-u-odgovorima)
+  - [4.1 Kako koristiti statusne kodove u Expressu?](#41-kako-koristiti-statusne-kodove-u-expressu)
+  - [Vježba 4 - Korištenje statusnih kodova u pizzeriji 🍕4️⃣0️⃣4️⃣](#vježba-4---korištenje-statusnih-kodova-u-pizzeriji-4️⃣0️⃣4️⃣)
+- [Samostalni zadatak za Vježbu 2](#samostalni-zadatak-za-vježbu-2)
 
 # 1. Ponavljanje
 
@@ -552,9 +559,11 @@ Primjer JSON objekta koji se šalje:
       "kolicina": 2
     }
   ],
+  klijent : [
   "prezime": "Perić",
   "adresa": "Alda Negrija 6",
   "broj_telefona": "0912345678"
+  ]
 }
 ```
 
@@ -567,10 +576,552 @@ adresa: "Alda Negrija 6",
 ukupna_cijena: izračunajte ukupnu cijenu narudžbe
 ```
 
-## 2.3 `PUT` i `PATH` metode
+## 2.3 `PUT` i `PATCH` metode
+
+Sljedeće metode koje ćemo naučiti su `PUT` i `PATCH` metode. Obe metode se koriste za **ažuriranje resursa** na poslužitelju. Međutim, razlika između njih je u tome što `PUT` metoda **zamjenjuje cijeli resurs** novim podacima, dok `PATCH` metoda **ažurira samo određene dijelove resursa**.
+
+### 2.3.1 `PUT` metoda
+
+Krenimo s metodom `PUT`. Zahtjev s ovom HTTP metodom se koristi za ažuriranje cijelog resursa na poslužitelju. Kada klijent pošalje ovakav zahtjev, želi zamijeniti cijeli resurs novim podacima koje šalje u **tijelu zahtjeva**.
+
+Ključni elementi:
+
+- **zamjenjuje cijeli resurs**: Kada šaljete `PUT` zahtjev, poslužitelj očekuje da ćete uključiti **sve informacije** za taj resurs, čak i onda kada želite zamijeniti samo manji dio resursa (npr. nekoliko polja u objektu).
+- **može se koristiti za stvaranje novog resursa**: Ako šaljete `PUT` zahtjev s podacima o resursu koji ne postoji, ovaj zahtjev se može koristiti za stvaranje novog resursa. Zašto? Zato što se u `URI` navodi identifikator resursa.
+
+_Primjer:_ Recimo da želite ažurirati podatke o pizzi s `id`-om 1. Slanjem `PUT` zahtjeva na `/pizze/1` poslužitelj očekuje da ćete poslati **sve podatke** o pizzi, uključujući `id`, `naziv`, `cijena`, itd.
+
+```javascript
+const pizze = [
+  { id: 1, naziv: 'Margherita', cijena: 6.5 },
+  { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
+  { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
+  { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
+  { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
+];
+```
+
+Zahtjev bi dakle izgledao ovako:
+
+```bash
+curl -X PUT http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"id": 1, "naziv": "Margherita", "cijena": 7.0}'
+```
+
+Primijetite da smo ažurirali samo cijenu Margherite, ali smo morali poslati sve podatke o pizzi.
+
+Rekli smo da možemo koristiti `PUT` metodu i za stvaranje novog resursa, s obzirom da se u `URI` navodi identifikator resursa, a u tijelu zahtjeva šaljemo sve podatke o resursu.
+
+Primjer:
+
+```bash
+curl -X PUT http://localhost:3000/pizze/6 -H "Content-Type: application/json" -d '{"id": 6, "naziv": "Quattro stagioni", "cijena": 8.0}'
+```
+
+Ako možemo koristiti `PUT` metodu za stvaranje novog resursa, zašto onda koristimo `POST` metodu? 🤔
+
+<hr>
+
+U pravilu želimo koristiti `POST` metodu za stvaranje novog resursa. Zašto? Iako je moguće koristiti `PUT` metodu, primijetite da smo morali poslati sve podatke o resursu, uključujući `id`. Ako korisnik šalje podatke o resursu, ne bi trebao znati `id` resursa, **već bi ga trebao generirati poslužitelj**.
+
+Kako bi izgledao `POST` zahtjev za dodavanje nove pizze u naš jelovnik? Uočite da ne šaljemo `id` pizze, već samo `naziv` i `cijenu`. Također pogledajte `URI` zahtjeva.
+
+```bash
+curl -X POST http://localhost:3000/pizze -H "Content-Type: application/json" -d '{"naziv": "Quattro stagioni", "cijena": 8.0}'
+```
+
+U Expressu možemo jednostavno definirati `PUT` rutu sljedećom sintaksom:
+
+```javascript
+app.put(PATH, (req, res) => {
+  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PUT zahtjev na PATH
+});
+```
+
+Dakle sintaksa je ista kao i za `GET` i `POST` rute, samo što koristimo `app.put` umjesto `app.get` ili `app.post`.
+
+Primjer metode `PUT` za ažuriranje podataka o pizzi:
+
+```javascript
+app.put('/pizze/:id', (req, res) => {
+  const id_pizza = req.params.id;
+  const nova_pizza = req.body;
+  nova_pizza.id = id_pizza; // dodajemo id pizze u objekt, u slučaju da ga klijent nije poslao u tijelu zahtjeva
+
+  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+
+  if (index !== -1) {
+    pizze[index] = nova_pizza;
+    res.json(pizze[index]);
+  } else {
+    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+  }
+});
+```
+
+### 2.3.2 `PATCH` metoda
+
+`PATCH` metoda se koristi za **ažuriranje dijelova resursa** na poslužitelju. Za razliku od `PUT` metode koja zamjenjuje cijeli resurs, `PATCH` metoda se koristi kada želimo ažurirati samo **određene dijelove resursa**.
+
+Primjer: Ako želimo ažurirati samo cijenu pizze s `id`-om 1, koristit ćemo `PATCH` metodu:
+
+```bash
+curl -X PATCH http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"cijena": 7.0}'
+```
+
+Metodu `PATCH` ne želimo koristiti za stvaranje novog resursa, jer ne želimo stvoriti resurs s nepotpunim podacima. Primjerice, ako korisnik pošalje `PATCH` zahtjev na `/pizze/6`, a zaboravi poslati `naziv` pizze, ne želimo stvoriti novu pizzu s nepotpunim podacima.
+
+U Expressu možemo definirati `PATCH` rutu na sljedeći način:
+
+```javascript
+app.patch(PATH, (req, res) => {
+  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PATCH zahtjev na PATH
+});
+```
+
+Primjer metode `PATCH` za ažuriranje podataka o pizzi:
+
+```javascript
+app.patch('/pizze/:id', (req, res) => {
+  const id_pizza = req.params.id;
+  const nova_pizza = req.body;
+
+  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+
+  if (index !== -1) {
+    for (const key in nova_pizza) {
+      pizze[index][key] = nova_pizza[key];
+    }
+
+    // ili
+    // pizze[index] = { ...pizze[index], ...nova_pizza }; // spread operator
+
+    res.json(pizze[index]);
+  } else {
+    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+  }
+});
+```
 
 ## 2.4 `DELETE` metoda
 
-# 3. Router objekt
+Metoda `DELETE` se koristi za **brisanje resursa** na poslužitelju. Kada klijent pošalje ovakav zahtjev, poslužitelj briše resurs s identifikatorom koji je naveden u `URI` zahtjeva.
+
+Primjer: Ako želimo obrisati pizzu s `id`-om 1, koristit ćemo `DELETE` metodu:
+
+```bash
+curl -X DELETE http://localhost:3000/pizze/1
+```
+
+U Expressu možemo definirati `DELETE` rutu na sljedeći način:
+
+```javascript
+app.delete(PATH, (req, res) => {
+  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje DELETE zahtjev na PATH
+});
+```
+
+Primjer metode `DELETE` za brisanje podataka o pizzi:
+
+```javascript
+app.delete('/pizze/:id', (req, res) => {
+  const id_pizza = req.params.id;
+
+  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+
+  if (index !== -1) {
+    pizze.splice(index, 1);
+    res.json({ message: 'Pizza uspješno obrisana.' });
+  } else {
+    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+  }
+});
+```
+
+## 2.5 Kada koristiti koju `HTTP` metodu?
+
+Naučili smo kako koristiti sljedeće `HTTP` metode:
+
+- `GET` - dohvati resurs (npr. `GET /pizze` ili `GET /pizze/1` ili `GET /narudzbe`)
+- `POST` - stvori novi resurs (npr. `POST /pizze` ili `POST /narudzbe` ili `POST /login` s podacima za autentifikaciju)
+- `PUT` - zamijeni cijeli resurs (npr. `PUT /pizze/1` ili `PUT /korisnici/1` s cijelim podacima o resursu)
+- `PATCH` - ažuriraj dio resursa (npr. `PATCH /pizze/1` ili `PATCH /korisnici/1` s parcijalnim podacima o resursu)
+- `DELETE` - obriši resurs (npr. `DELETE /pizze/1` ili `DELETE /korisnici/1` bez tijela zahtjeva)
+
+Postoje još metode koje nismo spomenuli, kao što su `HEAD`, `OPTIONS`, `TRACE`, `CONNECT` itd. Međutim, ove metode su manje uobičajene i koriste se u specifičnim situacijama. Vi ih ne morate znati koristiti.
+
+Iako je moguće koristiti bilo koju metodu za gotovo bilo koju akciju, ipak postoje pravila i dobre prakse koje se koriste u razvoju web aplikacija. Evo nekoliko smjernica:
+
+- **`GET`** metodu koristimo za dohvat resursa s poslužitelja. Ova metoda ne bi trebala imati nikakve druge efekte osim dohvata podataka. Primjerice, ako korisnik posjeti URL u pregledniku, očekujemo da će dobiti odgovor s podacima, ali ne očekujemo da će se nešto promijeniti na poslužitelju (npr. ažurirati podaci u bazi podataka).
+- **`POST`** metodu koristimo za stvaranje novog resursa na poslužitelju. Ova metoda se koristi kada korisnik želi poslati podatke na poslužitelj, npr. kada korisnik želi stvoriti novu pizzu u našem jelovniku. Međutim, metodu koristimo i za druge akcije, poput autentifikacije korisnika kada korisnik želi u tijelu zahtjeva poslati korisničko ime i lozinku (prisjetimo se da je kod GET zahtjeva sve vidljivo u URL-u).
+- **`PUT`** metodu koristimo za zamjenu cijelog resursa novim podacima. Ova metoda se koristi kada korisnik želi zamijeniti cijeli resurs novim podacima. Primjerice, kada korisnik želi ažurirati podatke o pizzi, ali mora poslati sve podatke o pizzi, uključujući `id` pa i one podatke koji se ne mijenjaju.
+- **`PATCH`** metodu koristimo za ažuriranje dijelova resursa. Ova metoda se koristi kada korisnik želi ažurirati samo određene dijelove resursa. Primjerice, kada korisnik želi ažurirati samo cijenu pizze, a ne i naziv pizze.
+- **`DELETE`** metodu koristimo za brisanje resursa. Ova metoda se koristi kada korisnik želi obrisati resurs s poslužitelja. Primjerice, kada korisnik želi obrisati pizzu iz našeg jelovnika.
+
+# 3. `Router` objekt
+
+Prilikom razvoja ozbiljnijeg poslužitelja, vjerojatno ćemo morati definirati mnoštvo različitih ruta. Možemo vidjeti da naša `index.js` datoteka postaje sve veća i veća kako dodajemo nove rute.
+
+Na primjer, za jednostavno dohvaćanje pizze i pizze po ID-u, potrebne su nam dvije rute:
+
+```javascript
+app.get('/pizze', (req, res) => {
+  // implementacija
+});
+
+app.get('/pizze/:id', (req, res) => {
+  // implementacija
+});
+```
+
+Što ako imamo još više ruta? Na primjer, rute za naručivanje pizze, ažuriranje podataka o pizzi, brisanje pizze, itd. Naša datoteka `index.js` postaje sve veća i teže ju je održavati.
+
+Kako bismo olakšali organizaciju koda, poželjno je koristiti `Router` objekt koji nam omogućuje grupiranje ruta i definiranje ruta u zasebnim datotekama.
+
+`Router` objekt jedna je od ključnih komponenti Expressa koja nam omogućuje grupiranje srodnih ruta. Na primjer, sve rute vezane uz pizze možemo grupirati u jedan `Router` objekt, ili sve rute vezane uz korisnike u drugi `Router` objekt.
+
+## 3.1 Kako koristiti `Router` objekt?
+
+Naš trenutni poslužitelj sastoji se od sljedećih datoteka:
+
+```
+.
+├── index.js
+├── node_modules
+├── package-lock.json
+├── package.json
+```
+
+Praktično je organizirati naše rute u zasebne datoteke. Na primjer, možemo imati datoteku `pizze.js` u kojoj ćemo definirati sve rute vezane uz pizze, ili datoteku `narudzbe.js` gdje ćemo definirati sve rute vezane uz narudžbe.
+
+Dodatno, te datoteke možemo pohraniti u zajednički direktorij `routes` ili `router`.
+
+Dodajmo direktorij `routes` u naš projekt i datoteku `pizze.js` unutar tog direktorija:
+
+```
+.
+├── index.js
+├── node_modules
+├── package-lock.json
+├── package.json
+└── routes
+    └── pizze.js
+```
+
+Unutar `pizze.js` datoteke moramo uključiti ponovo Express modul, ali i definirati `Router` objekt:
+
+```javascript
+const express = require('express');
+const router = express.Router();
+```
+
+Kako bi naš `Router` objekt bio dostupan u `index.js` datoteci, moramo ga izvesti:
+
+```javascript
+const express = require('express');
+const router = express.Router();
+
+module.exports = router;
+```
+
+Međutim, dok nismo napisali puno koda, nije loše da se napokon prebacimo na novu ES6 sintaksu koju ste vjerojatno već pisali u VUE.js aplikacijama. **ECMAScript** (JavaScript ES) je standardizacija JavaScripta, a **ES6** je šesta verzija standarda koja je donijela puno novih značajki, uključujući i modernu sintaksu za organizaciju i strukturiranje modula.
+
+U ES6 sintaksi, umjesto `module.exports` koristimo `export default`:
+
+`export default` sintaksa omogućava nam izvoz jednog objekta, funkcije ili varijable iz modula. Kada koristimo `export default`, možemo uvesti taj objekt, funkciju ili varijablu u drugom modulu koristeći `import` sintaksu bez vitičastih zagrada (odnosno bez navođenja imena objekta kojeg uvozimo).
+
+Prije svega, moramo ažurirati našu `package.json` datoteku kako bismo koristili ES6 sintaksu. Dodajte sljedeći redak u `package.json` datoteku:
+
+```json
+"type": "module",
+```
+
+Sada možemo koristiti ES6 sintaksu u našem projektu. Idemo prvo ispraviti `index.js` datoteku.
+
+U `index.js` datoteci, umjesto `require` koristimo `import` sintaksu:
+
+```javascript
+import object from 'module'; // umjesto const object = require('module');
+
+// odnosno
+
+import express from 'express'; // umjesto const express = require('express');
+```
+
+Ako imamo više izvoza iz jednog modula, možemo ih uvesti koristeći vitičaste zagrade:
+
+```javascript
+import { object1, object2 } from 'module'; // umjesto const { object1, object2 } = require('module');
+```
+
+Vratimo se na `pizze.js`, gdje ćemo također koristiti ES6 sintaksu:
+
+```javascript
+import express from 'express';
+const router = express.Router();
+
+export default router;
+```
+
+Kako ovaj `Router` objekt možemo zamisliti kao malu aplikaciju unutar naše glavne aplikacije, možemo dodati rute na isti način kao što smo to radili u `index.js` datoteci, ali ćemo umjesto `app` koristiti `router`:
+
+Idemo dodati rutu za dohvat svih pizza:
+
+```javascript
+import express from 'express';
+const router = express.Router();
+
+const pizze = [
+  { id: 1, naziv: 'Margerita', cijena: 7.0 },
+  { id: 2, naziv: 'Capricciosa', cijena: 9.0 },
+  { id: 3, naziv: 'Šunka sir', cijena: 8.0 },
+  { id: 4, naziv: 'Vegetariana', cijena: 12.0 },
+  { id: 5, naziv: 'Quattro formaggi', cijena: 15.0 }
+];
+
+router.get('/', (req, res) => {
+  // ruta za dohvat svih pizza, pišemo router.get umjesto app.get
+  res.json(pizze);
+});
+
+export default router;
+```
+
+Na isti način kopirajte i rutu za dohvat pizze po ID-u.
+
+Jednom kad to imamo, možemo uvesti `Router` objekt u našu `index.js` datoteku s proizvoljnim imenom:
+
+```javascript
+import pizzeRouter from './routes/pizze.js';
+```
+
+Zatim samo moramo reći našoj aplikaciji da koristi taj `Router` objekt:
+
+```javascript
+app.use(pizzeRouter);
+```
+
+To je to! Testirajte dohvaćanje svih pizza i pizze po ID-u koristeći Postman ili Thunder Client.
+
+## 3.2 Idemo još bolje strukturirati našu aplikaciju
+
+Kako bismo još bolje strukturirali naš poslužitelj, možemo napraviti još nekoliko stvari.
+
+Prvo, kopirajmo preostale `/pizze` rute iz `index.js` datoteke u `pizze.js` datoteku.
+
+Dakle, u `pizze.js` datoteci imamo sljedeće rute:
+
+```javascript
+router.get('/pizze');
+router.get('/pizze/:id');
+router.put('/pizze/:id');
+router.patch('/pizze/:id');
+app.delete('/pizze/:id');
+```
+
+Što je redundantno u ovim rutama? 🤔
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p> U svakoj ruti ponavljamo `/pizze` prefiks. </p>
+  <p> Kako bismo ovo izbjegli, možemo prefiks `/pizze` dodati samo jednom, na početku svih ruta, s obzirom da se nalaze u datoteci `pizze.js` gdje želimo implementirati samo rute za resurs <i>pizze</i> </p>
+</details>
+
+<hr>
+
+To ćemo definirati u `index.js` datoteci kada koristimo `pizzeRouter`:
+
+```javascript
+app.use('/pizze', pizzeRouter);
+```
+
+Sada naše rute u `pizze.js` datoteci mijenjamo na sljedeći način:
+
+```javascript
+router.get('/');
+router.get('/:id');
+router.put('/:id');
+router.patch('/:id');
+router.delete('/:id');
+```
+
+## Vježba 3 - Strukturiranje narudžbi ➡️🍕
+
+Strukturirajte narudžbe na jednak način kao što smo to napravili za pizze. Definirajte `narudzbe.js` datoteku unutar `routes` direktorija i prebacite polje narudžbi i sve rute vezane uz narudžbe u tu datoteku.
+
+Kako se radi o resursu `narudzbe`, prefiks `/narudzbe` dodajte samo jednom, na početku svih ruta. Dakle `URI` za dodavanje narudžbe trebao bi izgledati ovako: `/narudzbe`, a ne `/narudzbe/naruci` ili samo `/naruci`.
+
+Kada završite, uvezite `narudzbeRouter` u `index.js` datoteku i koristite ga u aplikaciji. Vaša `index.js` datoteka trebala bi izgledati ovako:
+
+```javascript
+import express from 'express';
+import pizzeRouter from './routes/pizze.js';
+import narudzbeRouter from './routes/narudzbe.js';
+
+const app = express();
+
+const PORT = 3000;
+
+app.use(express.json());
+
+app.use('/pizze', pizzeRouter);
+app.use('/narudzbe', narudzbeRouter);
+
+app.listen(PORT, error => {
+  if (error) {
+    console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
+  } else {
+    console.log(`Server dela na http://localhost:${PORT}`);
+  }
+});
+```
 
 # 4. Statusni kodovi u odgovorima
+
+**Statusni kodovi** (_eng. HTTP status codes_) su brojevi koji se koriste u **HTTP odgovorima** kako bi klijentu dali informaciju u kojem je stanju zahtjev koji je poslao. Drugim riječima, ako klijent pošalje zahtjev koji rezultira greškom, poslužitelj uz odgovarajuću poruku vraća i statusni kod koji označava vrstu greške.
+
+Ako se podsjetimo statusnih kodova iz prve skripte, rekli smo da ih možemo podijeliti u sljedeće kategorije:
+
+- `1xx` (100 - 199) - Informacijski odgovori (eng. _Informational responses_): Poslužitelj je primio zahtjev te ga i dalje obrađuje
+- `2xx` (200 - 299) - Odgovori uspjeha (_eng. Successful responses_): Zahtjev klijenta uspješno primljen i obrađen
+- `3xx` (300 - 399) - Odgovori preusmjeravanja (_eng. Redirection messages_): Ova skupina kodova govori klijentu da mora poduzeti dodatne radnje kako bi dovršio zahtjev
+- `4xx` (400 - 499) - Greške na strani klijenta (_eng. Client error responses_): Sadrži statusne kodove koji se odnose na greške nastale na klijentskoj strani
+- `5xx` (500 - 599) - Greške na strani poslužitelja (_eng. Server error responses_): Sadrži statusne kodove koji se odnose na greške nastale na poslužiteljskoj strani
+
+Statusni kodovi neizbježan su dio svakog HTTP standarda, a njihovom primjenom standardiziramo komunikaciju između klijenta i poslužitelja. Na taj način, klijent može interpretirati odgovor poslužitelja i ovisno o statusnom kodu poduzeti odgovarajuće radnje.
+
+Na primjer, ako pošaljemo klijentu JSON poruku `message: "Pizza nije pronađena"` ili `message: "Greška prilikom obrade narudžbe"`, potrebno je posebno tumačiti te poruke na klijentskoj strani. Međutim, to ne želimo raditi, jer bi svaki programer mogao interpretirati poruke na svoj način.
+
+Statusni kodovi su standardizirani i svaki statusni kod ima svoje značenje. Na primjer, statusni kod `404` označava da resurs nije pronađen (prvi slučaj), dok statusni kod `500` označava općenitu grešku na poslužitelju (drugi slučaj).
+
+## 4.1 Kako koristiti statusne kodove u Expressu?
+
+U Expressu možemo slati statusne kodove u odgovorima koristeći `res.status()` metodu. Ova metoda postavlja statusni kod odgovora na poslužitelju.
+
+Primjer postavljanja statusnog koda `200` (_OK_) u odgovoru:
+
+```javascript
+app.get('/pizze', (req, res) => {
+  res.status(200); // postavljanje statusnog koda 200 koji označava uspješan odgovor (OK)
+});
+```
+
+Na metodu `res.status()` možemo nadovezati metodu `res.send()` ili `res.json()` kako bismo poslali podatkovni odgovor klijentu:
+
+```javascript
+app.get('/pizze', (req, res) => {
+  res.status(200).json(pizze); // poslati sve pizze kao JSON odgovor s statusnim kodom 200
+});
+```
+
+Što ako **poslužitelj** ne može pronaći resurs **koji je korisnik zatražio**? U tom slučaju, možemo poslati statusni kod `404` (_Not Found_):
+
+```javascript
+app.get('/pizze/:id', (req, res) => {
+  const id_pizza = req.params.id;
+  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+
+  if (pizza) {
+    res.status(200).json(pizza);
+  } else {
+    res.status(404).json({ message: 'Pizza nije pronađena.' });
+  }
+});
+```
+
+Koji ćemo statusni kod poslati klijentu ako korisnik pošalje zahtjev s neispravnim podacima? Na primjer, ako korisnik pošalje kao parametar `id` slovo umjesto broja? U tom slučaju, možemo poslati statusni kod `400` (_Bad Request_):
+
+```javascript
+router.get('/:id', (req, res) => {
+  const id_pizza = req.params.id;
+
+  if (isNaN(id_pizza)) {
+    return res.status(400).json({ message: 'ID pizze mora biti broj.' }); // poslati statusni kod 400 ako ID pizze nije broj
+  }
+
+  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+
+  if (pizza) {
+    return res.status(200).json(pizza); // poslati statusni kod 200 ako je pizza pronađena
+  } else {
+    return res.status(404).json({ message: 'Pizza nije pronađena.' }); // poslati statusni kod 404 ako pizza nije pronađena
+  }
+});
+```
+
+Statusnih kodova ima mnogo, a svaki od njih ima svoje značenje. Možete pronaći **popis i definicija svih statusnih kodova** na [ovoj poveznici](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+
+Međutim, u praksi se ne najčešće ne koriste svi statusni kodovi, već nekolicina njih. Evo nekoliko najčešće korištenih statusnih kodova:
+
+- `200` - OK: Zahtjev je uspješno primljen i obrađen (npr. GET zahtjev za dohvat svih pizza)
+- `201` - Created: Resurs je uspješno stvoren (npr. nakon slanja POST zahtjeva)
+- `400` - Bad Request: Zahtjev nije moguće obraditi zbog neispravnih podataka (npr. korisnik je poslao neispravan ID pizze prilikom narudžbe)
+- `404` - Not Found: Resurs nije pronađen (npr. korisnik je poslao ID pizze koja ne postoji)
+- `500` - Internal Server Error: Opća greška na poslužitelju (npr. greška prilikom obrade narudžbe, najvjerojatnije zbog greške u kodu na poslužitelju)
+
+Postoji puno varijacija 4xx, 5xx i 2xx statusnih kodova, pa tako imamo:
+
+- `401` - Unauthorized: Korisnik nije autoriziran za pristup resursu (npr. korisnik nema prava pristupa resursu jer nije prijavljen)
+- `204` - No Content: Zahtjev je uspješno primljen i obrađen, ali nema sadržaja za prikazati (npr. nakon brisanja resursa)
+- `403` - Forbidden: Korisnik nema prava pristupa resursu (npr. korisnik nema prava pristupa resursu jer nije administrator)
+- `301` - Moved Permanently: Resurs je trajno premješten na novu lokaciju (npr. kada se mijenja URL resursa)
+- `503` - Service Unavailable: Poslužitelj nije dostupan (npr. poslužitelj je preopterećen)
+- `409` - Conflict: Zahtjev nije moguće obraditi zbog konflikta (npr. korisnik pokušava ažurirati resurs koji je već ažuriran, npr. kod PUT/PATCH zahtjeva)
+
+## Vježba 4 - Korištenje statusnih kodova u pizzeriji 🍕4️⃣0️⃣4️⃣
+
+**Dodajte statusne kodove** u odgovore vašeg poslužitelja za sve rute vezane uz pizze i narudžbe.
+
+Pokušajte koristiti što semantički ispravnije statusne kodove. Na primjer, ako korisnik pokuša dohvatiti pizzu koja ne postoji, pošaljite statusni kod `404` (_Not Found_), ali ako korisnik pošalje neispravan ID pizze, pošaljite statusni kod `400` (_Bad Request_).
+
+Dodatno, dodajte 3 nove rute u vašu pizzeriju:
+
+- dohvaćanje svih narudžbi
+- dohvaćanje narudžbe po ID-u
+- brisanje narudžbe po ID-u
+
+Kada završite, testirajte sve rute koristeći Postman ili Thunder Client, a zatim provjerite statusne kodove u odgovorima koje ste dobili.
+
+# Samostalni zadatak za Vježbu 2
+
+Definirajte novi Express projekt u kojem ćete implementirati jednostavni poslužitelj za agenciju za nekretnine.
+
+**Osmislite dizajn poslužitelja**, a podatke spremajte u polje objekata, odnosno _in-memory_. **Podaci o nekretninama** trebaju sadržavati sljedeće informacije:
+
+- `ID nekretnine`
+- `Naziv nekretnine`
+- `Opis nekretnine`
+- `Cijena nekretnine`
+- `Lokacija nekretnine`
+- `Broj soba`
+- `Površina nekretnine`
+- `Cijena nekretnine`
+
+Implementirajte sljedeće rute:
+
+- dohvati sve nekretnine
+- dohvati nekretninu po ID-u
+- dodaj novu nekretninu
+- ažuriraj nekretninu potpuno
+- ažuriraj nekretninu djelomično
+- obriši nekretninu
+- pošalji novu ponudu
+
+Ponude spremajte na jednak način u polje objekata, a **svaka ponuda mora sadržavati**:
+
+- `ID ponude`
+- `ID nekretnine`
+- `Ime kupca`
+- `Prezime kupca`
+- `Ponuđena cijena`
+- `Broj telefona kupca`
+
+Dodajte slične **provjere** kao u pizzeriji, primjerice:
+
+- provjerite jesu li ID-evi brojevi, ako ne vratite odgovarajući statusni kod i poruku
+- provjerite jesu li svi podaci poslani u tijelu zahtjeva, ako nisu vratite odgovarajući statusni kod i poruku
+- provjerite jesu li svi podaci ispravni, npr. cijena nekretnine ne može biti negativna, broj soba ne može biti negativan, itd.
+- prilikom izrade ponude, provjerite postoji li uopće nekretnina s navedenim ID-em
+
+Rute za **nekretnine i ponude grupirajte u zasebne** `Router` **objekte** i organizirajte ih u zasebnim datotekama unutar `routes` direktorija. Koristite statusne kodove u odgovorima.
+
+Za testiranje koristite Postman ili Thunder Client.
