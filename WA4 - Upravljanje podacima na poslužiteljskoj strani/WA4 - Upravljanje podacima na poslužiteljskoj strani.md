@@ -9,7 +9,7 @@
 
 # (4) Upravljanje podacima na poslužiteljskoj strani
 
-<img src="./WA_4_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/WA_4_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
 Učinkovita pohrana podataka od presudne je važnosti za osiguravanje visoke kvalitete i pouzdanosti svake web aplikacije. Način na koji se podaci pohranjuju ovisi o specifičnim potrebama aplikacije, vrsti podataka te zahtjevima za sigurnost i skalabilnost. Kod web aplikacija podaci se najčešće čuvaju na udaljenim bazama podataka, čime se osigurava jednostavan pristup i pouzdano upravljanje. Kroz sljedeća 2 poglavlja koja se bave pohranom podataka, naučit ćete kako ispravno spremati podatke u web aplikaciju, bilo da se radi o lokalnoj ili udaljenoj pohrani na poslužiteljskoj strani.
@@ -42,6 +42,8 @@ Učinkovita pohrana podataka od presudne je važnosti za osiguravanje visoke kva
 
 <div style="page-break-after: always; break-after: page;"></div>
 
+<div class="page-break"></div>
+
 # 1. Gdje pohranjujemo podatke u web aplikacijama?
 
 Kada govorimo o pohrani podataka u web aplikacijama, važno je odmah razjasniti razliku između **klijentske** i **poslužiteljske** pohrane podataka. Web aplikacije u produkcijskom okruženju obično pohranjuju podatke na **obje razine**, kako bi se osigurala brza i učinkovita komunikacija između klijenta i poslužitelja.
@@ -64,9 +66,11 @@ Prednosti pohrane na poslužiteljskoj strani uključuju:
 - visoka razina sigurnosti (pristup podacima kontroliran je na razini poslužitelja, što je _must-have_ za osjetljive podatke)
 - mogućnost skaliranja (u slučaju povećanja opterećenja, moguće je dodati nove poslužitelje ili resurse)
 
-<a href="https://www.postman.com/downloads/" target="_blank"><img src="./screenshots/pohrana_ilustracija.png" style="width:50%"> </a>
+<a href="https://www.postman.com/downloads/" target="_blank"><img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/pohrana_ilustracija.png" style="width:50%"> </a>
 
 > **Ilustracija**: Pohrana podataka u web aplikacijama (klijentska i poslužiteljska pohrana)
+
+<div class="page-break"></div>
 
 # 2. Podaci na poslužiteljskoj strani
 
@@ -174,6 +178,8 @@ A starica prela svoju pređu”
 
 ...
 ```
+
+<div class="page-break"></div>
 
 #### 2.1.2 Apsolutna i Relativna putanja do datoteke
 
@@ -317,6 +323,8 @@ fs.readFile('./app/data/story.txt', 'utf8', (err, data) => {
 
 > Sada radi, međutim ako terminalom opet uđemo u direktorij `app/`, kod će opet baciti grešku. Dakle, **relativne putanje ovise o trenutnom radnom direktoriju**.
 
+<div class="page-break"></div>
+
 #### 2.1.3 `Callback` vs `Promise` pristup
 
 Rekli smo da ćemo operacije s datotekama obavljati asinkrono, budući da one mogu potrajati i ne želimo zaustaviti rad poslužitelja dok se operacija ne završi. Idemo nadograditi naš poslužitelj na način da ćemo definirati endpoint `/story` koji će čitati datoteku `story.txt` i vraćati njen sadržaj kao odgovor.
@@ -345,6 +353,8 @@ app.listen(3000, () => {
 ```
 
 Međutim, nije uobičajeno da se kod koji se odnosi na čitanje datoteke nalazi unutar funkcije koja definira rutu, odnosno endpoint. Idemo ga prebaciti u zasebnu funkciju.
+
+<div class="page-break"></div>
 
 **Česta greška 1:**
 
@@ -375,6 +385,8 @@ app.get('/story', (req, res) => {
 - `fs.readFile` je **asinkrona funkcija**. Kada se pozove `read_story()`, instancira se proces čitanja datoteke, međutim funkcija odmah vrati prazan string `story_text` prije nego što se datoteka pročita budući da je to radnja koja traje dulje. Kada se datoteka pročita, `story_text` se popuni sadržajem datoteke, međutim funkcija je već završila i vratila prazan string.
 - `story_text` se nadopunjuje unutar callback funkcije koja se poziva **nakon što se datoteka pročita**. Međutim, prošao je voz, JavaScript je sekvencijalno izvršio kod u nastavku i vratio prazan string.
 - mi ustvari ovdje pokušavamo upravljati asinkronim kodom na sinkroni način, što nije moguće.
+
+<div class="page-break"></div>
 
 **Česta greška 2:**
 
@@ -506,6 +518,8 @@ Callback funkcija je definirana arrow sintaksom, i izgleda ovako:
 
 Dakle, kod koji šalje odgovor klijentu nalazi se unutar callback funkcije koja se poziva nakon što se datoteka pročita. Na ovaj način, osiguravamo da se odgovor šalje tek nakon što se datoteka pročita, odnosno nakon što se završi asinkrona operacija. Bez obzira što implementacija callback funkcije možda izgleda kao da se izvršava odmah nakon poziva `read_story()`, ona se zapravo izvršava nakon što se datoteka pročita.
 
+<div class="page-break"></div>
+
 > 2. Način: **Promise pattern**
 
 Kako bismo izbjegli ["callback hell"](http://callbackhell.com/) (duboko gniježđenje callback funkcija), možemo koristiti `Promise` pattern. Sintaksa iznad možda izgleda neintuitivno, a kod postaje teško čitljiv i održiv s više callback funkcija. `Promise` pattern je moderniji pristup i omogućuje nam da se rješavamo callback funkcija i pišemo čišći i čitljiviji kod.
@@ -592,6 +606,8 @@ app.get('/story', async (req, res) => {
 ```
 
 > Možete odabrati koji pristup je vama draži, međutim `Promise` pattern i `async/await` sintaksa su moderniji pristupi i češće se koriste u praksi.
+
+<div class="page-break"></div>
 
 ## 2.2 Pohrana u datoteke kroz `fs` modul
 
@@ -694,6 +710,8 @@ Ako pogledati sintaksu iznad, možete vidjeti u opcijama `flag` parametar. Ovaj 
 
 U nastavku ćemo prikazati primjere pohrane u datoteku kroz oba pristupa (Callback i Promise), definirat ćemo i flagove za svaki primjer.
 
+<div class="page-break"></div>
+
 ### 2.2.1 Pohrana `String` sadržaja u datoteku
 
 U ovom primjeru, pohranit ćemo string sadržaj u datoteku `text.txt` kroz `Callback` pattern:
@@ -736,6 +754,8 @@ app.get('/append-promise', async (req, res) => {
 ```
 
 Vidimo da se tekst dodaje na kraj datoteke, a ne zamjenjuje (razmaci se ne dodaju automatski).
+
+<div class="page-break"></div>
 
 ### 2.2.2 Čitanje i pohrana `JSON` podataka u datoteku
 
@@ -967,6 +987,8 @@ Jedan od većih problema je i **konkurentnost** i **sigurnost**. Što ako više 
 
 > Ovo su se pitanja kojima se bave developeri koji aktivno rade na razvoju baza podataka. **DBMS** (eng. Database Management System) su sustavi koji su razvijeni upravo iz ovih razloga; kako bi olakšali pohranu, upravljanje, pretraživanje, ažuriranje i brisanje podataka na siguran i efikasan način, uz osiguranje konzistentnosti i integriteta podataka.
 
+<div class="page-break"></div>
+
 # 3. Agregacija podataka kroz `Query` parametre
 
 Ipak, prije nego se krenemo baviti bazama podataka (u sljedećem poglavlju), moramo naučiti kako agregirati podatke na poslužiteljskoj strani kroz `query` parametre.
@@ -1079,13 +1101,15 @@ app.get('/students', async (req, res) => {
 });
 ```
 
+<div class="page-break"></div>
+
 Možemo testirati kroz web preglednik ili Thunder Client/Postman. HTTP klijenti nude opciju unosa `query` parametara kao ključ vrijednost parova pa ih možemo unijeti i na taj način ili direktno u URL.
 
-<img src="./screenshots/get_query_fakultet.png" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
 
 Ako maknemo `query` parametar, dobit ćemo sve studente.
 
-<img src="./screenshots/get_studenti_all.png" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_studenti_all.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
 
 Moguće je definirati i više `query` parametara, npr. `godine`, `prezime`, `ime` i slično. Ukoliko želimo filtrirati studente po više kriterija, možemo koristiti `&` operator unutar URL-a:
 
@@ -1121,9 +1145,11 @@ app.get('/students', async (req, res) => {
 });
 ```
 
-<img src="./screenshots/get_query_fakultet_godine.png" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet_godine.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
 
 To je to! Filtriranje možemo implementirati po želji puno različitih načina kroz `query` parametre.
+
+<div class="page-break"></div>
 
 **Važno je ovdje uočiti sljedeće:**
 
@@ -1186,7 +1212,9 @@ app.get('/students/:ime/:prezime', async (req, res) => {
 });
 ```
 
-<img src="./screenshots//get_params_ime_prezime.png" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_params_ime_prezime.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
+
+<div class="page-break"></div>
 
 ## 3.2 Sortiranje podataka
 
@@ -1227,11 +1255,11 @@ app.get('/students', async (req, res) => {
 
 Sortiranje po godinama **uzlazno**:
 
-<img src="./screenshots/sort_godine_uzlazno_query.png" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_uzlazno_query.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
 
 Sortiranje po godinama **silazno**:
 
-<img src="./screenshots/sort_godine_silazno_query.png" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_silazno_query.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
 
 Za kraj, dozvoljeno je i kombiniranje `query` parametra i parametra rute. Recimo da želimo dohvatiti resurs našeg studenta po imenu i prezimenu (param `:ime/:prezime`), ali dodati dodatni filter `fakultet` putem `query` parametra:
 
@@ -1268,11 +1296,13 @@ app.get('/students/:ime/:prezime', async (req, res) => {
 
 Primjer dohvaćanja studenta s imenom `Ivo` i prezimenom `Ivić` (:ime/:prezime) koji studira na fakultetu `FIPU` (`?fakultet=FIPU`):
 
-<img src="./screenshots/kombinacija_query_route_pronadeno.png" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_pronadeno.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
 
 Primjer dohvaćanja istog resursa, ali s pogrešnim fakultetom u `query` parametru:
 
-<img src="./screenshots/kombinacija_query_route_nema_ga.png" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_nema_ga.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
+
+<div class="page-break"></div>
 
 # Samostalni zadatak za Vježbu 4
 
