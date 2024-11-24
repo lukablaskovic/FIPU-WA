@@ -1048,7 +1048,7 @@ router.get('/:id', (req, res) => {
 });
 ```
 
-Statusnih kodova ima mnogo, a svaki od njih ima svoje značenje. Možete pronaći **popis i definicija svih statusnih kodova** na [ovoj poveznici](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+Statusnih kodova ima mnogo, a svaki od njih ima svoje značenje. Možete pronaći **popis i definicije svih statusnih kodova** na [ovoj poveznici](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 
 Međutim, u praksi se ne najčešće ne koriste svi statusni kodovi, već nekolicina njih. Evo nekoliko najčešće korištenih statusnih kodova:
 
