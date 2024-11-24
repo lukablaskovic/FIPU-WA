@@ -1,5 +1,13 @@
 # Materijali iz kolegija: Web aplikacije (WA)
 
+<p>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
+      <a href="https://nodejs.org/en" target="_blank">  <img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+  <a href="https://expressjs.com/" target="_blank">  <img src="https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <a href="https://www.mongodb.com/" target="_blank">  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <a href="https://jwt.io/" target="_blank">  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" />
+</p>
+
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
 
