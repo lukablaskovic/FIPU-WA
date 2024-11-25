@@ -8,8 +8,8 @@
   <a href="https://jwt.io/" target="_blank">  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white" />
 </p>
 
-**Nositelj**: doc. dr. sc. Nikola Tanković  
-**Asistent**: Luka Blašković, mag. inf.
+**Nositelj**: [doc. dr. sc. Nikola Tanković](https://fipu.unipu.hr/fipu/nikola.tankovic)  
+**Asistent**: [Luka Blašković, mag. inf.](https://fipu.unipu.hr/fipu/luka.blaskovic)
 
 **Ustanova**: [Sveučilište Jurja Dobrile u Puli](https://www.unipu.hr/), [Fakultet informatike u Puli](https://fipu.unipu.hr/)
 
@@ -19,3 +19,9 @@
   <img alt="Fakultet informatike u Puli (materijali iz kolegija Web Aplikacije - Luka Blašković)" 
        src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/FIPU_UNIPU_white.png" width="300">
 </picture>
+
+---
+
+Kolegij slušaju:
+- studenti 3. godine [Prijediplomskog sveučilišnog studija Informatika](https://fipu.unipu.hr/fipu/studijski_programi/preddiplomski_sveucilisni_studij_informatika) u 5. semestru, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
+- studenti 3. godine [Prijediplomskog sveučilišnog studija Računarstvo](https://tfpu.unipu.hr/tfpu/studijski_programi/preddiplomski/racunarstvo) u 5. semestru, na [Tehničkom fakultetu u Puli](https://tfpu.unipu.hr/tfpu)
