@@ -17,7 +17,7 @@ Zadnji put vidjeli smo kako pohranjivati podatke na poslužitelju u datoteke te 
 
 <br>
 
-**🆙 Posljednje ažurirano: 2.12.2024.**
+**🆙 Posljednje ažurirano: 6.12.2024.**
 
 ## Sadržaj
 
@@ -68,7 +68,9 @@ Zadnji put vidjeli smo kako pohranjivati podatke na poslužitelju u datoteke te 
     - [5.3.1 Operatori ažuriranja (eng. Update operators)](#531-operatori-ažuriranja-eng-update-operators)
     - [5.3.2 Operatori usporedbe (eng. Comparison operators)](#532-operatori-usporedbe-eng-comparison-operators)
     - [5.3.3 Logički operatori (eng. Logical operators)](#533-logički-operatori-eng-logical-operators)
-- [Samostalni zadatak za Vježbu](#samostalni-zadatak-za-vježbu)
+- [Samostalni zadatak za Vježbu 5](#samostalni-zadatak-za-vježbu-5)
+  - [Nadogradnja pizzerija aplikacije (1 bod)](#nadogradnja-pizzerija-aplikacije-1-bod)
+  - [Dodavanje naručivanja (1 bod)](#dodavanje-naručivanja-1-bod)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -2231,8 +2233,41 @@ MongoDB sadrži implementiranu veliku količinu operatora za razne operacije, po
 
 <div style="page-break-after: always; break-after: page;"></div>
 
-# Samostalni zadatak za Vježbu
+# Samostalni zadatak za Vježbu 5
 
-TBA
+## Nadogradnja pizzerija aplikacije (1 bod)
 
-Bit će za 2 boda
+Prvi dio samostalnog zadatka odnosi se na nadogradnju postojeće aplikacije. Potrebno je definirati jednostavan VUE.js 3 frontend nalik onom iz skripte WA3. Početna stranica mora prikazivati sve dostupne pizze, uključujući sliku, naziv, cijenu i sastojke.
+
+Dovoljno je da Vue aplikacija sadrži samo 1 endpoint - `/pizze`. Inspiracija za dizajn može se pronaći na [Tivoli pizzeria webu](https://www.pizzeria-tivoli.com.hr/pizzeria/pizze/18).
+
+Dizajn možete implementirati u CSS frameworku po izboru (Bootstrap, Tailwind, Bulma, itd.).
+
+Preuzmite Express poslužitelj koji smo definirali na `WA5 - prvi dio` i nadogradite ga na sljedeće načine:
+
+- Implementirajte GET `/pizze` endpoint koji će vraćati sve dostupne pizze iz MongoDB baze podataka
+- U MongoDB, nadogradite kolekciju `pizze` s novim poljima: `slika` i `sastojci`. U sastojke spremite polje sastojaka (stringova) koje pizza sadrži.
+- Implementirajte POST `/pizze` endpoint koji će dodavati nove pizze u kolekciju
+- Implementirajte validaciju podataka koje korisnik šalje na `/pizze` za prethodni endpoint. Morate provjeriti jesu li sadržani svi i točno navedeni ključevi. Provjerite je li cijena broj i svaki sastojak u sastojcima string.
+- Koristeći `Axios` paket, pozovite GET `/pizze` prilikom učitavanja stranice i prikažite podatke grafički.
+
+## Dodavanje naručivanja (1 bod)
+
+Drugi dio samostalnog zadatka odnosi se na dodavanje mogućnosti naručivanja pizza. Potrebno je definirati novu kolekciju `pizza_narudzbe` u MongoDB bazi podataka. Kolekcija mora sadržavati sljedeće ključeve:
+
+- `ime` - ime osobe koja naručuje
+- `adresa` - adresa dostave
+- `telefon` - broj telefona
+- `pizza_stavke` - polje stavki narudžbe (naručene pizze):
+  Svaka stavka mora sadržavati sljedeće ključeve:
+  - `naziv` - naziv pizze koja se naručuje
+  - `kolicina` - količina naručene pizze (može i `float`, npr. `0.5`)
+  - `velicina` - naručena veličina pizze (`'mala'`, `'srednja'`, `'velika'`)
+- `ukupna_cijena` - ukupna cijena narudžbe (računa se na poslužitelju, **ne šalje klijent**)
+
+**Implementirajte sljedeće funkcionalnosti:**
+
+- Implementirajte POST `/narudzba` endpoint koji će dodavati nove narudžbe u kolekciju `pizza_narudzbe`
+- Implementirajte validaciju podataka koje korisnik šalje na `/narudzba` za prethodni endpoint. Morate provjeriti jesu li sadržani i točno navedeni svi ključevi. Provjerite je li telefon broj ili string koji se sastoji samo od brojeva i je li svaka stavka u polju stavki ispravno definirana (naziv, količina, veličina).
+- Na poslužitelju izračunajte vrijednost ključa `ukupna_cijena` na temelju naručenih pizza. Cijenu pizze dobivate dohvaćanjem određene pizze u kolekciji `pizze`
+- Nadogradite Vue aplikaciju na način da ćete na dnu stranice dodati button `Naruči pizze` gdje ćete poslati zahtjev na endpoint `/narudzba` s podacima o narudžbi. Ako korisnik pošalje neispravne podatke, vratite odgovarajuću grešku i statusni kod na poslužitelju i prikažite lijepo grafički korisniku tu informaciju na frontendu.
