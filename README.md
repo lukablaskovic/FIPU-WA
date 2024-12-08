@@ -25,3 +25,7 @@
 Kolegij slušaju:
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Informatika](https://fipu.unipu.hr/fipu/studijski_programi/preddiplomski_sveucilisni_studij_informatika) u 5. semestru, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Računarstvo](https://tfpu.unipu.hr/tfpu/studijski_programi/preddiplomski/racunarstvo) u 5. semestru, na [Tehničkom fakultetu u Puli](https://tfpu.unipu.hr/tfpu)
+
+## Kolokviji
+
+- [Službeni šalabahter za 1. Kolokvij (wa-mid)](https://gist.github.com/lukablaskovic/b6e1741b3601dd67ccef1f457e7c852f)
