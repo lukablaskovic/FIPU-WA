@@ -68,7 +68,7 @@ Zadnji put vidjeli smo kako pohranjivati podatke na poslužitelju u datoteke te 
     - [5.3.1 Operatori ažuriranja (eng. Update operators)](#531-operatori-ažuriranja-eng-update-operators)
     - [5.3.2 Operatori usporedbe (eng. Comparison operators)](#532-operatori-usporedbe-eng-comparison-operators)
     - [5.3.3 Logički operatori (eng. Logical operators)](#533-logički-operatori-eng-logical-operators)
-- [Samostalni zadatak za Vježbu](#samostalni-zadatak-za-vježbu)
+- [Samostalni zadatak za Vježbu 5](#samostalni-zadatak-za-vježbu-5) 
 
 # 1. MongoDB
 
