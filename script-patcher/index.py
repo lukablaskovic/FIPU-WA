@@ -5,9 +5,12 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from googleapiclient.http import MediaFileUpload
 
+# https://github.com/googleapis/google-auth-library-python-oauthlib
+# https://github.com/googleapis/google-api-python-client
+
 from logger import logger
 
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive']
+GOOGLE_DRIVE_API_SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive']
 
 FOLDER_ID = "1y8PUAFmYoW-cBrvgdd8hCnhni39PNkXV"
 
@@ -18,14 +21,13 @@ def authenticate_google_drive():
     if os.path.exists(PICKLE_FILE_NAME):
         with open(PICKLE_FILE_NAME, 'rb') as token:
             creds = pickle.load(token)
-    
     if not creds or not creds.valid:
         logger.warning("Credentials not found or invalid. Prompting user to authenticate...")
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                'credentials.json', GOOGLE_DRIVE_API_SCOPES)
             creds = flow.run_local_server(port=0)
         
         with open('token.pickle', 'wb') as token:
@@ -38,19 +40,20 @@ def authenticate_google_drive():
 class GoogleDriveAPI:
     def __init__(self):
         self.drive_service = authenticate_google_drive()
+        self.folder_id = FOLDER_ID
     def list_folders(self):
         query = "mimeType = 'application/vnd.google-apps.folder' and trashed = false"
         results = self.drive_service.files().list(q=query).execute()
         folders = results.get('files', [])
 
         if not folders:
-            print("No folders found.")
+            logger.warning("[GoogleDriveAPI]: No folders found.")
         else:
-            print("Folders in your Google Drive:")
+            logger.info("[GoogleDriveAPI]: Folders:")
             for folder in folders:
                 print(f"{folder['name']} (ID: {folder['id']})")
-    def list_files_in_folder(self, folder_id):
-        query = f"'{folder_id}' in parents and trashed = false"
+    def list_files_in_folder(self):
+        query = f"'{self.folder_id}' in parents and trashed = false"
         results = self.drive_service.files().list(q=query).execute()
         return results.get('files', [])
     def find_file_by_name(self, files, filename):
@@ -61,9 +64,9 @@ class GoogleDriveAPI:
     def update_file_metadata(self, file_id, new_title):
         file_metadata = {'name': new_title}
         updated_file = self.drive_service.files().update(fileId=file_id, body=file_metadata).execute()
-        print(f"Updated file {updated_file['name']} (ID: {updated_file['id']}")
+        logger.info(f"[GoogleDriveAPI]: Updated file {updated_file['name']} (ID: {updated_file['id']}")
         
-    def upload_new_file(self, folder_id, local_pdf_path, existing_file_id=None):
+    def upload_new_file(self, local_pdf_path, existing_file_id=None):
         file_metadata = {
             'name': os.path.basename(local_pdf_path)
         }
@@ -71,42 +74,48 @@ class GoogleDriveAPI:
         media = MediaFileUpload(local_pdf_path, mimetype='application/pdf')
         
         if existing_file_id:
+            # Update an existing file
             self.drive_service.files().update(
                 fileId=existing_file_id,
-                addParents=folder_id,
-                removeParents=None,
+                body=file_metadata,
+                media_body=media,
+                addParents=self.folder_id
+            ).execute()
+            logger.info(f"[GoogleDriveAPI]: Replaced file with new PDF: {file_metadata['name']} (ID: {existing_file_id})")
+        else:
+            # Upload a new file
+            file_metadata['parents'] = [self.folder_id]
+            uploaded_file = self.drive_service.files().create(
                 body=file_metadata,
                 media_body=media
             ).execute()
-            print(f"Replaced file with new PDF: {file_metadata['name']} (ID: {existing_file_id})")
-        else:
-            uploaded_file = self.drive_service.files().create(
-                body=file_metadata,
-                media_body=media,
-                parents=[folder_id]
-            ).execute()
-            print(f"Uploaded new PDF: {uploaded_file['name']} (ID: {uploaded_file['id']})")
+            logger.info(f"[GoogleDriveAPI]: Uploaded new PDF: {uploaded_file['name']} (ID: {uploaded_file['id']})")
 
-def check_script_paths(SCRIPT_PATHS):
-    for file in SCRIPT_PATHS.values():
+
+
+def check_script_paths(SCRIPTS_LOCAL_FULL_PATHS) -> bool:
+    if not SCRIPTS_LOCAL_FULL_PATHS:
+        logger.error("SCRIPTS_LOCAL_FULL_PATHS is empty.")
+        return False
+    for file in SCRIPTS_LOCAL_FULL_PATHS.values(): # Check if all scripts are locally available
         local_file_exists(file)
+    return True
 
-def local_file_exists(file_path):
+def local_file_exists(file_path) -> bool:
     if os.path.exists(file_path):
-        print(f"Local file {file_path} exists.")
+        logger.info(f"Local file {file_path} exists.")
         return True
     else:
-        print(f"Local file {file_path} does not exist.")
+        logger.error(f"Local file {file_path} does not exist.")
         return False
 
-def main():
-    Drive = GoogleDriveAPI()
+def setup_script_paths():
     
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    root_dir = os.path.abspath(os.path.join(script_dir, os.pardir))
-    print("root_dir:", root_dir)
-    
-    SCRIPT_FILE_NAMES = {
+    script_dir = os.path.dirname(os.path.abspath(__file__)) # /Users/lukablaskovic/Github/FIPU-WA/script-patcher
+
+    root_dir = os.path.abspath(os.path.join(script_dir, os.pardir)) # /Users/lukablaskovic/Github/FIPU-WA
+
+    SCRIPTS_FILE_NAMES = {
     "WA1": "WA1 - Uvod u HTTP, Node i Express",
     "WA2": "WA2 - Usmjeravanje na Express poslužitelju",
     "WA3": "WA3 - Komunikacija s klijentskom stranom",
@@ -114,30 +123,44 @@ def main():
     "WA5": "WA5 - MongoDB baza podataka",
     }
     
-    SCRIPT_FILE_NAMES_PDF = {key: f"{value}.pdf" for key, value in SCRIPT_FILE_NAMES.items()}
+    SCRIPTS_FILE_NAMES_w_PDF = {key: f"{value}.pdf" for key, value in SCRIPTS_FILE_NAMES.items()}
     
-    SCRIPT_PATHS = {
-    "WA1": os.path.join(root_dir, SCRIPT_FILE_NAMES["WA1"], SCRIPT_FILE_NAMES_PDF["WA1"]),
-    "WA2" : os.path.join(root_dir, SCRIPT_FILE_NAMES["WA2"], SCRIPT_FILE_NAMES_PDF["WA2"]),
-    "WA3": os.path.join(root_dir, SCRIPT_FILE_NAMES["WA3"], SCRIPT_FILE_NAMES_PDF["WA3"]),
-    "WA4" : os.path.join(root_dir, SCRIPT_FILE_NAMES["WA4"], SCRIPT_FILE_NAMES_PDF["WA4"]),
-    "WA5" : os.path.join(root_dir, SCRIPT_FILE_NAMES["WA5"], SCRIPT_FILE_NAMES_PDF["WA5"]),
+    SCRIPTS_LOCAL_FULL_PATHS = {
+    "WA1": os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA1"], SCRIPTS_FILE_NAMES_w_PDF["WA1"]),
+    "WA2" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA2"], SCRIPTS_FILE_NAMES_w_PDF["WA2"]),
+    "WA3": os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA3"], SCRIPTS_FILE_NAMES_w_PDF["WA3"]),
+    "WA4" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA4"], SCRIPTS_FILE_NAMES_w_PDF["WA4"]),
+    "WA5" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA5"], SCRIPTS_FILE_NAMES_w_PDF["WA5"]),
     }
     
-    check_script_paths(SCRIPT_PATHS)
-    return
-    files_in_folder = Drive.list_files_in_folder(FOLDER_ID)
-    print("Files in the folder:", files_in_folder)
-    
-    files_to_find = list(SCRIPT_FILE_NAMES_PDF.values())
-    for filename in files_to_find:
-        file = Drive.find_file_by_name(files_in_folder, filename)
-        if file:
-            print(f"Found {filename} (ID: {file['id']})")
+    return SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF
 
-            #Drive.upload_new_file(FOLDER_ID, new_pdf_path, file['id'])
+def main():    
+    SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF = setup_script_paths()
+    
+    check_script_paths(SCRIPTS_LOCAL_FULL_PATHS)
+    
+    Drive = GoogleDriveAPI()
+    FILES_ON_DRIVE = Drive.list_files_in_folder()
+    
+    drive_files_dict = {file['name']: file['id'] for file in FILES_ON_DRIVE}
+
+    for script_name, local_path in SCRIPTS_LOCAL_FULL_PATHS.items():
+        script_pdf_name = SCRIPTS_FILE_NAMES_w_PDF[script_name]
+        logger.info(f"Processing file: {script_pdf_name}")
+        
+        if script_pdf_name in drive_files_dict:
+            # File exists on Drive, update it
+            file_id = drive_files_dict[script_pdf_name]
+            logger.info(f"File {script_pdf_name} found on Drive. Updating it.")
+            Drive.upload_new_file(local_path, existing_file_id=file_id)
         else:
-            print(f"{filename} not found in the folder.")
+            # File does not exist on Drive, upload it
+            logger.info(f"File {script_pdf_name} not found on Drive. Uploading it as new.")
+            Drive.upload_new_file(local_path)
             
 if __name__ == "__main__":
+    logger.info("Starting script-patcher...")
+    logger.info(f"FOLDER_ID is set to: {FOLDER_ID}")
+    logger.info("Checking for local files...")
     main()
