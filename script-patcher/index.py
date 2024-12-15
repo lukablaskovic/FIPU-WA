@@ -12,40 +12,31 @@ from GoogleDriveAPI import GoogleDriveAPI
 from logger import logger
 
 GOOGLE_DRIVE_API_SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive']
-PICKLE_FILE_NAME = "token.pickle"
+
 FOLDER_ID = "1y8PUAFmYoW-cBrvgdd8hCnhni39PNkXV"
 
 def authenticate_google_drive():
     creds = None
-    # Check if token.pickle exists
+    # The file token.pickle stores the user's access and refresh tokens
+    PICKLE_FILE_NAME = "token.pickle"
     if os.path.exists(PICKLE_FILE_NAME):
-        logger.info(f"Using local token.pickle.")
         with open(PICKLE_FILE_NAME, 'rb') as token:
             creds = pickle.load(token)
-
-    # If credentials are invalid, reauthenticate
     if not creds or not creds.valid:
         logger.warning("Credentials not found or invalid. Prompting user to authenticate...")
-
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            # Authenticate using the OAuth credentials from the credentials.json file
-            if os.path.exists("credentials.json"):
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', GOOGLE_DRIVE_API_SCOPES)
-                creds = flow.run_local_server(port=0)
-            else:
-                raise ValueError("credentials.json not found")
-
-        # Save the credentials to token.pickle for future use
-        with open(PICKLE_FILE_NAME, 'wb') as token:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json', GOOGLE_DRIVE_API_SCOPES)
+            creds = flow.run_local_server(port=0)
+        
+        with open('token.pickle', 'wb') as token:
             logger.info(f"Saving credentials as {PICKLE_FILE_NAME}...")
             pickle.dump(creds, token)
-
+    
     logger.info(f"Successfully loaded credentials from {PICKLE_FILE_NAME}!")
     return build('drive', 'v3', credentials=creds)
-
 
 def check_local_availability(SCRIPTS_LOCAL_FULL_PATHS) -> bool:
     logger.info("Checking local availability of scripts...")
