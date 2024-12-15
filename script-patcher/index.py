@@ -93,24 +93,26 @@ class GoogleDriveAPI:
 
 
 
-def check_script_paths(SCRIPTS_LOCAL_FULL_PATHS) -> bool:
+def check_local_availability(SCRIPTS_LOCAL_FULL_PATHS) -> bool:
+    logger.info("Checking local availability of scripts...")
     if not SCRIPTS_LOCAL_FULL_PATHS:
         logger.error("SCRIPTS_LOCAL_FULL_PATHS is empty.")
         return False
     for file in SCRIPTS_LOCAL_FULL_PATHS.values(): # Check if all scripts are locally available
         local_file_exists(file)
+    logger.info("All scripts are locally available!")
     return True
 
 def local_file_exists(file_path) -> bool:
     if os.path.exists(file_path):
-        logger.info(f"Local file {file_path} exists.")
+        logger.debug(f"Local file {file_path} exists.")
         return True
     else:
         logger.error(f"Local file {file_path} does not exist.")
         return False
 
 def setup_script_paths():
-    
+    logger.info("Setting up script paths...")
     script_dir = os.path.dirname(os.path.abspath(__file__)) # /Users/lukablaskovic/Github/FIPU-WA/script-patcher
 
     root_dir = os.path.abspath(os.path.join(script_dir, os.pardir)) # /Users/lukablaskovic/Github/FIPU-WA
@@ -132,35 +134,38 @@ def setup_script_paths():
     "WA4" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA4"], SCRIPTS_FILE_NAMES_w_PDF["WA4"]),
     "WA5" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA5"], SCRIPTS_FILE_NAMES_w_PDF["WA5"]),
     }
-    
+    logger.info("Script paths set up successfully!")
     return SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF
 
 def main():    
     SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF = setup_script_paths()
     
-    check_script_paths(SCRIPTS_LOCAL_FULL_PATHS)
+    check_local_availability(SCRIPTS_LOCAL_FULL_PATHS)
     
     Drive = GoogleDriveAPI()
     FILES_ON_DRIVE = Drive.list_files_in_folder()
     
-    drive_files_dict = {file['name']: file['id'] for file in FILES_ON_DRIVE}
+    Drive_files_dict = {file['name']: file['id'] for file in FILES_ON_DRIVE}
+    
+    if not FILES_ON_DRIVE:
+        logger.warning("No files found on Drive.")
+        raise FileNotFoundError("No files found on Drive.")
 
     for script_name, local_path in SCRIPTS_LOCAL_FULL_PATHS.items():
         script_pdf_name = SCRIPTS_FILE_NAMES_w_PDF[script_name]
         logger.info(f"Processing file: {script_pdf_name}")
         
-        if script_pdf_name in drive_files_dict:
+        if script_pdf_name in Drive_files_dict:
             # File exists on Drive, update it
-            file_id = drive_files_dict[script_pdf_name]
+            file_id = Drive_files_dict[script_pdf_name]
             logger.info(f"File {script_pdf_name} found on Drive. Updating it.")
             Drive.upload_new_file(local_path, existing_file_id=file_id)
         else:
             # File does not exist on Drive, upload it
             logger.info(f"File {script_pdf_name} not found on Drive. Uploading it as new.")
             Drive.upload_new_file(local_path)
-            
+    
 if __name__ == "__main__":
-    logger.info("Starting script-patcher...")
+    logger.info("Starting script-patcher")
     logger.info(f"FOLDER_ID is set to: {FOLDER_ID}")
-    logger.info("Checking for local files...")
     main()
