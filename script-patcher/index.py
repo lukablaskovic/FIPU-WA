@@ -19,19 +19,27 @@ def authenticate_google_drive():
     creds = None
     # The file token.pickle stores the user's access and refresh tokens
     PICKLE_FILE_NAME = "token.pickle"
+
+    # Check if token.pickle is available from the secret or environment
     if os.path.exists(PICKLE_FILE_NAME):
+        logger.info(f"Using local token.pickle.")
         with open(PICKLE_FILE_NAME, 'rb') as token:
             creds = pickle.load(token)
+    
     if not creds or not creds.valid:
         logger.warning("Credentials not found or invalid. Prompting user to authenticate...")
+
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
+            # Authenticate using the credentials stored in GitHub secrets
+            client_secrets = os.environ['GOOGLE_CREDENTIALS']  # This is stored as a GitHub secret
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', GOOGLE_DRIVE_API_SCOPES)
+                client_secrets, GOOGLE_DRIVE_API_SCOPES)
             creds = flow.run_local_server(port=0)
         
-        with open('token.pickle', 'wb') as token:
+        # Save the new token.pickle file locally, but note this will be ignored by git
+        with open(PICKLE_FILE_NAME, 'wb') as token:
             logger.info(f"Saving credentials as {PICKLE_FILE_NAME}...")
             pickle.dump(creds, token)
     
