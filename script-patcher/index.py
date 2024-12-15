@@ -56,7 +56,7 @@ def local_file_exists(file_path) -> bool:
         logger.error(f"Local file {file_path} does not exist.")
         return False
 
-def setup_script_paths():
+def setup_script_paths() -> tuple:
     logger.info("Setting up script paths...")
     script_dir = os.path.dirname(os.path.abspath(__file__)) # /Users/lukablaskovic/Github/FIPU-WA/script-patcher
 
@@ -70,6 +70,7 @@ def setup_script_paths():
     "WA5": "WA5 - MongoDB baza podataka",
     }
     
+    
     SCRIPTS_FILE_NAMES_w_PDF = {key: f"{value}.pdf" for key, value in SCRIPTS_FILE_NAMES.items()}
     
     SCRIPTS_LOCAL_FULL_PATHS = {
@@ -79,6 +80,7 @@ def setup_script_paths():
     "WA4" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA4"], SCRIPTS_FILE_NAMES_w_PDF["WA4"]),
     "WA5" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA5"], SCRIPTS_FILE_NAMES_w_PDF["WA5"]),
     }
+    # Full path example: /Users/lukablaskovic/Github/FIPU-WA/WA1 - Uvod u HTTP, Node i Express/WA1 - Uvod u HTTP, Node i Express.pdf
     logger.info("Script paths set up successfully!")
     return SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF
 
