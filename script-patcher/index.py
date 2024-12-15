@@ -34,6 +34,7 @@ def authenticate_google_drive():
         else:
             # Authenticate using the credentials stored in GitHub secrets
             client_secrets = os.environ['GOOGLE_CREDENTIALS']  # This is stored as a GitHub secret
+            print("client_secrets", client_secrets)
             flow = InstalledAppFlow.from_client_secrets_file(
                 client_secrets, GOOGLE_DRIVE_API_SCOPES)
             creds = flow.run_local_server(port=0)
