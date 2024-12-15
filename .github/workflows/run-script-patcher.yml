@@ -25,7 +25,7 @@ jobs:
 
       - name: Authenticate with Google API
         run: |
-          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
+          echo "${{ secrets.GOOGLE_CREDENTIALS_BASE64 }}" | base64 --decode > credentials.json
 
       - name: Debug the contents of credentials.json
         run: |
