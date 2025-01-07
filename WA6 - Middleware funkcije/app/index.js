@@ -3,39 +3,32 @@ import korisniciRouter from './routes/korisnici.js';
 import { body, validationResult, query, param } from 'express-validator';
 
 const app = express();
-app.use(express.json());
 
-const requestLogger = (req, res, next) => {
-  const date = new Date().toLocaleString();
-  const method = req.method;
-  const url = req.originalUrl;
-  console.log(`[${date}] : ${method} ${url}`);
+// middleware timer na razini aplikacije
+const timer = (req, res, next) => {
+  console.log(`Trenutno vrijeme: ${new Date().toLocaleString()}`);
   next();
 };
 
-const adminLogger = (req, res, next) => {
-  console.log('Oprez! Pristigao zahtjev na /admin rutu');
-  // u pravilu ovdje moramo provjeriti autorizacijski token, što ćemo vidjeti kasnije
-  next();
-};
-
-app.all('/admin', adminLogger); // na svim /admin rutama pozovi adminLogger middleware
-
-app.use(requestLogger);
-
+app.use(express.json()); // middleware koji obrađuje dolazne JSON podatke, definiran je na aplikacijskoj
+app.use(timer);
 app.use('/korisnici', korisniciRouter);
 
-app.get('/admin', (req, res) => {
-  res.send('Dobrodošli na admin stranicu');
-});
+app.get(
+  '/hello',
+  [query('ime').notEmpty().withMessage('Polje ime ne može biti prazno'), query('ime').escape()],
 
-app.get('/hello', [query('ime').notEmpty().withMessage('Ime je obavezno'), query('ime').trim(), query('ime').escape()], (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  (req, res) => {
+    const errors = validationResult(req);
+    // ako nema greške
+    if (errors.isEmpty()) {
+      return res.send('Hello, ' + req.query.ime);
+    }
     return res.status(400).json({ errors: errors.array() });
   }
-  res.send('Hello, ' + req.query.ime);
-});
+);
+
+// GET /hello?ime=Petar
 
 let PORT = 3000;
 

@@ -1,10 +1,7 @@
 // routes/korisnici.js
 
 import express from 'express';
-// uključujemo middleware funkcije iz middleware/korisnici.js
-import { validacijaEmaila, pretragaKorisnika } from '../middleware/korisnici.js';
-import { body, validationResult, query, param } from 'express-validator';
-
+import { validirajEmail, pronadiKorisnika } from '../middleware/korisnici.js';
 const router = express.Router();
 
 let korisnici = [
@@ -13,6 +10,7 @@ let korisnici = [
   { id: 983498356, ime: 'Sanja', prezime: 'Sanjić', email: 'ssanjic123@gmail.com' }
 ];
 
+// dohvat svih korisnika
 router.get('/', async (req, res) => {
   if (korisnici) {
     return res.status(200).json(korisnici);
@@ -20,18 +18,16 @@ router.get('/', async (req, res) => {
   return res.status(404).json({ message: 'Nema korisnika' });
 });
 
-router.get('/:id', [pretragaKorisnika], async (req, res) => {
-  return res.status(200).json(req.korisnik);
+// dohvat pojedinog korisnika
+router.get('/:id', [pronadiKorisnika], async (req, res) => {
+  res.status(200).json(req.korisnik);
 });
 
-router.patch('/:id', [pretragaKorisnika, body('email').isEmail().contains('@unipu.hr'), body('ids').isInt().withMessage('Svaki element polja mora biti tipa integer')], async (req, res) => {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    req.korisnik.email = req.body.email;
-    console.log(korisnici);
-    return res.status(200).json(req.korisnik);
-  }
-  return res.status(400).json({ errors: errors.array() });
+//ažuriranje emaila
+router.patch('/:id', [pronadiKorisnika, validirajEmail], async (req, res) => {
+  let korisnik = req.korisnik;
+  korisnik.email = novi_email;
+  res.status(200).json({ message: 'Uspješna promjena...' });
 });
 
 export default router;
