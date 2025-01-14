@@ -47,6 +47,8 @@ Autentifikacija i autorizacija su ključni koncepti području sigurnosti informa
   - [2.6 Rok trajanja JWT tokena](#26-rok-trajanja-jwt-tokena)
 - [Samostalni zadatak za Vježbu 7](#samostalni-zadatak-za-vježbu-7)
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 # 1. Autentifikacija vs Autorizacija
 
 **Autentifikacija** (eng. _authentication_) je proces provjere identiteta korisnika ili sustava. Cilj autentifikacije je utvrditi je li osoba ili sustav onaj za koga se predstavlja.
@@ -164,6 +166,8 @@ Koje probleme ovdje možemo uočiti?
 3. Pohrana lozinki bez ikakvog enkripcijskog mehanizma je **neprihvatljiva** i **ilegalna** u većini zemalja, posebno u EU. Rizici su preveliki, a [kazne su visoke](https://www.reuters.com/technology/eu-privacy-regulator-fines-meta-91-million-euros-over-password-storage-2024-09-27/).
 4. **Nema mehanizma za _session management_**. Kako će klijent znati da je autentificiran, ako poslužitelj vrati samo poruku "Uspješno ste autentificirani!"? Bolje pitanje je: **kako će se poslužitelj sjetiti da je korisnik autentificiran**, ako je svaki zahtjev novi zahtjev (HTTP je _stateless_ protokol)?
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 ## 1.2 Enkripcija vs Hashiranje
 
 **Enkripcija** (_eng. Encryption_) je proces pretvaranja podataka ili poruka u kodirani oblik kako bi se osigurala njihova privatnost i zaštita od neovlaštenog pristupa. Kodiranjem s originalni podaci, koje često zovem "običan" ili "čisti" tekst, pretvaraju u nečitki oblik koji nazivamo "šifrirani" tekst, odnosno _ciphertext_.
@@ -231,6 +235,8 @@ Odgovor je **hashiranje**! U sljedećoj tablici usporedit ćemo ove dvije tehnik
 | **Primjeri algoritama** | SHA-256, bcrypt, Argon2                                               | AES, RSA, DES                                                                               |
 
 U praksi, **hashiranje** je **sigurniji** i **jednostavniji** način pohrane lozinki korisnika.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ## 1.3 `bcrypt` paket
 
@@ -546,6 +552,8 @@ app.post('/login', async (req, res) => {
 ```
 
 > Vidimo da u drugom primjeru, **vraćamo istu poruku o grešci** bez obzira u kojem dijelu procesa autentifikacije je došlo do greške!
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 # 2. Autorizacija kroz JWT
 
@@ -863,6 +871,8 @@ Ako promijenimo samo jedan znak u tokenu, dobit ćemo grešku:
 ```
 Došlo je do greške prilikom verifikacije tokena: JsonWebTokenError: invalid token
 ```
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ## 2.4 Implementacija funkcija za generiranje i provjeru JWT tokena
 
@@ -1218,6 +1228,8 @@ let token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' }); // token traje 1
 ```
 
 Ovaj token će trajati **1 sat** od trenutka generiranja. Nakon toga, funkcija `verify` će vratiti grešku `"TokenExpiredError"`. U tom slučaju potrebno je na klijentskoj strani preusmjeriti korisnika na formu za prijavu, a poslužitelj neće dozvoliti pristup zaštićenim resursima.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 # Samostalni zadatak za Vježbu 7
 
