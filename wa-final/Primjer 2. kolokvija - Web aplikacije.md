@@ -4,7 +4,7 @@ Prije početka pisanja kolokvija studenti su **dužni provjeriti** jesu li na ra
 
 **VAŽNO!** Potrebno je pripremiti MongoDB Atlas cluster te generirati osobni **Connection String** i **lozinku** za povezivanje preko **Node.js drivera**.
 
-<a href="https://cloud.mongodb.com/" target="_blank"><img src="./atlas-network.png" style="width:80%"> </a>
+<a href="https://cloud.mongodb.com/" target="_blank"><img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/wa-final/atlas-network.png?raw=true" style="width:80%"> </a>
 
 > **PREPORUKA**: Odaberite Security -> Network Access -> Add IP Address -> omogućite pristup Atlasu sa svih IP adresa (`0.0.0.0/0`)
 
@@ -17,9 +17,9 @@ MONGO_URI=vaš_mongo_connection_string_s_lozinkom
 DB_NAME=wa_final
 ```
 
-gdje su `MONGO_URI` vaš Connection String na MongoDB Atlasu, a `DB_NAME` naziv baze podataka koju koristite (ne kolekcije!).
-
 Drugi kolokvij obuhvaća **ukupno gradivo iz vježbi**, a studenti mogu ostvariti maksimalno **60 bodova iz kontinuiranog praćenja**.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 # Primjer kako će izgledati 2. kolokvij
 
@@ -43,8 +43,6 @@ Primjer JSON objekta za **dodavanje novog napitka**:
   "kolicina": 100
 }
 ```
-
-<br>
 
 ### 2. Validacija ulaznih podataka prilikom (**10 bodova**)
 
@@ -139,4 +137,3 @@ Prebacite implementacije funkcija `hashPassword` i `comparePassword` u zasebnu d
   - Potrebno je provjeriti zaglavlje `Authorization` te izvući `Bearer` token iz njega. Klijent šalje JWT toke u obliku: `Bearer <JWT_token>`
   - Ispravnost tokena provjerite odgovarajućom metodom iz `jsonwebtoken` biblioteke i privatnim ključem. Ako token nije ispravan, vratite odgovarajući statusni kod i poruku.
   - Ako je token ispravan, u dijeljeni objekt `req` dodajte atribut `user` koji će sadržavati korisničko ime korisnika **dekodirano iz JWT-a**.
-  - Testirajte _middleware_ na nekoj od ruta iz **1. Zadatka**.
