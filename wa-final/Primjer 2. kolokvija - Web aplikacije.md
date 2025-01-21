@@ -8,7 +8,7 @@ Prije početka pisanja kolokvija studenti su **dužni provjeriti** jesu li na ra
 
 > **PREPORUKA**: Odaberite Security -> Network Access -> Add IP Address -> omogućite pristup Atlasu sa svih IP adresa (`0.0.0.0/0`)
 
-Jednom kad ste pripremili sve potrebne alate, možete klonirati repozitorij [`lukablaskovic/wa-final-template`](https://github.com/lukablaskovic/wa-final-template) koji ćete koristiti i na kolokviju. Predložak ima sve instalirane pakete koji vam trebaju, uključujući i `db.js` datoteku kojom se povezujete na vaš MongoDB Atlas.
+Jednom kad ste pripremili sve potrebne alate, možete klonirati repozitorij [`lukablaskovic/wa-final-template`](https://github.com/lukablaskovic/wa-final-template) koji ćete koristiti i na kolokviju. Predložak ima sve instalirane pakete koji vam trebaju te sadrži i `db.js` datoteku kojom se povezujete na vaš MongoDB Atlas.
 
 Potrebno je dodati sljedeće varijable u `.env` datoteku:
 
@@ -99,7 +99,7 @@ Primjer JSON polja objekata za **dodavanje više napitaka**:
 
 **Uključite _middleware_ `validateDrink` u postojeću rutu za dodavanje novih napitaka** te dodajte jedan ili više napitaka ovisno o vrijednosti atributa `req.type`.
 
-**Napomena**: sva validacija podataka mora biti implementirana u middlewareu `validateDrink`, dok u implementaciji rute mora biti samo implementacija dodavanja u bazu ovisno o tipu ulaznih podataka.
+**Napomena**: sva validacija podataka mora biti implementirana u middlewareu `validateDrink`, dok u implementaciji rute mora biti samo logika za dodavanje u bazu ovisno o tipu ulaznih podataka.
 
 ### 4. Implementacija ruta za dodavanje korisnika (**10 bodova**)
 
