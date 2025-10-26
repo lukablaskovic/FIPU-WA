@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 23.10.2024.**
+**🆙 Posljednje ažurirano: 21.10.2025.**
 
 ## Sadržaj
 
@@ -24,9 +24,9 @@
 - [1. Uvod](#1-uvod)
   - [1.1 Kratak povijesni pregled](#11-kratak-povijesni-pregled)
 - [2. Instalacija potrebnih alata](#2-instalacija-potrebnih-alata)
-  - [2.1 Node.js](#21-nodejs)
-  - [2.2 VS Code](#22-vs-code)
-  - [2.3 Git](#23-git)
+    - [2.1 Node.js](#21-nodejs)
+    - [2.2 VS Code](#22-vs-code)
+    - [2.3 Git](#23-git)
 - [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
   - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)
@@ -158,7 +158,7 @@ Prvi korak je definiranje strukture projekta, budući da smo odlučili verzionir
 
 Nazovite repozitorij **"wa_vjezbe_01"** i dodajte opis po želji. Možete ga postaviti kao privatni ili javni, a svakako odaberite opciju `"Add a README file"` kako ne bi inicijalno bio prazan.
 
-<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/new_repo.png" style="width:50%;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA1%20-%20Uvod%20u%20HTTP%2C%20Node%20i%20Express/screenshots/new_repo.png" style="width:75%;"></img>
 
 Nakon što ste izradili repozitorij, kopirajte URL repozitorija, npr. https://github.com/lukablaskovic/wa-vjezbe-01.git
 
@@ -654,15 +654,13 @@ HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zn
 
 Dakle, za sad je važno zapamtiti da klijent šalje HTTP zahtjeve poslužitelju, čeka odgovor i zatim prikazuje odgovor krajnjem korisniku. Naravno, to ne mora biti i vrlo često i nije (1 <-> 1) komunikacija, već klijent može slati različite zahtjeve na različite poslužitelje. No mi ćemo u sklopu ovog kolegija raditi samo s jednim poslužiteljem i jednim klijentom.
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/http_requests.png?raw=true" style="width:50%">
-
 ## 5.1 HTTP zahtjev (eng. HTTP request)
 
 HTTP zahtjev predstavlja zahtjev klijenta poslužitelju, npr. klijent (web preglednik) zahtjeva određeni web resurs (npr. HTML stranicu) od poslužitelja.
 
 HTTP zahtjev sastoji se od nekoliko dijelova od kojih su neki **obavezni**, a neki **opcionalni**:
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/http_request.png?raw=true" style="width:50%">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20HTTP,%20Node%20i%20Express/screenshots/http_request.png?raw=true" style="width:75%">
 
 ### 5.1.1 Obavezni dijelovi HTTP zahtjeva
 
@@ -689,7 +687,7 @@ curl -X GET http://www.google.com
 
 Koji smo **URI** (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI predstavlja jedinstveni identifikator elektroničkog resursa. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/url_uri_urn.png?raw=true">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20HTTP,%20Node%20i%20Express/screenshots/url_uri_urn.png?raw=true">
 
 U ovoj skripti će se često koristiti termin URI.
 
@@ -711,7 +709,7 @@ curl -X GET http://www.google.com/about_me.html
 
 Vidimo da kao odgovor dobivamo HTML stranicu s porukom `"404. That’s an error. The requested URL was not found on this server. That’s all we know."`. Ako otvorimo u web pregledniku, ona izgleda ovako:
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/google_error404.png?raw=true" style="width:50%">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20HTTP,%20Node%20i%20Express/screenshots/google_error404.png?raw=true" style="width:50%">
 
 Dakle, **Request Line** se sastoji od HTTP **metode**, traženog **URI** i HTTP **verzije**.
 
@@ -766,7 +764,7 @@ Više o HTTP zahtjevima možete pročitati na [MDN web dokumentaciji](https://de
 
 HTTP odgovor predstavlja odgovor poslužitelja klijentu, npr. poslužitelj šalje HTML stranicu ili JSON podatke klijentu. HTTP odgovor sastoji se od nekoliko dijelova od kojih su, kao i kod zahtjeva, neki **obavezni**, a neki **opcionalni**:
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/screenshots/http_response.png?raw=true" style="width:50%">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20HTTP,%20Node%20i%20Express/screenshots/http_response.png?raw=true" style="width:75%">
 
 ### 5.2.1 Obavezni dijelovi HTTP odgovora
 
@@ -861,4 +859,7 @@ res.sendFile(__dirname + 'putanja_do_datoteke');
 3. Dodajte i posljednju GET rutu `/users` koja će vratiti korisnike u JSON formatu. Korisnike pohranite u polju kao objekte s atributima `id`, `ime` i `prezime`. Dodajte barem 3 korisnika. Kako biste vratili korisnike u JSON formatu, koristite `res.json()` metodu.
 
 Testirajte u web pregledniku i s programom `curl` sve tri rute.
+
+Testirajte poslužitelj i u izrađenom Postman okruženju.
+
 Kada završite, pohranite promjene na GitHub repozitorij s komentarom "Samostalni zadatak za vježbu 1".
