@@ -1,9 +1,7 @@
-const express = require('express');
+import express from 'express';
+
 const app = express();
 const PORT = 3005;
-
-// instalirati nodemon:
-// npm install -g nodemon
 
 app.get('/', (req, res) => {
   console.log('pozvan je GET endpoint!');
