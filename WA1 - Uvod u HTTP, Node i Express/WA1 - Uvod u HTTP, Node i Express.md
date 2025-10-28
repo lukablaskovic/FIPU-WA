@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 21.10.2025.**
+**🆙 Posljednje ažurirano: 28.10.2025.**
 
 ## Sadržaj
 
@@ -24,9 +24,9 @@
 - [1. Uvod](#1-uvod)
   - [1.1 Kratak povijesni pregled](#11-kratak-povijesni-pregled)
 - [2. Instalacija potrebnih alata](#2-instalacija-potrebnih-alata)
-    - [2.1 Node.js](#21-nodejs)
-    - [2.2 VS Code](#22-vs-code)
-    - [2.3 Git](#23-git)
+  - [2.1 Node.js](#21-nodejs)
+  - [2.2 VS Code](#22-vs-code)
+  - [2.3 Git](#23-git)
 - [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
   - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)
@@ -638,17 +638,17 @@ HTTP (eng. _Hypertext Transfer Protocol_) je protokol koji se koristi za **prije
 
 HTTP koristi različite **metode** (_eng. HTTP method_) za različite vrste zahtjeva. Najčešće korištene HTTP metode su:
 
-- **GET** - koristi se za dohvaćanje podataka
+- **GET** - koristi se za dohvaćanje resursa
 - **POST** - koristi se za slanje podataka
-- **PUT** - koristi se za ažuriranje podataka
-- **DELETE** - koristi se za brisanje podataka
-- **PATCH** - koristi se za djelomično ažuriranje podataka
+- **PUT** - koristi se za ažuriranje/zamjenu resursa novim podacima
+- **DELETE** - koristi se za brisanje resursa
+- **PATCH** - koristi se za djelomično ažuriranje resursa
 
 Ove metode koriste se za različite vrste zahtjeva. Na primjer, korisnik može poslati `GET` zahtjev kako bi dohvatio podatke s poslužitelja, ili `POST` zahtjev kako bi poslao podatke poslužitelju. Sve ove metode koriste se u web razvoju za komunikaciju između klijenta i poslužitelja. U nastavku ćemo obraditi svaku metodu posebno i pokazati kako ih implementirati u Express.js aplikaciji.
 
 Međutim, prije nego što krenemo, važno je naučiti od čega se sastoje HTTP zahtjevi i odgovori.
 
-HTTP prati klasičnu **klijent-poslužitelj** arhitekturu (_eng. client-server architecture_). Ukratko, to znači da klijent šalje zahtjev poslužitelju, a poslužitelj šalje odgovor klijentu. Preciznije, klijent otvara **TCP/IP** vezu s poslužiteljem, šalje HTTP zahtjev i onda čeka sve dok poslužitelj ne pošalje odgovor.
+HTTP prati klasičnu **klijent-poslužitelj** arhitekturu (_eng. client-server architecture_). Ukratko, to znači da klijent upućuje zahtjev poslužitelju, a poslužitelj obrađuje taj zahtjev i vraća odgovor klijentu. Preciznije, klijent otvara **TCP/IP** vezu s poslužiteljem, šalje HTTP zahtjev i onda čeka sve dok poslužitelj ne pošalje odgovor.
 
 HTTP je **stateless** protokol, što znači da svaki zahtjev poslužitelju ne zna ništa o prethodnim zahtjevima. Na primjer, kada korisnik posjeti stranicu, poslužitelj ne zna ništa o prethodnim posjetama korisnika. Ovo je korisno jer omogućava poslužitelju da bude brži i efikasniji, međutim postoje tehnike kojima možemo na klijentskoj strani zapamtiti prethodne interakcije, npr. kroz kolačiće (_eng. cookies_) ili lokalno pohranjivanje (_eng. local storage_) te na taj način imati neki oblik stanja koji šaljemo s klijenta na poslužitelj.
 
@@ -669,9 +669,27 @@ Kako bi klijent poslao najjednostavniji mogući HTTP zahtjev, potrebno je navest
 | **Obavezni dijelovi HTTP zahtjeva** | **Opis**                                                           | **Primjer**                |
 | ----------------------------------- | ------------------------------------------------------------------ | -------------------------- |
 | **Request Line**                    | Sastoji se od HTTP **metode**, traženog **URI** i HTTP **verzije** | `GET /index.html HTTP/1.1` |
-| **Host Header**                     | Navodi se naziv domene ili IP adresa poslužitelja                  | `Host: www.example.com`    |
+| **Host Header**                     | Navodi se **naziv domene** ili **IP adresa** poslužitelja          | `Host: www.example.com`    |
 
-Međutim, **Host Header** je ustvari jedini obavezni dio zahtjeva, ali to u pravilu ne želimo raditi. Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev. Ovaj program je u pravilu dostupan na svakom OS-u, a koristi se za slanje HTTP zahtjeva iz terminala. Možete provjeriti imate li ga instaliranog s naredbom `curl --version`.
+Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev. Ovaj program je u pravilu dostupan na svakom OS-u, a koristi se za slanje HTTP zahtjeva iz terminala. Možete provjeriti imate li ga instaliranog s naredbom `curl --version`.
+
+`curl` je CLI programski alat koji služi za slanje zahtjeva prema URL-ovima putem različitih mrežnih protokola, najčešće je to HTTP/HTTPS.
+
+**Sintaksa naredbe `curl`:**
+
+```
+curl [options] [URL]
+```
+
+- gdje opcije predstavljaju bilo koju opciju osim **Host Header**.
+
+Najčešće korištene opcije su:
+
+- `-X` - specificira HTTP metodu (npr. GET, POST, PUT, DELETE)
+- `-H` - specificira HTTP zaglavlje (npr. Host, Content-Type)
+- `-d` - specificira tijelo zahtjeva (npr. podaci u JSON formatu)
+
+Međutim, ima ih još mnogo, a sve ih možete vidjeti u [dokumentaciji](https://curl.se/docs/manpage.html).
 
 Idemo poslati najjednostavniji mogući HTTP zahtjev prema `http://www.google.com`:
 
@@ -685,11 +703,21 @@ Uočite što smo dobili - HTML stranicu koja definira Googleovu početnu stranic
 curl -X GET http://www.google.com
 ```
 
-Koji smo **URI** (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI predstavlja jedinstveni identifikator elektroničkog resursa. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
+Koji smo **URI** (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI **predstavlja jedinstveni identifikator elektroničkog resursa na internetu**. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA1%20-%20Uvod%20u%20HTTP,%20Node%20i%20Express/screenshots/url_uri_urn.png?raw=true">
 
 U ovoj skripti će se često koristiti termin URI.
+
+Primjer: `https://www.youtube.com/watch?v=xvFZjo5PgG0` predstavlja URI koji identificira određeni resurs (videozapis) na Youtubu. Ovdje možemo uočiti jedan resurs - `watch`, koji filtriramo pomoću upitnog parametra `v` (video ID).
+
+Youtube ima svoj interni sustav za upravljanje resursima na poslužitelju, pa tako `watch?v=xvFZjo5PgG0` predstavlja specifični resurs (videozapis) koji korisnik želi dohvatiti unutar tog sustava (_backenda_).
+
+Primjer: `https://fipu.unipu.hr/fipu/oglasna_ploca` predstavlja URI koji identificira određeni resurs (oglasnu ploču) Fakulteta informatike u Puli. Ovdje možemo uočiti dva resursa - `fipu` i `oglasna_ploca` koji su ugniježđeni jedan unutar drugog - nema upitnih parametara.
+
+Više o upitnim parametrima i parametrima rute naučit ćemo na sljedećim vježbama.
+
+---
 
 Dakle što je ovdje URI? `http://www.google.com`
 
@@ -729,10 +757,10 @@ Pokrenite Express poslužitelj koji smo izradili i pošaljite HTTP zahtjev prema
 
 Osim obaveznih dijelova HTTP zahtjeva, postoje i opcionalni dijelovi koji se koriste za slanje dodatnih informacija poslužitelju. Konkretno, možemo poslati **HTTP zaglavlja** (_eng. HTTP headers_) i **HTTP tijelo** (_eng. HTTP body_).
 
-| **Opcionalni dijelovi HTTP zahtjeva**                      | **Opis**                                                                                                 | **Primjer**                                                                                    |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Opcionalna zaglavlja zahtjeva (_eng. Request Headers_)** | Ključ-vrijednost parovi koji pružaju dodatne informacije o zahtjevu (zamislimo ih kao metapodatke)       | `Content-Type: application/json` <br> `Authorization: Bearer <token>` <br> `Accept: text/html` |
-| **Tijelo zahtjeva (_eng. Request Body_)**                  | Stvarni podaci koje šaljemo, često u JSON formatu, a tipično se koristi u metodama poput POST, PUT, itd. | `{ "username": "Pero", "password": "password123" }`                                            |
+| **Opcionalni dijelovi HTTP zahtjeva**                      | **Opis**                                                                                                               | **Primjer**                                                                                    |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Opcionalna zaglavlja zahtjeva** (_eng. Request Headers_) | Ključ-vrijednost parovi koji pružaju dodatne informacije o zahtjevu (zamislimo ih kao metapodatke)                     | `Content-Type: application/json` <br> `Authorization: Bearer <token>` <br> `Accept: text/html` |
+| **Tijelo zahtjeva** (_eng. Request Body_)                  | Stvarni podaci koje šaljemo, često u JSON formatu. Tijelo se vrlo često koristi u metodama poput POST, PUT, PATCH itd. | `{ "username": "Pero", "password": "password123" }`                                            |
 
 Zaglavlja ćemo raditi detaljnije na nekim drugim vježbama, za sada morate znati samo da postoje i da se koriste za slanje dodatnih informacija poslužitelju.
 
@@ -773,7 +801,7 @@ Kako bi poslužitelj poslao najjednostavniji mogući HTTP odgovor, potrebno je n
 | **Obavezni dijelovi HTTP odgovora**                       | **Opis**                                                                             | **Primjer**                                                                 |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | **Status Line**                                           | Sadrži HTTP **verziju**, **statusni kod** (_eng. status code_) i **_reason phrase_** | `HTTP/1.1 200 OK` <br> `HTTP/1.1 404 Not Found`                             |
-| **Obavezna zaglavlja odgovora (_eng. Response headers_)** | Pruža obavezne metapodatke o odgovoru (npr. Content-Type)                            | `Content-Type: application/json` <br> `Date: Mon, 21 Oct 2024 10:32:45 GMT` |
+| **Obavezna zaglavlja odgovora** (_eng. Response headers_) | Pruža obavezne metapodatke o odgovoru (npr. Content-Type)                            | `Content-Type: application/json` <br> `Date: Mon, 21 Oct 2024 10:32:45 GMT` |
 
 Kod **Status Line** komponente, najzanimljiviji nam je **statusni kod**. Vjerojatno smo se svi do sad susreli sa statusnim kodovima koje nam je vratio neki poslužitelj.
 
@@ -783,11 +811,11 @@ Statusni kod `503` označava grešku na poslužitelju, odnosno da poslužitelj t
 
 U grubo, brojevi ovih kodova označavaju različite situacije koje se mogu dogoditi prilikom slanja zahtjeva poslužitelju:
 
-- `1xx` (100 - 199) - Informacijski odgovori (eng. _Informational responses_): Poslužitelj je primio zahtjev te ga i dalje obrađuje
-- `2xx` (200 - 299) - Odgovori uspjeha (_eng. Successful responses_): Zahtjev klijenta uspješno primljen i obrađen
-- `3xx` (300 - 399) - Odgovori preusmjeravanja (_eng. Redirection messages_): Ova skupina kodova govori klijentu da mora poduzeti dodatne radnje kako bi dovršio zahtjev
-- `4xx` (400 - 499) - Greške na strani klijenta (_eng. Client error responses_): Sadrži statusne kodove koji se odnose na greške nastale na klijentskoj strani
-- `5xx` (500 - 599) - Greške na strani poslužitelja (_eng. Server error responses_): Sadrži statusne kodove koji se odnose na greške nastale na poslužiteljskoj strani
+- `1xx` (100 - 199) - **Informacijski odgovori** (eng. _Informational responses_): Poslužitelj je primio zahtjev te ga i dalje obrađuje
+- `2xx` (200 - 299) - **Odgovori uspjeha** (_eng. Successful responses_): Zahtjev klijenta uspješno primljen i obrađen
+- `3xx` (300 - 399) - **Odgovori preusmjeravanja** (_eng. Redirection messages_): Ova skupina kodova govori klijentu da mora poduzeti dodatne radnje kako bi dovršio zahtjev
+- `4xx` (400 - 499) - **Greške na strani klijenta** (_eng. Client error responses_): Sadrži statusne kodove koji se odnose na greške nastale na klijentskoj strani
+- `5xx` (500 - 599) - **Greške na strani poslužitelja** (_eng. Server error responses_): Sadrži statusne kodove koji se odnose na greške nastale na poslužiteljskoj strani
 
 Više o statusnim kodovima uskoro, a možete ih pročitati i sami na [MDN web dokumentaciji](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 
@@ -799,8 +827,8 @@ Osim obaveznih dijelova HTTP odgovora, postoje i opcionalni dijelovi koji se kor
 
 | **Component**                                               | **Description**                                                         | **Example**                                                     |
 | ----------------------------------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Tijelo odgovora (_eng. Response body_)**                  | Stvarni podaci koji se vraćaju korisniku, npr. u JSON ili XML formatima | `{ "message": "Success", "data": { "id": 1, "name": "John" } }` |
-| **Opcionalna zaglavlja odgovora (_eng. Response headers_)** | Pruža opcionalne metapodatke o odgovoru (npr. Set-Cookie)               | `Set-Cookie: sessionId=abc123` <br> `Cache-Control: no-cache`   |
+| **Tijelo odgovora** (_eng. Response body_)                  | Stvarni podaci koji se vraćaju korisniku, npr. u JSON ili XML formatima | `{ "message": "Success", "data": { "id": 1, "name": "John" } }` |
+| **Opcionalna zaglavlja odgovora** (_eng. Response headers_) | Pruža opcionalne metapodatke o odgovoru (npr. Set-Cookie)               | `Set-Cookie: sessionId=abc123` <br> `Cache-Control: no-cache`   |
 
 #### Vježba 2: Kako vidjeti cijeli HTTP odgovor?
 

@@ -1,29 +1,19 @@
-import express from 'express';
-
-import pizzeRouter from './routes/pizze.js';
-import narudzbeRouter from './routes/narudzbe.js';
-
+const express = require('express');
 const app = express();
+const PORT = 3005;
 
-app.use(express.json());
+// instalirati nodemon:
+// npm install -g nodemon
 
-const pizze = [
-  { id: 1, naziv: 'Margherita', cijena: 6.5 },
-  { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
-  { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
-  { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
-  { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
-];
-
-app.use('/pizze', pizzeRouter);
-app.use('/narudzbe', narudzbeRouter);
-
-let PORT = 3000;
+app.get('/', (req, res) => {
+  console.log('pozvan je GET endpoint!');
+  res.send({ poruka: 'Pozdrav iz Expres.js poslužitelja' });
+});
 
 app.listen(PORT, error => {
   if (error) {
-    console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
+    console.error('Ne mogu startati... neda mi se..');
   } else {
-    console.log(`Server dela na http://localhost:${PORT}`);
+    console.log(`Express.js poslužitelj sluša na portu ${PORT}`);
   }
 });

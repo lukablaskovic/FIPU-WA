@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;"> Usmjeravanje (eng. routing) se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 3.11.2024.**
+**🆙 Posljednje ažurirano: 28.10.2025.**
 
 ## Sadržaj
 
@@ -33,11 +33,11 @@
     - [2.3.2 `PATCH` metoda](#232-patch-metoda)
   - [2.4 `DELETE` metoda](#24-delete-metoda)
   - [2.5 Kada koristiti koju `HTTP` metodu?](#25-kada-koristiti-koju-http-metodu)
-- [3. `Router` objekt](#3-router-objekt)
+- [3. `Router` objekt i organizacija ruta](#3-router-objekt-i-organizacija-ruta)
   - [3.1 Kako koristiti `Router` objekt?](#31-kako-koristiti-router-objekt)
-  - [3.2 Idemo još bolje strukturirati našu aplikaciju](#32-idemo-još-bolje-strukturirati-našu-aplikaciju)
+  - [3.2 Bolje strukturiranje aplikacije](#32-bolje-strukturiranje-aplikacije)
   - [Vježba 3 - Strukturiranje narudžbi ➡️🍕](#vježba-3---strukturiranje-narudžbi-️)
-- [4. Statusni kodovi u odgovorima](#4-statusni-kodovi-u-odgovorima)
+- [4. Statusni kodovi u HTTP odgovorima](#4-statusni-kodovi-u-http-odgovorima)
   - [4.1 Kako koristiti statusne kodove u Expressu?](#41-kako-koristiti-statusne-kodove-u-expressu)
   - [Vježba 4 - Korištenje statusnih kodova u pizzeriji 🍕4️⃣0️⃣4️⃣](#vježba-4---korištenje-statusnih-kodova-u-pizzeriji-4️⃣0️⃣4️⃣)
 - [Samostalni zadatak za Vježbu 2](#samostalni-zadatak-za-vježbu-2)
@@ -489,13 +489,13 @@ Pošaljite zahtjev na endpoint `/pizze` i vidjet ćete rezultat u obliku JSON ob
 http://localhost:3000/pizze
 ```
 
-Ako je sve OK, ispod će vam se prikazati JSON objekt unutar **Body** taba, ali možete vidjeti i **zaglavlja koja su došla s odgovorom**.
+Ako je sve OK, ispod će vam se prikazati JSON objekt unutar **Body** sekcije, ali možete vidjeti i **zaglavlja koja su došla s odgovorom**.
 
 Postoji puno alternative Postmanu, npr. [Insomnia](https://insomnia.rest/), [Paw](https://paw.cloud/), [Thunder Client](https://www.thunderclient.com/), [HTTPie](https://httpie.io/), od kojih se neki izvode na webu, a neki lokalno na računalu.
 
 Zgodno je preuzeti i **Thunder Client** koji je dostupan kao ekstenzija za Visual Studio Code.
 
-<a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client" target="_blank"><img src="https://rangav.gallerycdn.vsassets.io/extensions/rangav/vscode-thunder-client/2.29.3/1729923134992/Microsoft.VisualStudio.Services.Icons.Default" style="width:10%"> </a>
+<a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client" target="_blank"><img src="https://rangav.gallerycdn.vsassets.io/extensions/rangav/vscode-thunder-client/2.38.2/1761067605073/Microsoft.VisualStudio.Services.Icons.Default" style="width:10%"> </a>
 
 Otvorite Thunder Client ekstenziju i odaberite `New Request`. Unesite URL `http://localhost:3000/pizze` i odaberite metodu `GET`. Kliknite na `Send Request` i vidjet ćete isti rezultat kao i u Postmanu.
 
@@ -757,7 +757,7 @@ Iako je moguće koristiti bilo koju metodu za gotovo bilo koju akciju, ipak post
 - **`PATCH`** metodu koristimo za ažuriranje dijelova resursa. Ova metoda se koristi kada korisnik želi ažurirati samo određene dijelove resursa. Primjerice, kada korisnik želi ažurirati samo cijenu pizze, a ne i naziv pizze.
 - **`DELETE`** metodu koristimo za brisanje resursa. Ova metoda se koristi kada korisnik želi obrisati resurs s poslužitelja. Primjerice, kada korisnik želi obrisati pizzu iz našeg jelovnika.
 
-# 3. `Router` objekt
+# 3. `Router` objekt i organizacija ruta
 
 Prilikom razvoja ozbiljnijeg poslužitelja, vjerojatno ćemo morati definirati mnoštvo različitih ruta. Možemo vidjeti da naša `index.js` datoteka postaje sve veća i veća kako dodajemo nove rute.
 
@@ -864,7 +864,7 @@ export default router;
 
 Kako ovaj `Router` objekt možemo zamisliti kao malu aplikaciju unutar naše glavne aplikacije, možemo dodati rute na isti način kao što smo to radili u `index.js` datoteci, ali ćemo umjesto `app` koristiti `router`:
 
-Idemo dodati rutu za dohvat svih pizza:
+Dodat ćemo rutu za dohvat svih pizza:
 
 ```javascript
 import express from 'express';
@@ -902,7 +902,7 @@ app.use(pizzeRouter);
 
 To je to! Testirajte dohvaćanje svih pizza i pizze po ID-u koristeći Postman ili Thunder Client.
 
-## 3.2 Idemo još bolje strukturirati našu aplikaciju
+## 3.2 Bolje strukturiranje aplikacije
 
 Kako bismo još bolje strukturirali naš poslužitelj, možemo napraviti još nekoliko stvari.
 
@@ -975,7 +975,7 @@ app.listen(PORT, error => {
 });
 ```
 
-# 4. Statusni kodovi u odgovorima
+# 4. Statusni kodovi u HTTP odgovorima
 
 **Statusni kodovi** (_eng. HTTP status codes_) su brojevi koji se koriste u **HTTP odgovorima** kako bi klijentu dali informaciju u kojem je stanju zahtjev koji je poslao. Drugim riječima, ako klijent pošalje zahtjev koji rezultira greškom, poslužitelj uz odgovarajuću poruku vraća i statusni kod koji označava vrstu greške.
 
@@ -1079,7 +1079,7 @@ Dodatno, dodajte 3 nove rute u vašu pizzeriju:
 - dohvaćanje narudžbe po ID-u
 - brisanje narudžbe po ID-u
 
-Kada završite, testirajte sve rute koristeći Postman ili Thunder Client, a zatim provjerite statusne kodove u odgovorima koje ste dobili.
+Za testiranje koristite Postman. Testirajte statusne kodove u odgovorima koje ste dobili.
 
 # Samostalni zadatak za Vježbu 2
 
@@ -1124,4 +1124,4 @@ Dodajte slične **provjere** kao u pizzeriji, primjerice:
 
 Rute za **nekretnine i ponude grupirajte u zasebne** `Router` **objekte** i organizirajte ih u zasebnim datotekama unutar `routes` direktorija. Koristite statusne kodove u odgovorima.
 
-Za testiranje koristite Postman ili Thunder Client.
+Za testiranje koristite Postman.
