@@ -1,76 +1,96 @@
-// 1. npm init -y
-// 2. npm install express
-// 3. u package.json promijeniti type commonjs u type module
 import express from 'express';
-let PORT = 3000;
-let app = express();
 
-// middleware
-app.use(express.json());
+import pizzeRouter from './routes/pizze.js';
 
-let pizze = [
-  { id: 1, naziv: 'Margerita', cijena: 9 },
-  { id: 2, naziv: 'Capriciosa', cijena: 12 },
-  { id: 3, naziv: 'Vegetariana', cijena: 18 },
-  { id: 4, naziv: 'Quattro stagioni', cijena: 15 },
-  { id: 5, naziv: 'Salami', cijena: 13 }
+import { pizze } from './data/pizze.js';
+
+import path from 'path';
+
+const app = express();
+const PORT = 3000;
+
+let korisnici = [
+  { id: 1, ime: 'Marko', prezime: 'Marić' },
+  { id: 2, ime: 'Pero', prezime: 'Perić' },
+  { id: 3, ime: 'Ana', prezime: 'Anić' }
 ];
 
-app.get('/', (req, res) => {
-  // osnovna ruta
-  console.log('Pozvana GET / ruta');
-  res.send('Pozdrav.');
+let narudzbe = [
+  {
+    id: 1,
+    id_korisnik: 2,
+    sadrzaj: [
+      { id_pizza: 1, kolicina: 2, velicina: 'mala' },
+      { id_pizza: 3, kolicina: 1, velicina: 'jumbo' }
+    ]
+  }
+];
+
+app.use(express.json());
+
+app.use('/pizze', pizzeRouter);
+
+app.get('/narudzbe', (req, res) => {
+  res.json(narudzbe).status(200);
 });
 
-app.get('/pizze', (req, res) => {
-  res.json(pizze);
-});
-// route parametar (parametar rute)
-app.get('/pizze/:naziv', (req, res) => {
-  let naziv_pizze = req.params.naziv;
-  console.log('Tražim pizzu:', naziv_pizze);
-  // -X GET http://localhost:3000/pizze/Vegetarina
-  let trazena_pizza = pizze.find(pizza => {
-    return naziv_pizze == pizza.naziv;
-  });
+app.post('/narudzbe', (req, res) => {
+  let korisnik_ime = req.body.korisnik_ime;
+  let sadrzaj = req.body.sadrzaj;
 
-  // find - nadi jednog u polju
-  // findIndex - nad index jednog u polju
-  // map, filter, reduce - stuči polje
-  // splice, slice - vrati podskup
-  // some, every - boolean provjere...
-  // forEach, for of, for in
+  let narudzbe_idevi = narudzbe.map(narudzba => narudzba.id);
 
-  res.json(trazena_pizza);
-});
+  let id_nova_narudzba = narudzbe_idevi.at(-1) + 1;
 
-app.post('/pizze', (req, res) => {
-  let nova_pizza = req.body;
-  console.log('Podaci:', nova_pizza);
-  pizze.push(nova_pizza);
-  res.json(pizze);
-});
+  console.log(id_nova_narudzba);
 
-app.delete('/pizze/:id', (req, res) => {
-  let brisanje_id = req.params.id;
+  let korisnik = korisnici.find(korisnik => korisnik.ime == korisnik_ime);
 
-  let index_polje = pizze.findIndex(pizza => {
-    return brisanje_id == pizza.id;
-  });
-
-  pizze.splice(index_polje, 1);
-
-  console.log(pizze);
-
-  res.json(pizze);
-});
-
-// primjer poslužitelja za naručivanje pizze
-app.listen(PORT, error => {
-  // pokretanje poslužitelja
-  if (error) {
-    console.error('Došlo je do greške u pokretanju poslužitelja...');
+  if (!korisnik) {
+    return res.status(404).json({ Greška: 'Korisnik nije pronađen...' });
   }
 
-  console.log(`Aplikacija sluša na portu ${PORT}`);
+  // za svaku pizzu u sadržaju provjeri:
+  // 1. postoji li pizza u bazi,
+  // 2. je li kolicina >= 1,
+  // 3. je li velicina izmedu "mala", "srednja", "jumbo"
+  let sadrzaj_ok = sadrzaj.every(function (stavka) {
+    // stavka == { "id_pizza": 1, "kolicina": 2, "velicina": "mala" }
+
+    let kolicina_ok = Boolean(stavka.kolicina >= 1);
+    let velicina_ok = Boolean(['mala', 'srednja', 'jumbo'].includes(stavka.velicina));
+
+    let pizza_postoji = pizze.findIndex(pizza => pizza.id == stavka.id_pizza);
+
+    return kolicina_ok && velicina_ok && pizza_postoji != -1;
+  });
+
+  if (!sadrzaj_ok) {
+    return res.status(400).json({ Greška: 'Sadržaj narudžbe nije ok....' });
+  }
+
+  let nova_narudzba_form = {
+    id: id_nova_narudzba,
+    id_korisnik: korisnik.id,
+    sadrzaj: sadrzaj
+  };
+
+  narudzbe.push(nova_narudzba_form);
+
+  return res.status(201).json(narudzbe);
+});
+
+app.get('/', (req, res) => {
+  let rootPathHTML = path.join('./public', 'index.html');
+  let absolutePathHTML = path.resolve(rootPathHTML);
+  console.log(absolutePathHTML);
+  res.sendFile(absolutePathHTML);
+});
+
+app.listen(PORT, error => {
+  if (error) {
+    console.error('Greška kod pokretanja poslužitelja', error);
+  }
+
+  console.log(`Poslužitelj sluša na portu ${PORT}`);
 });

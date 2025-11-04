@@ -11,10 +11,10 @@
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/WA_2_logo.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
-<div style="float: clear; margin-right:5px;"> Usmjeravanje (eng. routing) se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo.</div>
+<div style="float: clear; margin-right:5px;"> Usmjeravanje (eng. routing) se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo. Također, implementirat ćemo neke osnovne validacije podataka na našem poslužitelju.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 28.10.2025.**
+**🆙 Posljednje ažurirano: 4.11.2025.**
 
 ## Sadržaj
 
@@ -394,7 +394,7 @@ Kako ćemo sada u našoj Express aplikaciji dohvatiti podatke koje je korisnik p
 
 > Podaci koje korisnik šalje u tijelu zahtjeva se nalaze u `req.body` objektu.
 
-Primjer:
+_Primjer:_
 
 ```javascript
 app.post('/naruci', (req, res) => {
@@ -404,7 +404,9 @@ app.post('/naruci', (req, res) => {
 });
 ```
 
-Primijetit ćete da će se u konzoli ispisati poruka `"Primljeni podaci: undefined"`. Razlog zašto se ne ispisuju podaci je taj što Express ne zna kako parsirati podatke u tijelu zahtjeva. Da bismo to omogućili, moramo koristiti **middleware** koji će parsirati podatke u tijelu zahtjeva. O middleware funkcijama više u sljedećim lekcijama, međutim za sada ćemo koristiti ugrađeni middleware `express.json()` koji će parsirati podatke u JSON formatu.
+Primijetit ćete da će se u konzoli ispisati poruka `"Primljeni podaci: undefined"`. Razlog zašto se ne ispisuju podaci je taj što Express ne zna kako parsirati podatke u tijelu zahtjeva. Da bismo to omogućili, moramo koristiti **Middleware** koji će parsirati podatke u tijelu zahtjeva.
+
+O middleware funkcijama više u sljedećim lekcijama (WA6 - Middleware funkcije), međutim za sada ćemo koristiti ugrađeni middleware `express.json()` koji će parsirati podatke u JSON formatu.
 
 Jednostavno dodajemo na početku naše aplikacije, nakon definiranja instance aplikacije:
 
@@ -478,10 +480,14 @@ Preuzmite Postman s [ovog linka](https://www.postman.com/downloads/). Potrebno j
 
 Jednom kada se prijavite, morate napraviti novi radni prostor (_workspace_). Kliknite na `New Workspace` i unesite naziv radnog prostora. Možete ga nazvati `Web aplikacije - Vježbe`.
 
-Odaberite '+' i dodajte novu kolekciju koju možete nazvati `WA2` te dodajte novi zahtjev u kolekciju odabirom `"Add a request"`. Nazovite zahtjev `Jelovnik` i odaberite GET zahtjev (po defaultu je GET).
+<img src="./screenshots/postman-create-workspace.png" style="width:60%">
+
+Odaberite `+` i dodajte novu kolekciju (`Create collection`) koju možete nazvati `WA2` te dodajte novi zahtjev u kolekciju odabirom `"Add a request"`. Nazovite zahtjev `Jelovnik` i odaberite GET zahtjev (po defaultu je GET).
+
+<img src="./screenshots/postman-create-collection.png" style="width:60%">
 
 Vidjet ćete razno-razne opcije koje možete koristiti za slanje zahtjeva, kao što su **URL**, **HTTP metoda**, **zaglavlja**, **tijelo zahtjeva**, **autorizacija** itd.
-Uočite da se unutar zaglavlja već nalazi postavljeno čak 7 različitih zaglavlja, dakle Postman automatski postavlja neka zaglavlja za nas.
+Uočite da se unutar zaglavlja već nalazi postavljeno čak 7 različitih zaglavlja, dakle Postman automatski postavlja neka zaglavlja za nas kako bi nam olakšao posao.
 
 Pošaljite zahtjev na endpoint `/pizze` i vidjet ćete rezultat u obliku JSON objekta s dostupnim pizzama. Morate unijeti puni URL u formatu:
 
@@ -489,11 +495,42 @@ Pošaljite zahtjev na endpoint `/pizze` i vidjet ćete rezultat u obliku JSON ob
 http://localhost:3000/pizze
 ```
 
+Te odaberite metodu `GET` s padajućeg izbornika.
+
 Ako je sve OK, ispod će vam se prikazati JSON objekt unutar **Body** sekcije, ali možete vidjeti i **zaglavlja koja su došla s odgovorom**.
+
+<img src="./screenshots/postman-GET-primjer.png" style="width:60%">
+
+Dodajte preostale zahtjeve u svoju kolekciju:
+
+- Zahtjev `Dohvati pizzu` s metodom `GET` i URL-om `http://localhost:3000/pizze/1`
+- Zahtjev `Naruči pizzu` s metodom `POST` i URL-om `http://localhost:3000/naruci`. U tijelo zahtjeva odaberite opciju `raw` i format `JSON`, te unesite sljedeći JSON objekt:
+
+```json
+{
+  "pizza": "Capricciosa",
+  "velicina": "jumbo"
+}
+```
+
+2
+Ono što je još praktično postaviti je **Environment** varijabla za `base_url` i/ili `port` ako želite odvojiti, kako ne biste trebali svaki put unositi puni URL. Postman omogućava izradu raznih okruženja (_environments_) s različitim varijablama koje možete koristiti u svojim zahtjevima: npr. `Development`, `Staging`, `Production`, itd., ovisno za koje okruženje radite testove.
+
+Odaberite `Environments` u izborniku lijevo te izradite novo okruženje `Development`. Dodajte novu varijablu `BASE_URL` s vrijednošću `http://localhost:`, i varijablu `PORT` s vrijednošću `3000`. Environemnt varijable je uobičajeno pisati velikim slovima - no nije nužno.
+
+<img src="./screenshots/postman-environemnt-vars.png" style="width:60%">
+
+Varijable možete referencirati duplim vitičastim zagradama `{{VAR_NAME}}`. Sada možete izmijeniti URL-ove svojih zahtjeva na sljedeći način:
+
+- Zahtjev `Jelovnik`: `{{BASE_URL}}{{PORT}}/pizze`
+- Zahtjev `Dohvati pizzu`: `{{BASE_URL}}{{PORT}}/pizze/1`
+- Zahtjev `Naruči pizzu`: `{{BASE_URL}}{{PORT}}/naruci`
+
+<hr>
 
 Postoji puno alternative Postmanu, npr. [Insomnia](https://insomnia.rest/), [Paw](https://paw.cloud/), [Thunder Client](https://www.thunderclient.com/), [HTTPie](https://httpie.io/), od kojih se neki izvode na webu, a neki lokalno na računalu.
 
-Zgodno je preuzeti i **Thunder Client** koji je dostupan kao ekstenzija za Visual Studio Code.
+Ako hoćete, možete preuzeti i [Thunder Client](https://www.thunderclient.com/) koji je dostupan kao ekstenzija za Visual Studio Code.
 
 <a href="https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client" target="_blank"><img src="https://rangav.gallerycdn.vsassets.io/extensions/rangav/vscode-thunder-client/2.38.2/1761067605073/Microsoft.VisualStudio.Services.Icons.Default" style="width:10%"> </a>
 
@@ -543,7 +580,7 @@ Nadogradite POST rutu `/naruci` tako da očekuje od korisnika dodatne podatke o 
 
 Na jednak način kao u vježbi 1, provjerite jesu li svi potrebni podaci poslani i jesu li sve pizze koje je korisnik naručio prisutne u vašem jelovniku.
 
-Primjer JSON objekta koji se šalje:
+_Primjer:_ JSON objekt koji se šalje:
 
 ```json
 {
@@ -559,11 +596,11 @@ Primjer JSON objekta koji se šalje:
       "kolicina": 2
     }
   ],
-  klijent : [
-  "prezime": "Perić",
-  "adresa": "Alda Negrija 6",
-  "broj_telefona": "0912345678"
-  ]
+  "klijent": {
+    "prezime": "Perić",
+    "adresa": "Alda Negrija 6",
+    "broj_telefona": "0912345678"
+  }
 }
 ```
 
@@ -706,7 +743,7 @@ app.patch('/pizze/:id', (req, res) => {
 
 Metoda `DELETE` se koristi za **brisanje resursa** na poslužitelju. Kada klijent pošalje ovakav zahtjev, poslužitelj briše resurs s identifikatorom koji je naveden u `URI` zahtjeva.
 
-Primjer: Ako želimo obrisati pizzu s `id`-om 1, koristit ćemo `DELETE` metodu:
+_Primjer:_ Ako želimo obrisati pizzu s `id`-om 1, koristit ćemo `DELETE` metodu:
 
 ```bash
 curl -X DELETE http://localhost:3000/pizze/1
@@ -720,7 +757,7 @@ app.delete(PATH, (req, res) => {
 });
 ```
 
-Primjer metode `DELETE` za brisanje podataka o pizzi:
+_Primjer:_ Metoda `DELETE` za brisanje podataka o pizzi:
 
 ```javascript
 app.delete('/pizze/:id', (req, res) => {
