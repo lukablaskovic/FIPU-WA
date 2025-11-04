@@ -480,11 +480,11 @@ Preuzmite Postman s [ovog linka](https://www.postman.com/downloads/). Potrebno j
 
 Jednom kada se prijavite, morate napraviti novi radni prostor (_workspace_). Kliknite na `New Workspace` i unesite naziv radnog prostora. Možete ga nazvati `Web aplikacije - Vježbe`.
 
-<img src="./screenshots/postman-create-workspace.png" style="width:60%">
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/screenshots/postman-create-workspace.png" style="width:60%">
 
 Odaberite `+` i dodajte novu kolekciju (`Create collection`) koju možete nazvati `WA2` te dodajte novi zahtjev u kolekciju odabirom `"Add a request"`. Nazovite zahtjev `Jelovnik` i odaberite GET zahtjev (po defaultu je GET).
 
-<img src="./screenshots/postman-create-collection.png" style="width:60%">
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/screenshots/postman-create-collection.png" style="width:60%">
 
 Vidjet ćete razno-razne opcije koje možete koristiti za slanje zahtjeva, kao što su **URL**, **HTTP metoda**, **zaglavlja**, **tijelo zahtjeva**, **autorizacija** itd.
 Uočite da se unutar zaglavlja već nalazi postavljeno čak 7 različitih zaglavlja, dakle Postman automatski postavlja neka zaglavlja za nas kako bi nam olakšao posao.
@@ -499,7 +499,7 @@ Te odaberite metodu `GET` s padajućeg izbornika.
 
 Ako je sve OK, ispod će vam se prikazati JSON objekt unutar **Body** sekcije, ali možete vidjeti i **zaglavlja koja su došla s odgovorom**.
 
-<img src="./screenshots/postman-GET-primjer.png" style="width:60%">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/screenshots/postman-GET-primjer.png?raw=true" style="width:60%">
 
 Dodajte preostale zahtjeve u svoju kolekciju:
 
@@ -518,7 +518,7 @@ Ono što je još praktično postaviti je **Environment** varijabla za `base_url`
 
 Odaberite `Environments` u izborniku lijevo te izradite novo okruženje `Development`. Dodajte novu varijablu `BASE_URL` s vrijednošću `http://localhost:`, i varijablu `PORT` s vrijednošću `3000`. Environemnt varijable je uobičajeno pisati velikim slovima - no nije nužno.
 
-<img src="./screenshots/postman-environemnt-vars.png" style="width:60%">
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju/screenshots/postman-environemnt-vars.png" style="width:60%">
 
 Varijable možete referencirati duplim vitičastim zagradama `{{VAR_NAME}}`. Sada možete izmijeniti URL-ove svojih zahtjeva na sljedeći način:
 
