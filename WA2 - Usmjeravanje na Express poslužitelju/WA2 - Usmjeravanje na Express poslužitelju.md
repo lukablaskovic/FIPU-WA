@@ -57,7 +57,7 @@ app.METHOD(PATH, HANDLER);
 gdje je:
 
 - `app` je instanca Express aplikacije
-- `METHOD` je HTTP metoda (npr. GET, POST, PUT, DELETE, itd.) koju želimo posluživati
+- `METHOD` je HTTP metoda (npr. GET, POST, PUT, PATCH, DELETE, itd.) koju želimo posluživati
 - `PATH` je putanja na koju želimo reagirati (npr. `/`, `/about`, `/contact`, itd.)
 - `HANDLER` je callback funkcija koja se izvršava kada se zahtjev podudara s definiranom rutom
 
@@ -149,7 +149,7 @@ Zašto nismo dobili dobili podatke samo za jednu pizzu iako smo poslali `id` par
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
-  Jer nismo nigdje definirali logiku koja će dohvatiti samo jednu pizzu na temelju `id` parametra.
+  Jer nismo nigdje definirali logiku koja će dohvatiti samo jednu pizzu na temelju <code>id</code> parametra.
   <p>Mi smo definirali smo strukturu i dobar dizajn našeg endpointa, ali nismo napravili stvarnu radnju.</p>
 </details>
 
@@ -738,6 +738,9 @@ app.patch('/pizze/:id', (req, res) => {
   }
 });
 ```
+
+> Spread operator (`...`) nam omogućava da "rasporedimo" svojstva
+> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 
 ## 2.4 `DELETE` metoda
 
