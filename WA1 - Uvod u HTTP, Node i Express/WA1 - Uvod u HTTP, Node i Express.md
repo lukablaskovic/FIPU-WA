@@ -9,7 +9,7 @@
 
 # (1) Uvod u HTTP, Node i Express
 
-<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA1%20-%20Uvod%20u%20Node%20i%20Express/WA_1_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/wa-icons/WA_1.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
@@ -24,9 +24,9 @@
 - [1. Uvod](#1-uvod)
   - [1.1 Kratak povijesni pregled](#11-kratak-povijesni-pregled)
 - [2. Instalacija potrebnih alata](#2-instalacija-potrebnih-alata)
-  - [2.1 Node.js](#21-nodejs)
-  - [2.2 VS Code](#22-vs-code)
-  - [2.3 Git](#23-git)
+    - [2.1 Node.js](#21-nodejs)
+    - [2.2 VS Code](#22-vs-code)
+    - [2.3 Git](#23-git)
 - [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
   - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)

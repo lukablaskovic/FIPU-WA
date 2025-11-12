@@ -534,7 +534,7 @@ Template možete kopirati iz `/snippets/ProductTemplate.html` koji se nalazi u o
 
 Nakon što ste kopirali template i izradili komponentu, morate omotati html kod u `template` tag.
 
-```vue
+```js
 <!-- Proizvod.vue -->
 <template>
   <!-- HTML kod ovdje -->
@@ -552,10 +552,8 @@ Zatim ćemo u `App.vue` uključiti ovu komponentu i iscrtati ju na stranici.
 </template>
 ```
 
-```vue
-<script setup>
-import ProductView from './components/ProductView.vue';
-</script>
+```js
+<script setup>import ProductView from './components/ProductView.vue';</script>
 ```
 
 Sada možete pokrenuti aplikaciju i vidjeti kako izgleda komponenta `Proizvod.vue`.
@@ -584,7 +582,7 @@ Jednom kad ste ga instalirali, možete ga koristiti u svim `vue` i `js` datoteka
 
 Krenimo sa slanjem jednostavnog GET zahtjeva za dohvaćanje svih proizvoda iz naše trgovine. Možete otvoriti `ProductView.vue` datoteku i dodati sljedeći kod unutar `script` taga:
 
-```vue
+```js
 // ProductView.vue
 
 <script setup>
@@ -732,7 +730,7 @@ Ideja je da upotrijebimo podatke koje smo dobili iz Express poslužitelja i prik
 
 U `ProductView.vue` datoteci, definirajmo varijablu `proizvodi` koja će sadržavati podatke o proizvodima.
 
-```vue
+```js
 // ProductView.vue
 
 <script setup>
@@ -767,7 +765,7 @@ Reactivity API u Vue 3 omogućuje nam da pratimo promjene varijabli na razne na�
 
 Kako ne bi previše zakomplicirali stvari, možemo koristiti `ref` funkciju za definiranje reaktivne varijable `proizvod`. Oprez, ako koristite `reactive` funkciju morate paziti da ne pregazite cijeli objekt dohvaćenim podacima, već samo pojedinačne atribute (npr. greška bi bila: `proizvod = response.data`).
 
-```vue
+```js
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
@@ -794,7 +792,7 @@ Problem je što se `console.log` izvršava prije nego što se asinkroni zahtjev 
 
 Kako se radi o asinkronoj callback funkciji, moramo koristiti `async` ključnu riječ ispred definicije funkcije.
 
-```vue
+```js
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
@@ -815,7 +813,7 @@ onMounted(async () => {
 
 Jednom kad imamo podatke o proizvodu, možemo ih prikazati na stranici. U `template` tagu možemo prikazati podatke pomoću `{{ }}` interpolacije odnosno `v-model` direktive ako se radi o atributima HTML elemenata.
 
-```vue
+```js
 <template>
   ...
   <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ proizvod.naziv }}</a>
@@ -828,7 +826,7 @@ Vidimo da stvari rade, ali dobivamo grešku u konzoli `Cannot read properties of
 
 Kako bismo to riješili, možemo koristiti `v-if` direktivu koja će prikazati element samo ako je on istinit. U ovom slučaju, prikazat ćemo elemente samo ako postoje dohvaćeni podaci o proizvodu.
 
-```vue
+```js
 <template>
   <div v-if="proizvod">
     <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ proizvod.naziv }}</a>
@@ -839,7 +837,7 @@ Kako bismo to riješili, možemo koristiti `v-if` direktivu koja će prikazati e
 
 - ili možemo definirati početne vrijednosti za reaktivnu varijablu `proizvod` koristeći `ref` funkciju.
 
-```vue
+```js
 <script setup>
 let proizvod = ref({
   id: 0,
@@ -855,7 +853,7 @@ let proizvod = ref({
 
 Nadopunit ćemo i preostale podatke o proizvodu: `cijena` i `velicine`.
 
-```vue
+```js
 <template>
   ...
   <div class="mt-4 lg:row-span-3 lg:mt-0">
@@ -893,7 +891,7 @@ Sintaksa `v-for`:
 <div v-for="element in list" :key="element" :value = "element"></div
 ```
 
-> OPREZ: razlikuje se od sintakse JavaScript `for` petlje koja koristi `of` ključnu riječ. Ovo više nalikuje na `for` petlju u Pythonu.
+> **OPREZ**: razlikuje se od sintakse JavaScript `for` petlje koja koristi `of` ključnu riječ. Ovo više nalikuje na `for` petlju u Pythonu.
 
 U našem slučaju, izbrisat ćemo sve osim jedne ponavljajuće veličine (preskačemo i prvu jer je ta prekrižena) i pišemo `v-for` za iscrtavanje za svaku veličinu u objektu koji definira proizvod. Dodatno, obzirom da `label` sadrži dosta CSS klasa, možda je bolje da sve omotamo jednostavnim `div` elementom i tu definiramo `v-for` direktivu.
 
@@ -979,26 +977,14 @@ U `vue` aplikaciji, odnosno komponenti `ProductView.vue` možemo dodati prikaz s
     </div>
     <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
       <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-        <img
-          :src="proizvod.slike[3]"
-          alt="illo inventore veritatis et quasi architecto beatae vitae"
-          class="h-full w-full object-cover object-center"
-        />
+        <img :src="proizvod.slike[3]" alt="illo inventore veritatis et quasi architecto beatae vitae" class="h-full w-full object-cover object-center" />
       </div>
       <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-        <img
-          :src="proizvod.slike[2]"
-          alt="accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab"
-          class="h-full w-full object-cover object-center"
-        />
+        <img :src="proizvod.slike[2]" alt="accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab" class="h-full w-full object-cover object-center" />
       </div>
     </div>
     <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-      <img
-        :src="proizvod.slike[1]"
-        alt="Sed ut perspiciatis unde omnis iste natus error sit voluptatem"
-        class="h-full w-full object-cover object-center"
-      />
+      <img :src="proizvod.slike[1]" alt="Sed ut perspiciatis unde omnis iste natus error sit voluptatem" class="h-full w-full object-cover object-center" />
     </div>
   </div>
   ...
@@ -1062,7 +1048,7 @@ U Vue3 koristimo [**Composition API**](https://vuejs.org/guide/extras/compositio
 
 Dummy podatke smo definirali iznad, a metodu za slanje narudžbe možemo definirati na sljedeći način:
 
-```vue
+```js
 // ProductView.vue
 <script setup>
 const posaljiNarudzbu = async () => {
