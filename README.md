@@ -26,6 +26,12 @@ Kolegij slušaju:
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Informatika](https://fipu.unipu.hr/fipu/studijski_programi/preddiplomski_sveucilisni_studij_informatika) u 5. semestru, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Računarstvo](https://tfpu.unipu.hr/tfpu/studijski_programi/preddiplomski/racunarstvo) u 5. semestru, na [Tehničkom fakultetu u Puli](https://tfpu.unipu.hr/tfpu)
 
+## YouTube 📺
+
+1. [Uvod u HTTP, Node i Express](https://youtu.be/lds6_b8shHQ) ([WA1](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA1%20-%20Uvod%20u%20HTTP%2C%20Node%20i%20Express))
+2. [Usmjeravanje na Express poslužitelju 1/2](https://youtu.be/o33YumQ_H2k) ([WA2](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju))
+3. [Usmjeravanje na Express poslužitelju 2/2](https://youtu.be/3bBWkjoMmyA) ([WA2](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju))
+
 ## Kolokviji
 
 - [Službeni šalabahter za 1. Kolokvij (wa-mid)](https://gist.github.com/lukablaskovic/b6e1741b3601dd67ccef1f457e7c852f)
