@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:naziv', (req, res) => {
-    const naziv_broda = normalize(req.params.name);
-    const brod = boats.find(b => normalize(b.naziv) === name);
+    const naziv_broda = normalize(req.params.naziv);
+    const brod = boats.find(b => normalize(b.naziv) === naziv_broda);
 
     if (!brod) {
         return res.status(404).json({ greska: `Nema broda ${naziv_broda}` });
