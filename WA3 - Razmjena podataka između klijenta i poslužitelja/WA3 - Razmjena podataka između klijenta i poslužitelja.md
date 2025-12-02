@@ -22,32 +22,30 @@ Preporučuje se da prije početka izrade <i>frontend</i> dijela web aplikacije p
 
 <br>
 
-**🆙 Posljednje ažurirano: 1.12.2025.**
-
-- skripta nije gotova
-- bit će vrlo uskoro 🙃
+**🆙 Posljednje ažurirano: 2.12.2025.**
 
 ## Sadržaj
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(3) Razmjena podataka između klijenta i poslužitelja](#3-razmjena-podataka-između-klijenta-i-poslužitelja)
-    - [Sadržaj](#sadržaj)
+  - [Sadržaj](#sadržaj)
 - [1. Postavljanje `Express` poslužitelja](#1-postavljanje-express-poslužitelja)
-    - [1.1 Definiranje osnovnih endpointova i dummy podataka](#11-definiranje-osnovnih-endpointova-i-dummy-podataka)
-        - [1.1.1 Implementacija `/pizze Router`](#111-implementacija-pizze-router)
-        - [1.1.2 Implementacija `/narudzbe Router`](#112-implementacija-narudzbe-router)
+  - [1.1 Definiranje osnovnih endpointova i dummy podataka](#11-definiranje-osnovnih-endpointova-i-dummy-podataka)
+    - [1.1.1 Implementacija `/pizze Router`](#111-implementacija-pizze-router)
+    - [1.1.2 Implementacija `/narudzbe Router`](#112-implementacija-narudzbe-router)
 - [2. Implementacija Vue.js klijentske strane](#2-implementacija-vuejs-klijentske-strane)
-    - [2.1 Konfiguracija Vue.js projekta s TailwindCSS-om i Vite-om](#21-konfiguracija-vuejs-projekta-s-tailwindcss-om-i-vite-om)
-    - [2.2 Dodavanje osnovnih komponenti korisničkog sučelja](#22-dodavanje-osnovnih-komponenti-korisničkog-sučelja)
-        - [PizzaList.vue komponenta](#pizzalistvue-komponenta)
-        - [Header.vue komponenta](#headervue-komponenta)
-    - [Implementacija odabira pizze](#implementacija-odabira-pizze)
+  - [2.1 Konfiguracija Vue.js projekta s TailwindCSS-om i Vite-om](#21-konfiguracija-vuejs-projekta-s-tailwindcss-om-i-vite-om)
+  - [2.2 TailwindCSS konfiguracija](#22-tailwindcss-konfiguracija)
+  - [2.3 Dodavanje osnovnih komponenti korisničkog sučelja](#23-dodavanje-osnovnih-komponenti-korisničkog-sučelja)
+    - [PizzaList.vue komponenta](#pizzalistvue-komponenta)
+    - [Header.vue komponenta](#headervue-komponenta)
+  - [Implementacija odabira pizze](#implementacija-odabira-pizze)
 - [3. Axios i komunikacija s Express poslužiteljem](#3-axios-i-komunikacija-s-express-poslužiteljem)
-    - [3.1 CORS politika](#31-cors-politika)
-    - [3.2 Dinamičko iscrtavanje podataka o pizzama](#32-dinamičko-iscrtavanje-podataka-o-pizzama)
-    - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
-    - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
-    - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
+  - [3.1 CORS politika](#31-cors-politika)
+  - [3.2 Dinamičko iscrtavanje podataka o pizzama](#32-dinamičko-iscrtavanje-podataka-o-pizzama)
+  - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
+  - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
+  - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -404,6 +402,8 @@ Ovo možemo riješiti bash naredbom `mv` za premještanje svih datoteka iz poddi
 → mv vue-project/* vue-project/.* . (# premještanje svih neskrivenih (*) i skrivenih datoteka (.*) iz vue-project u trenutni direktorij .)
 ```
 
+> Hint: Kod instalacijskog Vue procesa, moguće je kao naziv projekta unijeti točku `.` kako bi se izbjeglo stvaranje dodatnog poddirektorija ili jednostavno pozvati instalacijski alat iz direktorija `app`.
+
 Prije nastavka provjerite jesu lise sve datoteke prebacile. Ako jesu, `vue-project` direktorij sada možete obrisati.
 
 Otvorite `package.json` datoteku i provjerite jesu li sve ovisnosti ispravno instalirane:
@@ -438,15 +438,15 @@ _Primjer: `package.json` datoteke Vue.js projekta:_
 }
 ```
 
-Možete uočiti `scripts` ključ u kojem su definirane različite CLI naredbe za razvoj i izgradnju Vue.js aplikacije.
+- Uočite `scripts` svojstvo u kojem su definirane različite CLI naredbe za razvoj i izgradnju Vue.js aplikacije.
 
-Prije nego možemo pokrenuti razvojni server, potrebno je instalirati sve ovisnosti navedene u `package.json` datoteci:
+Prije nego možemo pokrenuti razvojni poslužitelj, potrebno je instalirati sve ovisnosti navedene u `package.json` datoteci:
 
 ```bash
 → npm install
 ```
 
-Primjer uspješne instalacije ovisnosti:
+Primjer uspješne instalacije potrebnih paketa:
 
 ```
 added 125 packages, and audited 126 packages in 24s
@@ -459,7 +459,7 @@ found 0 vulnerabilities
 
 `npm` naredbe pokrećemo iz terminala unutar `pizza-vue` direktorija, prefiksom `npm run <script-name>`:
 
-_Primjer:_
+_Primjer definiranih npm naredbi:_
 
 ```bash
 → npm run dev (# pokretanje CLI naredbe vite)
@@ -473,6 +473,7 @@ Sada možemo pokrenuti razvojni poslužitelj koristeći naredbu `npm run dev`:
 → npm run dev
 
 # ili samo
+
 → vite
 ```
 
@@ -482,9 +483,11 @@ Otvorite web preglednik i posjetite `http://localhost:5173/` kako biste vidjeli 
 
 > Slika 3: Početna stranica Vue.js aplikacije pokrenute s Vite razvojnim poslužiteljem na zadanom portu `5173`. Vue.js developer tools možete otvoriti putem preglednika za lakše debugiranje Vue komponenti kraticom `SHIFT + ALT/OPT + D`.
 
-> Hint: Isto možete provjeriti i u Postmanu. Možete zamisliti Vite kao specijalizirani poslužitelj koji isporučuje HTML stranicu s ugrađenim JavaScript modulima koji onda iscrtavaju web stranicu u pregledniku
+> Hint: Isto možete provjeriti i u Postmanu. Možete zamisliti Vite kao specijalizirani poslužitelj koji isporučuje HTML stranicu s ugrađenim JavaScript modulima koji onda iscrtavaju web stranicu u pregledniku. Ipak, osnovni sadržaj stranice bez dinamičkih modula možete vidjeti i u Postmanu.
 
 ---
+
+## 2.2 TailwindCSS konfiguracija
 
 Sada ćemo **konfigurirati TailwindCSS** unutar našeg Vue.js projekta.
 
@@ -604,13 +607,13 @@ app
 > Hint 2: Dvije korisne kratice u VS Code-u kada radite na većim projektima su:
 
 > - `CTRL/CMD + P` - Otvara brzi **pretraživač datoteka** unutar projekta (krenite unositi naziv datoteke bez obzira gdje se nalazi)
-> - `CTRL/CMD + Shift + F` - Otvara **globalni pretraživač teksta** unutar svih datoteka projekta (krenite unositi tekst koji tražite bez obzira gdje se nalazi)
+> - `CTRL/CMD + Shift + F` - Otvara **globalni pretraživač teksta** unutar svih datoteka projekta (krenite unositi tekst/kod koji tražite bez obzira gdje se nalazi)
 
 Prije nego nastavite, preporučuje se da spremite _commitate_ sve promjene u vaš Git repozitorij kako biste imali sigurnosnu kopiju trenutnog stanja projekta.
 
 > Napomena: Kod izrade projekta iz kolegija, _frontend_ i _backend_ dijelove aplikacije morat ćete **verzionirati u zasebnim repozitorijima**. Da ne kompliciramo, za potrebe ove vježbe, ostavit ćemo sve u jednom repozitoriju.
 
-## 2.2 Dodavanje osnovnih komponenti korisničkog sučelja
+## 2.3 Dodavanje osnovnih komponenti korisničkog sučelja
 
 Želimo izraditi grafičko korisničko sučelje gdje korisnik može pregledavati dostupne pizze i naručiti ih.
 
@@ -618,15 +621,17 @@ Na Express poslužitelju već imamo implementirane potrebne _endpointove_ za doh
 
 Želimo korisniku prikazati grafičko sučelje gdje može vidjeti sve dostupne pizze i njihove detalje (naziv, sastojke, cijene) te omogućiti odabir veličine i količine za svaku pizzu koju želi naručiti.
 
-U kontekstu poslužitelja, zamislite da moramo prvo implementirati GET `/pizze` endpoint koji vraća popis svih pizza u JSON formatu te lijepo prikazati te podatke u Vue.js aplikaciji.
+U kontekstu poslužitelja, zamislite da moramo prvo implementirati GET `/pizze` endpoint koji vraća popis svih pizza u JSON formatu te lijepo prikazati te podatke u Vue.js aplikaciji. Nakon toga ćemo implementirati funkcionalnost naručivanja pizza putem POST `/narudzbe` _endpointa_.
 
 ### PizzaList.vue komponenta
 
 Izradit ćemo Vue komponentu `PizzaList.vue` koja će dohvaćati i prikazivati popis dostupnih pizza s Express poslužitelja.
 
-Kako frontend dizajn korisničkog sučelja nije predmet ovog predmeta, upotrijebit ćemo gotovi _tailwind-HTML_ predložak te raditi na funkcionalnostima Vue komponente. Ako hoćete, možete uređivati stilove prema vlastitim željama i/ili izraditi vlastiti dizajn.
+Kako frontend dizajn korisničkog sučelja nije tema ovog kolegija, upotrijebit ćemo gotovi _tailwind-HTML_ predložak te raditi na funkcionalnostima Vue komponente. Ako hoćete, možete uređivati stilove prema vlastitim željama i/ili izraditi vlastiti UI dizajn.
 
-Predložak možete pronaći u datoteci `WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates/pizza-list.html`.
+Sve predloške možete pronaći na GitHubu kolegija: [WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/vue-templates).
+
+- odaberite `pizza-list.html` datoteku i kopirajte njen sadržaj
 
 Stvorite `components` direktorij unutar `src` direktorija Vue.js projekta i dodajte `PizzaList.vue` datoteku:
 
@@ -648,11 +653,14 @@ app
     │   │   └── PizzaList.vue
 ```
 
-Vue3 komponenta sastoji se od barem dva dijela:
+Vue3 komponenta sastoji se od barem dva obavezna dijela:
 
 1. **Template (HTML) dio** - definira HTML strukturu komponente (unutar `<template>` taga) - gotovo uvijek koristimo
 2. **Script (JS) dio** - definira logiku komponente (unutar `<script setup>` taga) - gotovo uvijek koristimo
-3. **Style (CSS) dio** - definira stilove komponente (unutar `<style>` taga) - opcionalno koristimo (npr. ako koristimo TailwindCSS, rijetko želimo pisati prilagođene stilove)
+
+Ipak, moguće je dodati i CSS stilove unutar Vue komponente:
+
+3. **Style (CSS) dio** - definira stilove komponente (unutar `<style>` taga) - rjeđe koristimo (npr. ako koristimo TailwindCSS, rijetko kad želimo pisati prilagođeni (custom) CSS)
 
 **Sintaksa Vue3 komponente:**
 
@@ -674,7 +682,7 @@ Samo ćemo kopirati HTML predložak iz `pizza-list.html` datoteke u **template**
 
 Vidjet ćete mnogo `class` atributa u kojima su pohranjene TailwindCSS klase za stilizaciju elemenata.
 
-Komponenta sadrži stil za prikaz jedne **kartice pizze**, a ponavlja se 3 puta.
+Komponenta sadrži strukturu i stil koji iscrtavaju **karticu pizze**, a ponavljaju se 3 puta.
 
 Isječak kartice za pizzu iz `pizza-list.html`:
 
@@ -717,23 +725,23 @@ Isječak kartice za pizzu iz `pizza-list.html`:
 </div>
 ```
 
-> Pokušajte uočiti dijelove HTML koda gdje su prikazani naziv pizze, slika, sastojci i cijene za različite veličine. Važno je razumjeti strukturu HTML-a čak i ako ne razumijete sve detalje dizajna (u ovom slučaju TailwindCSS klasa), budući da ćemo kasnije trebati dinamički mijenjati te dijelove koda koristeći Vue.js na temelju podataka dohvaćenih s poslužitelja.
+> Hint: Pokušajte uočiti dijelove HTML koda gdje su prikazani naziv pizze, slika, sastojci i cijene za različite veličine. Važno je razumjeti strukturu HTML-a čak i ako ne razumijete sve detalje dizajna (u ovom slučaju TailwindCSS klasa), budući da ćemo kasnije trebati dinamički mijenjati te dijelove koda koristeći Vue.js na temelju podataka dohvaćenih s poslužitelja.
 
 `PizzaList.vue` komponenta sada izgleda ovako:
 
 ```html
 // app/pizza-vue/src/components/PizzaList.vue
 
-<template> kopirani HTML predložak iz pizza-list.html datoteke </template>
+<template> ...kopirani HTML predložak iz pizza-list.html datoteke... </template>
 
 <script setup></script>
 
 <style></style>
 ```
 
-Otvorite `App.vue` datoteku i uvezite `PizzaList.vue` komponentu unutar `script setup` dijela, a nakon toga je unesite unutar `template` dijela.
+Otvorite `App.vue` datoteku i uvezite `PizzaList.vue` komponentu unutar `script setup` dijela, a nakon toga je pozovite unutar `template` dijela.
 
-Na ovaj način žemo iscrtati `PizzaList` komponentu unutar glavne aplikacije.
+Na ovaj način ćemo iscrtati `PizzaList` komponentu unutar glavne aplikacijske komponente `App.vue`.
 
 ```html
 // app/pizza-vue/src/App.vue
@@ -745,15 +753,15 @@ Na ovaj način žemo iscrtati `PizzaList` komponentu unutar glavne aplikacije.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue_pizzalist_first_render.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 5: Prikaz Vue.js aplikacije s dodanim HTML predloškom u `PizzaList.vue` komponenti (prikaz u pregledniku)
+> Slika 5: Prikaz u web pregledniku: HTML predložak iz `PizzaList.vue` komponente iscrtava se u pregledniku koristeći TailwindCSS stilove.
 
-> Hint: Možete otvoriti Vue.js developer tools u pregledniku kako biste lakše pratili strukturu Vue komponenti ili samo HTML elemente u DOM stablu. Pokušajte izmijeniti neke TailwindCSS klase unutar `PizzaList.vue` komponente i proučite kako se mijenja izgled stranice u web pregledniku.
+> Hint: Možete otvoriti _Vue.js developer tools_ u pregledniku kako biste lakše pratili strukturu Vue komponenti ili HTML elemente u DOM stablu. Pokušajte izmijeniti neke TailwindCSS klase unutar `PizzaList.vue` komponente i proučite kako se mijenja izgled stranice u web pregledniku.
 
 Dodat ćemo još pozadinsku sliku i zaglavlje (_header_) naše aplikacije.
 
-Pozadinsku sliku `background.png` možete pronaći u `WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates/` direktoriju.
+Pozadinsku sliku `background.png` možete također pronaći u `WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates/` direktoriju.
 
-Slike koje želimo koristiti u Vue.js aplikaciji (čitaj: koje želimo da Vue.js poslužitelj servira) moraju biti smještene unutar `public` direktorija Vue.js projekta.
+Slike koje želimo koristiti u Vue.js aplikaciji (čitaj: koje želimo da Vite razvojni poslužitelj servira) moraju biti smještene unutar `public` direktorija Vue.js projekta.
 
 Struktura `public` direktorija:
 
@@ -764,7 +772,9 @@ app
     │   └── background.png
 ```
 
-Pozadinsku sliku možemo postaviti na više načina, a ako želimo ostati vjerni TailwindCSS pristupu, možemo dodati samo nekoliko klasa na prvi `div` unutar `PizzaList.vue` komponente:
+> Hint: Statične datoteke koje stavljamo unutar `public` direktorija postaju javni resursi dostupni svima koji pristupe našoj web aplikaciji. Vite će automatski poslužiti te datoteke kada se aplikacija pokrene u razvojnom ili produkcijskom okruženju, npr. `http://localhost:5173/background.png`.
+
+Pozadinsku sliku možemo postaviti na više načina, a ako želimo ostati vjerni TailwindCSS-u, možemo dodati nekoliko gotovih klasa na prvi `div` unutar `PizzaList.vue` komponente:
 
 Pronađite prvi `div`:
 
@@ -772,17 +782,17 @@ Pronađite prvi `div`:
 <div class="mx-auto bg-linear-to-br min-h-screen p-8"></div>
 ```
 
-Dodajemo sljedeće TailwindCSS klase na kraj:
+Dodajemo sljedeće TailwindCSS klase u ovaj `div`:
 
 ```html
-<div class="mx-auto bg-linear-to-br min-h-screen p-8 bg-[url('/background.png')] bg-cover bg-center bg-no-repeat"></div>
+bg-[url('/background.png')] bg-cover bg-center bg-no-repeat
 ```
 
-Vue.js može pročitati slike iz `public` direktorija koristeći relativnu putanju počevši od korijena web aplikacije (što je u ovom slučaju `/`). Iz tog razloga ne moramo navoditi cijelu putanju do slike, već samo `/background.png`.
+Rekli smo da Vue.js može pročitati slike iz `public` direktorija koristeći relativnu putanju počevši od korijenskog modula web aplikacije (što je u ovom slučaju `/`). Iz tog razloga ne moramo navoditi cijelu putanju do slike, već samo `/background.png`.
 
 ### Header.vue komponenta
 
-Na jednak način ćemo izraditi `Header.vue` komponentu koja će prikazivati zaglavlje naše aplikacije.
+Idemo na jednak način dodati i zaglavlje (_header_) naše aplikacije.
 
 Stvorite `Header.vue` datoteku unutar `components` direktorija:
 
@@ -804,9 +814,9 @@ app
     │   │   └── PizzaList.vue
 ```
 
-Kopirajte HTML predložak iz `header.html` datoteke (nalazi se u `WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates/` direktoriju) unutar **template** dijela `Header.vue` komponente.
+Kopirajte HTML predložak iz `header.html` datoteke (nalazi se u `WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates/`) u `Header.vue` komponentu.
 
-Uvezite komponentu unutar `App.vue` datoteke i koristite je iznad `PizzaList` komponente kako bi se zaglavlje prikazalo na vrhu stranice.
+Uvezite komponentu unutar `App.vue` datoteke i unesite je iznad `PizzaList` komponente kako bi se zaglavlje prikazalo na vrhu stranice (iznad popisa pizza).
 
 ```html
 // app/pizza-vue/src/App.vue
@@ -821,37 +831,40 @@ Uvezite komponentu unutar `App.vue` datoteke i koristite je iznad `PizzaList` ko
 </script>
 ```
 
-To je to! Vaša web aplikacija sada bi trebala imati pozadinsku sliku iza sadržaja i zaglavlje na vrhu stranice.
+To je to! Vaša web aplikacija sada bi trebala imati pozadinsku sliku iza sadržaja i zaglavlje (_header_) na samom vrhu.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-bg-header.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 6: Prikaz u web pregledniku: `PizzaList.vue` komponenta s pozadinskom slikom i `Header.vue` komponentom
 
 ## Implementacija odabira pizze
 
 **Reaktivnost** (_eng. reactivity_) predstavlja jedan od temeljnih koncepata u Vue.js ekosustavu. Ona omogućuje da se korisničko sučelje automatski osvježi svaki put kada dođe do promjene podataka u pozadini, čineći time reaktivnost ključnim mehanizmom na kojem počiva cijeli Vue.js okvir.
 
-Ukratko, koristimo dvije ključne riječi za definiranje reaktivnih podataka u Vue3 komponentama: `ref` i `reactive`.
+Ukratko, koristimo **dvije ključne riječi** za definiranje reaktivnih podataka u Vue3 komponentama: `ref` i `reactive`.
 
-Ove funkcije svojevrsni su omotači (_wrapperi_) koji omogućuju Vue.js da prati promjene vrijednosti varijabli i objekata te automatski ažurira DOM kada se ti podaci promijene.
+Ove funkcije svojevrsni su omotači (_wrapperi_) koji omogućuju Vue.js da "prati promjene vrijednosti varijabli i objekata" te automatski ažurira DOM (_Document Object Model_) kada dođe do promjene u podacima.
 
 **Sintaksa:**
 
 ```javascript
-const dinamicka_varijabla = ref(pocetna_vrijednost); // najčešće za primitivne tipove podataka
+const dinamicka_varijabla = ref(pocetna_vrijednost); // najčešće za primitivne tipove podataka, ali može se koristiti i s referentnim tipovima
 
+// koristi se samo s referentnim tipovima podataka (objekti)
 const dinamicki_objekt = reactive({
     // svojstvo1: vrijednost1,
     // svojstvo2: vrijednost2
 }); // za složene tipove podataka (objekte)
 ```
 
-_Primjer `ref`:_
+_Primjer definiranja reaktivne varijable s `ref`:_
 
 - trenutnoj vrijednosti `ref` objekta pristupamo preko `.value` svojstva
 
 ```javascript
 import { ref, reactive } from 'vue';
 
-let count = ref(0); // primitivni tipovi podataka (brojevi, stringovi, booleani)
+let count = ref(0); // može se koristiti s bilo kojim tipom podataka
 
 console.log(count); // Ispisuje ref objekt
 console.log(count.value); // Ispisuje trenutnu vrijednost (0)
@@ -863,9 +876,9 @@ count.value++; // DA: ispravno povećanje vrijednosti za 1
 console.log(count.value); // 1
 ```
 
-_Primjer `reactive`:_
+_Primjer definiranja reaktivne varijable s `reactive`:_
 
-- u usporedbi s `ref`, `reactive` će učiniti cijeli objekt dubinski reaktivnim, što znači da možemo mijenjati njegova svojstva izravno bez potrebe za `.value` pristupom.
+- u usporedbi s `ref`, `reactive` će učiniti cijeli objekt dubinski reaktivnim, što znači da možemo mijenjati i njegova svojstva izravno - bez potrebe za `.value` svojstvom.
 
 ```javascript
 const user = reactive({
@@ -879,6 +892,13 @@ const user = reactive({
 console.log(user.name); // Ispisuje 'Marko'
 user.dob++; // Ispravno mijenja dob na 31
 console.log(user.dob); // Ispisuje 31
+
+const settings = reactive({
+    // složeni tipovi podataka (objekti)
+    tema: 'svijetla',
+    notifikacije: true,
+    jezici: ['hrvatski', 'engleski']
+});
 ```
 
 > Više o reaktivnosti u Vue.js možete pročitati u službenoj dokumentaciji: [Reactivity Fundamentals](https://vuejs.org/guide/essentials/reactivity-fundamentals.html).
@@ -889,7 +909,7 @@ Otvorite `PizzaList.vue` komponentu i unutar `<script setup>` dijela uvezite `re
 
 - Definirat ćemo reaktivnu varijablu `odabrana_pizza` i postavit joj vrijednost na `null`.
 
-- Definirat ćemo i jednostavnu funkciju `odaberiPizzu(pizza_naziv)` koja će promijeniti vrijdnosti `odabrana_pizza` varijable na proslijeđeni `pizza_naziv` string.
+- Definirat ćemo i jednostavnu funkciju `odaberiPizzu(pizza_naziv)` koja će promijeniti vrijednosti `odabrana_pizza` varijable na proslijeđeni `pizza_naziv` string.
 
 _Primjer:_
 
@@ -900,13 +920,13 @@ const odabrana_pizza = ref(null); // reaktivna varijabla za pohranu naziva odabr
 
 function odaberiPizzu(pizza_naziv) {
     odabrana_pizza.value = pizza_naziv; // postavljanje naziva odabrane pizze
-    console.log('Odabrana pizza:', odabrana_pizza.value); // ispis u konzolu
+    console.log('Odabrana pizza:', odabrana_pizza.value); // ispis u konzolu (provjerite)
 }
 ```
 
 Unutar `template` dijela `PizzaList` komponente, pronađite pizze i izmijenite im nazive na proizvoljne vrijednosti.
 
-Funkcije možemo pozivati iz HTML dijela komponente koristeći `@click` direktivu na gumbu za svaku pizzu. Ovismo gdje stavimo direktivu, ona će "obuhvatiti" taj HTML element i pozvati funkciju prilikom klika na taj element.
+Funkcije možemo pozivati iz HTML dijela komponente koristeći `@click` [Vue direktivu](https://vuejs.org/api/built-in-directives.html) na gumbu za svaku pizzu. Ovismo gdje stavimo direktivu, ona će "obuhvatiti" taj HTML element i pozvati funkciju klikom na taj element.
 
 **Sintaksa** `@click` direktive:
 
@@ -920,11 +940,14 @@ Funkcije možemo pozivati iz HTML dijela komponente koristeći `@click` direktiv
 <button @click="odaberiPizzu('Margherita')">Odaberi Margherita pizzu</button>
 ```
 
-Ako koristite stringove kao argumente, pripazite da koristite jednostruke navodnike (`''`) za string argumente unutar dvostrukih navodnika (`""`) `@click` direktive, kako biste izbjegli greške u parsiranju HTML-a.
+> Hint: Ako u argumentima koristite stringove, preporučuje se da unutar dvostrukih navodnika (`""`) u `@click` direktivi upotrebljavate jednostruke navodnike (`''`). Time ćete izbjeći probleme s parsiranjem HTML-a i osigurati pravilno izvršavanje direktive.
 
 _Primjer: Izmijenjeni naziv pizze i dodani `@click` event:_
 
 ```html
+<!-- app/pizza-vue/src/components/PizzaList.vue -->
+
+<!-- direktiva @click dodana u glavni div -->
 <div @click="odaberiPizzu('Margherita')">
     <div class="bg-inherit rounded-xl overflow-hidden">
         <div class="w-full h-48 flex items-center justify-center bg-inherit">
@@ -939,9 +962,11 @@ _Primjer: Izmijenjeni naziv pizze i dodani `@click` event:_
 
 > Slika 6: Dodan `@click` event na HTML element pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
-Kako bismo naznačili korisniku da je kliknuo na određenu pizzu, možemo promijeniti stil kartice odabrane pizze koristeći uvjetno dodavanje TailwindCSS klasa.
+Kako bismo naznačili korisniku da je kliknuo na određenu pizzu, možemo promijeniti stil kartice odabrane pizze koristeći **uvjetno dodavanje/oduzimanje TailwindCSS klasa**.
 
 Uvjetnu izmjenu klase u Vue.js komponenti možemo napraviti koristeći `:class` direktivu.
+
+> Hint: Općenito, dodavanjem dvotočke (`:`) ispred atributa HTML elementa, Vue.js zna da treba interpretirati vrijednost tog atributa kao JavaScript izraz. Ovo je moguće na većini HTML atributa, uključujući `class`, `style`, `src`, `href`, itd.
 
 **Sintaksa:**
 
@@ -966,7 +991,7 @@ _Primjeri:_
               'bg-gray-500': !isActive }"
 ></div>
 
-<!-- Druga sintaksa -->
+<!-- Alternativna sintaksa -->
 <div
     :class="[
           'p-4 rounded',
@@ -975,16 +1000,18 @@ _Primjeri:_
 ></div>
 ```
 
-Uvjetni izraz u našem slučaju može biti samo: `odabrana_pizza == 'neki_naziv_pizze'`
+Uvjetni izraz u našem slučaju može biti: `odabrana_pizza == 'neki_naziv_pizze'`
 
-- ako je `null` ili `""`, nijedna pizza nije odabrana i nema dodatnih TailwindCSS klasa
-- ako je jednaka nekom nazivu pizze, dobivamo `dodatni-niz-klasa-ako-je-uvjet-true`
+- ako je `odabrana_pizza` == `null` ili `""`, nijedna pizza nije odabrana i ne iscrtavamo dodatne TailwindCSS klase
+- ako je `odabrana_pizza` == nekom nazivu pizze, dobivamo `dodatni-niz-klasa-ako-je-uvjet-true`
+
+_Primjer:_ Niz TailwindCSS klasa koje ćemo dodati ako je pizza odabrana:
 
 ```html
 ring-4 ring-orange-300 shadow-lg shadow-orange-300/50 scale-[1.02]
 ```
 
-Promijenit ćemo i zadanu klasu kako bismo dobili **tranzicijski efekt prilikom odabira pizze**:
+Promijenit ćemo i zadanu klasu kako bismo dobili **tranzicijski efekt** prilikom odabira pizze:
 
 ```html
 <div
@@ -998,23 +1025,25 @@ Promijenit ćemo i zadanu klasu kako bismo dobili **tranzicijski efekt prilikom 
 ></div>
 ```
 
-- Zadana klasa je prva `bg-inherit rounded-xl overflow-hidden cursor-pointer transition-all duration-300`
-- Ako je pizza odabrana, dodaju se prve četiri klase iza ternarnog operatora (`?`)
-- Ako pizza nije odabrana, dodaje se samo `hover:scale-[1.01]`
+- **Zadana klasa** je prva: `bg-inherit rounded-xl overflow-hidden cursor-pointer transition-all duration-300`
+- **Ako je pizza odabrana**, dodaju se klase iza ternarnog operatora (`?`): `ring-4 ring-orange-300 shadow-lg shadow-orange-300/50 scale-[1.02]`
+- **Ako pizza nije odabrana**, dodaje se samo `hover:scale-[1.01]`
 
-Možemo prebaciti `@click` event na cijeli ovaj `div` budući da želimo da se pizza odabere kada korisnik klikne bilo gdje unutar kartice pizze.
+Možemo prebaciti `@click` direktivu na cijeli ovaj `div` budući da želimo da se pizza odabere kada korisnik klikne bilo gdje unutar kartice pizze.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizza-click-highlight.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 7: Uvjetno dodavanje TailwindCSS klasa za označavanje odabrane pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
 Za sada toliko od dizajna. Idemo napokon implementirati komunikaciju s Express poslužiteljem kako bismo dohvatili stvarne podatke o pizzama i prikazali ih dinamički unutar `PizzaList.vue` komponente.
 
 # 3. Axios i komunikacija s Express poslužiteljem
 
-Za komunikaciju s Express poslužiteljem imamo na raspolaganju više opcija. Moguće je koristiti i `fetch` API koji smo upoznali na _Skriptnim jezicima_ i _Programskom inženjerstvu_, međutim kroz neke vanjske biblioteke možemo definirati konciznu i čitljivu sintaksu za slanje HTTP zahtjeva te rukovanje odgovorima.
+Za komunikaciju s Express poslužiteljem imamo na raspolaganju više opcija. Moguće je koristiti i `fetch` API koji smo upoznali na _Skriptnim jezicima_ i _Programskom inženjerstvu_, međutim kroz neke vanjske biblioteke možemo definirati koncizniju sintaksu za slanje HTTP zahtjeva te rukovanje odgovorima.
 
-Jedna od takvih biblioteka je i [Axios](https://axios-http.com/docs/intro) koji ćemo koristiti na ovom kolegiju.
+Jedna od takvih biblioteka je i [Axios](https://axios-http.com/docs/intro).
 
-Axios je HTTP klijent za Node i web preglednik koji se bazira na sintaksi `Promise` objekata.
+Axios je **HTTP klijent za Node i web preglednik** koji se bazira na sintaksi `Promise` objekata.
 
 Instalirajte Axios unutar Vue.js projekta:
 
@@ -1023,13 +1052,19 @@ Instalirajte Axios unutar Vue.js projekta:
 → npm install axios
 ```
 
+Prije nastavka, pogledajte ilustraciju koja prikazuje **razmjenu podataka između klijenta i poslužitelja** (odnosno između Vue.js aplikacije i Express poslužitelja), jer smo do sada uveli niz novih pojmova. Obratite pozornost gdje se u ovom procesu nalazi Axios biblioteka.
+
+<img src="./screenshots/excelidraw/frontend-backend-communication-illustration.png" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 8: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) koristeći Axios HTTP klijent
+
 Prijetimo se ukratko sintakse `Promise` objekata kako bismo lakše razumjeli kako Axios funkcionira.
 
 ```js
 // Izrada novog Promise objekta
 const myPromise = new Promise((resolve, reject) => {
-    // asinhroni kod koji će na kraju pozvati resolve() ili reject() ovisno o ishodu
-    let success = true; // primjer uvjeta
+    // asinkroni kod koji će na kraju pozvati resolve() ili reject() ovisno o ishodu
+    let success = true; // primjer "super-jednostavne operacije koja se uvijek uspješno izvrši"
     if (success) {
         resolve('Uspjeh!'); // poziva se ako je operacija uspješna
     } else {
@@ -1038,11 +1073,11 @@ const myPromise = new Promise((resolve, reject) => {
 });
 ```
 
-Promise objekt predstavlja buduću vrijednost koja može biti ispunjena (`resolved`), odbijena (`rejected`) ili još uvijek na čekanju (`pending`).
+Promise objekt predstavlja buduću vrijednost (_future_) koja može biti u jednom od tri stanja: **ispunjena** (`resolved`), **odbijena** (`rejected`) ili još uvijek **na čekanju/u tijeku** (`pending`).
 
-> Drugim riječima, Promise nam omogućuje da radimo s asinkronim operacijama na način koji je sličniji sinkronom kodu, čineći ga lakšim za čitanje i održavanje. `pending` stanje znači da mrežna operacija (HTTP zahtjev) prema našem Express poslužitelju još nije izvršena, odnosno da poslužitelj još uvijek nije obradio zahtjev i vratio HTTP odgovor. `resolved` predstavlja uspješno izvršenu mrežnu operaciju (neovisno kakav je odgovor poslužitelj vratio), dok `rejected` označava da je došlo do greške tijekom mrežne operacije (npr. poslužitelj nije dostupan, došlo je do timeouta, itd.).
+> Drugim riječima, Promise nam omogućuje da radimo s asinkronim operacijama na način koji je sličniji sinkronom kodu, čineći ga lakšim za čitanje i održavanje. `pending` stanje ovdje konkretno znači da mrežna operacija (HTTP zahtjev) prema našem Express poslužitelju još nije izvršena, odnosno da poslužitelj još uvijek nije obradio zahtjev i vratio HTTP odgovor. `resolved` predstavlja uspješno izvršenu mrežnu operaciju (_non-500_ odgovor poslužitelja), dok `rejected` označava da je došlo do greške tijekom mrežne operacije (npr. poslužitelj nije dostupan, došlo je do _timeouta_, itd.).
 
-Promise objekte obrađujemo metodama `.then()` i `.catch()`:
+Eventualne rezultate Promise objekata obrađujemo metodama `.then()` i `.catch()`:
 
 ```js
 myPromise
@@ -1056,22 +1091,22 @@ myPromise
 
 Također, možemo koristiti i `async/await` sintaksu za rad s Promise objektima:
 
-- tada moramo koristiti `try/catch/finally` blok za "hvatanje" grešaka
+- tada moramo koristiti `try/catch/finally` blok za "hvatanje" eventualnih grešaka
 
 ```js
 async function runAsyncTask() {
     try {
         const result = await myPromise; // čeka da se Promise riješi
-        console.log(result); // ispisuje 'Uspjeh!' ako je resolve()
+        console.log(result); // ispisuje 'Uspjeh!' ako je Promise.resolve(), tj. ako se Promise rezolvira
     } catch (error) {
-        console.error(error); // ispisuje 'Greška!' ako je reject()
+        console.error(error); // ispisuje 'Greška!' ako je Promise.reject(), tj. ako se Promise odbije
     }
 }
 
-runAsyncTask(); // pozivanje asinkrone funkcije runAsyncTask
+runAsyncTask(); // pozivanje asinkrone funkcije runAsyncTask()
 ```
 
-`axios` objekt je Promise koji ima metode za slanje različitih HTTP zahtjeva: `axios.get()`, `axios.post()`, `axios.put()`, `axios.delete()`, itd.
+`axios` objekt je Promise koji ima **implementirane metode za slanje različitih HTTP zahtjeva**: `axios.get()`, `axios.post()`, `axios.put()`, `axios.delete()`, itd.
 
 Tijelo `axios` Promise objekta postaje asinkroni HTTP zahtjev koji šaljemo na određeni URL (odgovarajući endpoint na `express-server` poslužitelju), a odgovor na taj zahtjev obrađujemo u `.then()` metodi ili koristeći `await` unutar asinkrone funkcije.
 
@@ -1094,7 +1129,7 @@ axios
     });
 ```
 
-Ubacite ovaj kod u `PizzaList.vue` komponentu i pokušajte osvježite stranicu u pregledniku - na taj način ćete poslati GET zahtjev na Express poslužitelj za dohvaćanje podataka o svim pizzama.
+Ubacite ovaj kod u `PizzaList.vue` komponentu i pokušajte osvježite stranicu u pregledniku - na taj način ćete poslati GET zahtjev na Express poslužitelj i ispisati odgovor u konzolu web preglednika.
 
 ## 3.1 CORS politika
 
@@ -1104,27 +1139,35 @@ Nažalost, ako pokušate pokrenuti ovaj kod odmah, vjerojatno ćete dobiti greš
 
 > Slika 7: CORS greška u konzoli preglednika prilikom pokušaja slanja HTTP zahtjeva s Vue.js aplikacije na Express poslužitelj
 
-Možemo se dodatno uvjeriti da je došlo do greške tako da otvorimo _Network_ tab u developer tools preglednika i pogledamo detalje neuspjelog zahtjeva.
+Možemo se dodatno uvjeriti da je došlo do greške tako da otvorimo _Network_ tab u _developer toolsu_ preglednika i pogledamo detalje HTTP zahtjeva.
 
 **Network tab** pokazuje sve mrežne zahtjeve koje je web stranica napravila, uključujući HTTP zahtjeve **prema našem Express poslužitelju**, ali i **Vite razvojnom poslužitelju**.
 
-Osvježite ponovo stranicu i pronađite neuspjeli zahtjev obojen u crveno.
+Osvježite ponovo stranicu i pronađite neuspjeli zahtjev prema Expressu obojen u crveno.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_network.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
+> Slika 8: Neuspjeli HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj zbog CORS politike (prikaz u Network tabu developer tools preglednika)
+
 Ako otvorite detalje mrežnog zahtjeva, vidjet ćete detalje o HTTP zahtjevu i poslana zaglavlja (_request headers_). Međutim, nećete vidjeti podatke o HTTP odgovoru jer je preglednik blokirao pristup tim podacima zbog CORS politike. Ipak, statusni kod odgovora je `200 OK`, što znači da je poslužitelj ispravno obradio zahtjev.
 
-[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) je sigurnosna značajka web preglednika koja kontrolira kako web stranice/aplikacije mogu komunicirati/zatražiti određene resurse preko poslužitelja koji se nalazi na drugoj domeni (ili samo portu u našem slučaju).
+[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) je **sigurnosna značajka web preglednika** koja kontrolira kako web stranice/aplikacije mogu komunicirati/zatražiti određene resurse preko poslužitelja koji se nalazi na drugoj domeni (ili samo portu u našem slučaju).
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors-illustration.png?raw=true" style="width:40%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-Drugim riječima, CORS politika definira smije li razvojni poslužitelj na domeni `http://localhost:5173` (Vite poslužitelj) komunicirati s Express poslužiteljem na domeni `http://localhost:3000`.
+Drugim riječima, CORS politikom definira se smije li razvojni poslužitelj na domeni `http://localhost:5173` (Vite poslužitelj) komunicirati s Express poslužiteljem na domeni `http://localhost:3000`.
 
-Ako smije, tada će web preglednik dopustiti da se HTTP zahtjev izvrši i da se podaci iz odgovora proslijede Vue.js aplikaciji koju izvršava razvojni poslužitelj. U suprotnom, preglednik će blokirati pristup podacima iz odgovora i prikazati CORS grešku u konzoli.
+Ako smije, tada će web preglednik dopustiti da se HTTP zahtjev izvrši i da se podaci iz odgovora proslijede Vue.js aplikaciji koju izvršava razvojni poslužitelj. U suprotnom, preglednik će blokirati pristup podacima iz odgovora i prikazati CORS grešku u konzoli `(No 'Access-Control-Allow-Origin' header is present on the requested resource`).
 
-Ovo je sigurnosni mehanizam kojim možemo spriječiti zlonamjerne web aplikacije da pristupaju resursima na drugim poslužiteljima bez dopuštenja.
+Ovo je **sigurnosni mehanizam** kojim možemo spriječiti zlonamjerne web aplikacije da pristupaju resursima na _backend_ poslužiteljima bez dopuštenja i jako je dobra praksa implementirati ga na produkcijskim sustavima, uz adekvatnu dodatnu autorizaciju HTTP zahtjeva.
 
 Konkretno, mi **moramo CORS politiku definirati na Express poslužitelju** kako bismo dopustili zahtjeve samo s naše Vue.js aplikacije.
+
+Sljedeća ilustracija prikazuje gdje CORS politika "živi" u našem lancu komunikacije između klijenta i poslužitelja:
+
+<img src="./screenshots/excelidraw/frontend-backend-communication-w-cors.png" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 9: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) uz CORS politiku
 
 Vratimo se na `pizza-express` projekt i instalirajmo `cors` paket:
 
@@ -1133,7 +1176,7 @@ Vratimo se na `pizza-express` projekt i instalirajmo `cors` paket:
 → npm install cors
 ```
 
-`cors` npm paket nam omogućuje jednostavnu konfiguraciju CORS politike na Express poslužitelju. Uključit ćemo ga u glavnoj `index.js` datoteci poslužitelja.
+`cors` paket nam omogućuje **jednostavnu konfiguraciju CORS politike na Express poslužitelju**. Uključit ćemo ga u glavnoj `index.js` datoteci poslužitelja.
 
 ```javascript
 // app/pizza-express/index.js
@@ -1149,7 +1192,7 @@ Dodajemo još jedan globalni _middleware_ poziv, ovaj put za `cors`:
 app.use(cors());
 ```
 
-Na ovaj način smo dozvolili **svim domenama** da šalju zahtjeve našem Express poslužitelju. **Ovo nije dobro produkcijsko rješenje**, ali je u redu za razvojne svrhe.
+Na ovaj način smo dozvolili **svim domenama** da šalju zahtjeve našem Express poslužitelju. **Ovo nije dobro produkcijsko rješenje**, ali je u redu za razvojno okruženje i testiranje web aplikacije.
 
 Vratite se na Vue.js aplikaciju i osvježite stranicu u pregledniku. Sada bi HTTP zahtjev trebao uspješno proći bez CORS greške, a podaci o pizzama trebali bi se ispisati u **konzoli preglednika**.
 
@@ -1157,13 +1200,15 @@ Vratite se na Vue.js aplikaciju i osvježite stranicu u pregledniku. Sada bi HTT
 
 > Slika 8: Uspješan HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u konzoli preglednika)
 
-Možete otvoriti i **Network tab** u developer tools preglednika i pogledati detalje uspješnog zahtjeva.
+Možete otvoriti i **Network tab** i pogledati detalje uspješnog zahtjeva.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-network-tab-get-pizze-after-cors.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 9: Detalji uspješnog HTTP GET zahtjeva s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u Network tabu developer tools preglednika)
+> Slika 9: Detalji uspješnog HTTP GET zahtjeva s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike na _backendu_ (prikaz u Network tabu _developer toolsa_)
 
 Ipak, na Express poslužitelju **poželjno je dodatno ograničiti CORS politiku** samo na domenu naše Vue.js aplikacije.
+
+> **Važna napomena**: CORS je **dodatna sigurnosna značajka web preglednika** - ovo nije zamjena za adekvatnu autorizaciju i autentifikaciju HTTP zahtjeva, strogu validaciju i sanitizaciju podataka na _backend poslužitelju_, a HTTP zahtjeve je i dalje moguće poslati kroz HTTP klijente izvan preglednika (npr. Postman, curl, itd.) bez obzira na CORS postavke.
 
 Možemo definirati CORS opcije prilikom poziva `cors()` funkcije:
 
@@ -1173,7 +1218,7 @@ const corsOptions = {
 };
 ```
 
-Možemo dodati i više domena ako postoji potreba:
+Ako je naša web aplikacija dostupna na više domena, možemo navesti i niz dozvoljenih domena:
 
 ```javascript
 const corsOptions = {
@@ -1181,10 +1226,10 @@ const corsOptions = {
 };
 ```
 
-- ovo može biti praktično ako imamo više frontend aplikacija koje trebaju pristupiti našem Express poslužitelju (npr. mobilna aplikacija i web aplikacija)
+- ovo može biti praktično ako imamo više _frontend_ aplikacija koje trebaju pristupiti našem Express poslužitelju (npr. mobilna aplikacija i web aplikacija) ili
 - u produkcijskom okruženju, **svakako navedite samo domene koje su vam potrebne**
 
-Zamijenite `app.use(cors());` s:
+Proslijedite ove opcije `cors()` _middleware_ funkciju:
 
 ```javascript
 app.use(cors(corsOptions));
@@ -1194,9 +1239,9 @@ app.use(cors(corsOptions));
 
 Sada kada smo uspostavili HTTP komunikaciju između Vue.js aplikacije i Express poslužitelja, možemo dinamički iscrtavati podatke o pizzama unutar `PizzaList.vue` komponente.
 
-Ovo možemo postići tako da pohranimo dohvaćene podatke o pizzama u **reaktivnu varijablu** i zatim koristimo Vue-ovu `v-for` direktivu za iteraciju kroz taj popis i iscrtavanje svake pizze.
+Navedeno možemo postići tako da pohranimo dohvaćene podatke o pizzama u **reaktivnu varijablu** i zatim koristimo Vue-ovu `v-for` direktivu za iteraciju kroz taj popis i iscrtavanje svake pizze.
 
-Kako se HTTP zahtjev izvršava asinkrono, trebamo ga smjestiti unutar `onMounted` _lifecycle hooka_ kako bismo bili sigurni da se zahtjev šalje tek nakon što je komponenta "montirana" u DOM.
+Kako se HTTP zahtjev izvršava asinkrono, trebamo ga smjestiti unutar `onMounted` _lifecycle hooka_ kako bismo bili sigurni da se HTTP zahtjev šalje tek nakon što je komponenta "montirana" u DOM strukturu.
 
 **Sintaksa:**
 
@@ -1210,7 +1255,7 @@ onMounted(() => {
 });
 ```
 
-_Primjer:_
+_Primjer:_ prebacujemo rukovanje `axios` Promise objekta u `onMounted` _hook_
 
 ```javascript
 import { ref, onMounted } from 'vue';
@@ -1230,9 +1275,9 @@ onMounted(() => {
 console.log(pizze.value); // ispisuje podatke o pizzama (?)
 ```
 
-Kod iznad neće raditi budući da je sinkroni: `console.log(pizze.value);` će se izvršiti **prije nego što se HTTP zahtjev završi** i podaci budu pohranjeni u `pizze` varijablu. Iz tog razloga će se ispisati prazan niz `[]`.
+Kod iznad neće raditi budući da je sinkroni, tj. `console.log(pizze.value);` će se izvršiti **prije nego što se HTTP zahtjev završi** i podaci budu pohranjeni u `pizze` varijablu. Iz tog razloga će se ispisati prazno polje `[]`.
 
-Ako ga prebacimo ispod `pizze.value = response.data;` unutar `.then()` metode, tada će se ispisati stvarni podaci o pizzama nakon što su dohvaćeni s poslužitelja.
+Ako ga prebacimo ispod `pizze.value = response.data;` tj. unutar `.then()` metode, tada će se ispisati tek nakon što su podaci uspješno dohvaćeni.
 
 ```javascript
 .then(response => {
@@ -1241,7 +1286,7 @@ Ako ga prebacimo ispod `pizze.value = response.data;` unutar `.then()` metode, t
 })
 ```
 
-Ipak, kako bismo mogli ovaj kod "spakirati u funkciju", možemo koristiti `async/await` sintaksu unutar `onMounted` hooka:
+Ipak, kako bismo mogli ovaj kod "spakirati u funkciju", moramo koristiti `async/await` sintaksu unutar `onMounted` _hooka_:
 
 ```javascript
 onMounted(async () => {
@@ -1255,7 +1300,7 @@ onMounted(async () => {
 });
 ```
 
-Te spakirati logiku dohvaćanja podataka o pizzama u zasebnu asinkronu funkciju:
+Logiku dohvaćanja praktično je izdvojiti u zasebnu asinkronu funkciju, npr. `fetchPizze()`, koju ćemo pozvati unutar `onMounted` _hooka_:
 
 ```javascript
 async function fetchPizze() {
@@ -1273,15 +1318,15 @@ onMounted(() => {
 });
 ```
 
-Osvježite web aplikaciju i provjerite u konzoli preglednika da li se podaci o pizzama ispravno dohvaćaju s poslužitelja i pohranjuju u reaktivnu varijablu.
+Osvježite web aplikaciju i provjerite u konzoli preglednika dohvaćaju li se podaci o pizzama ispravno i jesu li pohranjeni u `pizze` reaktivnu varijablu.
 
 ## 3.2.1 `v-for` direktiva
 
-Direktiva `v-for` nam omogućuje da iteriramo kroz nizove ili objekte i iscrtavamo HTML elemente za svaki element u nizu ili svojstvo u objektu.
+Direktiva `v-for` nam omogućuje da iteriramo kroz polja ili objekte i iscrtavamo HTML elemente za svaki element u nizu ili svojstvo u objektu.
 
-Prvi korak je identificirati HTML element koji želimo ponoviti za svaki element u nizu - odnosno želimo identificirati HTML elemente koji se **ponavljaju za svaku pizzu**.
+Prvi korak je identificirati **HTML strukturu koju želimo ponavljati za svaki element u polju**, odnosno želimo identificirati HTML elemente koji se **ponavljaju za svaku pizzu** (jedna kartica pizze).
 
-U našem slučaju, to je `div` kojem smo dodali `@click` event:
+U našem slučaju, to je početni `div` element kojem smo dodali `@click` direktivu:
 
 ```html
 <div
@@ -1305,9 +1350,7 @@ Uočite dinamičke elemente unutar ovog `div`-a koje želimo zamijeniti s podaci
 - **ponavljajuće ikone sastojaka** unutar `<div class="p-6">...</div>`
 - **cijene za svaku veličinu pizze** unutar `<div class="space-y-2">...</div>`
 
-Prvi korak je definirati `v-for` direktivu na glavnom `div`-u koji se ponavlja za svaku pizzu:
-
-- implementacija je konceptualno ekvivalentna petlji `for ... of`, ali ovdje pišemo `for ... in` zbog sintakse Vue.js direktive
+> Napomena: Implementacija Vue `v-for` direktive je **konceptualno ekvivalentna** petlji `for ... of`, ali ovdje pišemo `for ... in` (ne zbuniti s JavaScript petljom koja iterira prema ključevima objekta!)
 
 **Sintaksa:**
 
@@ -1317,7 +1360,7 @@ Prvi korak je definirati `v-for` direktivu na glavnom `div`-u koji se ponavlja z
 </div>
 ```
 
-U našem slučaju, `item` predstavlja pojedinačnu pizzu iz niza `pizze`, pa možemo koristiti naziv `pizza` umjesto `item` radi bolje čitljivosti.
+U našem slučaju, `item` predstavlja pojedinačnu pizzu iz niza `pizze`, pa možemo koristiti naziv `pizza` umjesto `item` radi bolje čitljivosti koda.
 
 ```html
 <!-- app/pizza-vue/src/components/PizzaList.vue -->
@@ -1338,15 +1381,15 @@ U našem slučaju, `item` predstavlja pojedinačnu pizzu iz niza `pizze`, pa mo�
 
 Sada **obrišite preostale pizze** iz HTML predloška budući da će se one sada generirati dinamički pomoću `v-for` direktive na temelju podataka iz reaktivne varijable `pizze` napunjene podacima s poslužitelja.
 
-Ako ste dobro implementirali `v-for` direktivu, sada biste trebali vidjeti ukupno pet pizza iscrtano u pregledniku, ali s pogrešnim podacima.
+Ako ste dobro implementirali `v-for` direktivu, sada biste trebali vidjeti ukupno pet jednakih pizza-kartica iscrtano u pregledniku, ali s pogrešnim podacima.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/v-for-pizze.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 10: Dodana `v-for` direktiva za dinamičko iscrtavanje pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
-Kako bismo izmijenili outer-HTML elemente iterabilnim podacima iz `pizza` objekta, koristit ćemo **interpolaciju** (`{{ }}`).
+Kako bismo izmijenili HTML sadržaj iterabilnom podatku iz `pizza` objekta, koristit ćemo **interpolaciju** (`{{ }}`), tj. [Template Syntax](https://vuejs.org/guide/essentials/template-syntax).
 
-Na primjer, za prikaz naziva pizze, zamijenit ćemo statički tekst `Margherita` s `{{ pizza.naziv }}`:
+Na primjer, za prikaz naziva pizze, zamijenit ćemo statički tekst `Margherita` s interpoliranom varijablom: `{{ pizza.naziv }}`:
 
 ```html
 <h2 class="text-lg font-bold text-orange-500 tracking-wide">{{pizza.naziv}}</h2>
@@ -1375,9 +1418,9 @@ Isto možemo napraviti za cijene budući da je svojstvo `pizza.cijene` objekt s 
 
 Želimo prikazati različite ikone ovisno o sastojcima svake pizze. Budući da kod sastojaka nema poretka (pohranjeni su u listi), idemo za početak samo izlistati naziv sastojaka unutar `<div class="p-6">...</div>`:
 
-Kako je svojstvo `pizza.sastojci` niz (`Array`) stringova, moramo koristiti još jednu `v-for` direktivu za iteraciju kroz svaki sastojak.
+Kako je svojstvo `pizza.sastojci` polje stringova, moramo koristiti još jednu `v-for` direktivu za iteraciju kroz svaki sastojak.
 
-Ovaj put ju dodajemo na ponavljajući `<div> class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-slate-50 font-semibold text-xs`:
+Ovaj put ju dodajemo na ponavljajući element: `<div> class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-slate-50 font-semibold text-xs`.
 
 ```html
 <div class="flex space-x-2">
@@ -1391,15 +1434,13 @@ Ovaj put ju dodajemo na ponavljajući `<div> class="w-8 h-8 bg-orange-500 rounde
 
 Svi podaci se uspješno iscrtavaju dinamički unutar `PizzaList.vue` komponente na temelju podataka dohvaćenih s Express poslužitelja 🚀.
 
-Ipak, ne sviđa nam se kako se prikazuju sastojci - želimo vidjeti odgovarajuće ikone umjesto riječi "Icon".
+Ipak, ne sviđa nam se kako se prikazuju sastojci - želimo vidjeti odgovarajuće ikone umjesto riječi "Icon". Idemo to implementirati.
 
 ## 3.2.2 Prikaz ikona sastojaka
 
 Da bismo prikazali odgovarajuće ikone sastojaka, možemo definirati mapu (objekt) koja povezuje naziv sastojka s URL-om ikone ili lokalnom putanjom do slike.
 
-Za ikone postoji mnoštvo besplatnih izvora na internetu, a mi ćemo koristiti [Oh, Vue, Icons!](https://oh-vue-icons.js.org/)
-
-Ovaj projekt nudi veliki izbor SVG ikona koje možemo koristiti besplatno unutar Vue.js aplikacija.
+Za ikone postoji mnoštvo besplatnih izvora na internetu, a mi ćemo koristiti [Oh, Vue, Icons!](https://oh-vue-icons.js.org/) biblioteku koja **agregira veliki broj besplatnih SVG ikona** iz različitih izvora.
 
 Instalirajte `oh-vue-icons` paket unutar Vue.js projekta:
 
@@ -1408,7 +1449,7 @@ Instalirajte `oh-vue-icons` paket unutar Vue.js projekta:
 → npm install oh-vue-icons
 ```
 
-Kako ova biblioteka nudi veliki broj ikona, dobra je praksa uvesti samo one koje ćemo koristiti kako bismo smanjili veličinu konačnog JavaScript paketa i poboljšali performanse web aplikacije.
+Kako ova biblioteka nudi veliki broj ikona, dobra je praksa uvesti samo one koje ćemo koristiti kako bismo **smanjili veličinu konačnog JavaScript paketa** i **poboljšali performanse web aplikacije**.
 
 Otvorite stranicu [Oh, Vue, Icons!](https://oh-vue-icons.js.org/) i potražite ikone koje odgovaraju sastojcima koje koristimo na pizzama.
 
@@ -1424,7 +1465,7 @@ Unutar `PizzaList.vue` komponente, uvezite potrebne ikone iz `oh-vue-icons` pake
 import { GiTomato, GiCheeseWedge, GiSlicedMushroom, IoLeafSharp, CoHotjar, GiMilkCarton, GiBellPepper, LaPepperHotSolid, GiCannedFish, GiGarlic, FaBacon, GiHamShank } from 'oh-vue-icons/icons';
 ```
 
-Zatim definiramo jednostavnu mapu (objekt) koja povezuje naziv sastojka s odgovarajućom ikonom:
+Zatim ćemo definirati jednostavnu mapu (objekt) koja povezuje naziv sastojka s odgovarajućim identifikatorom ikone (komponentom):
 
 ```javascript
 const ikoneSastojaka = {
@@ -1443,7 +1484,7 @@ const ikoneSastojaka = {
 };
 ```
 
-Ikone iz biblioteke `oh-vue-icons` su Vue komponente, a iscrtavamo ih koristeći `v-icon name="ikona"` sintaksu.
+Ikone iz biblioteke `oh-vue-icons` su Vue komponente, a iscrtavamo ih koristeći `v-icon` komponentu.
 
 ```html
 <v-icon :name="kebab-case-ikona" class="w-5 h-5" />
@@ -1451,12 +1492,12 @@ Ikone iz biblioteke `oh-vue-icons` su Vue komponente, a iscrtavamo ih koristeći
 
 Problem je što imena ikona u `oh-vue-icons` biblioteci koriste `PascalCase` format (npr. `GiTomato`), dok `v-icon` komponenta očekuje `kebab-case` format (npr. `gi-tomato`).
 
-Da bismo riješili ovaj problem, možemo definirati pomoćnu funkciju koja će pretvoriti `PascalCase` u `kebab-case` format **ili izmijeniti mapu** `ikoneSastojaka` da koristi `kebab-case` stringove umjesto uvoženih komponenti.
+Da bismo riješili ovaj problem, možemo definirati pomoćnu funkciju koja će pretvoriti `PascalCase` u `kebab-case` format **ili izmijeniti mapu** `ikoneSastojaka` da pohranjuje `kebab-case` nazive ikona kao vrijednosti.
 
-> Napomena: `kebab-case` format koristi crtice za razdvajanje riječi, dok `PascalCase` format koristi velika slova za početak svake riječi bez razmaka ili crtica.
-> Ovo nam je jednostavno ograničenje `oh-vue-icons` biblioteke.
+> Napomena: `kebab-case` format koristi crtice za razdvajanje riječi, dok `PascalCase` format koristi velika slova za početak svake riječi bez razmaka ili crtica. Ovo nam je jednostavno ograničenje `oh-vue-icons` biblioteke koje moramo uzeti u obzir.
 
 ```javascript
+// mapa ikona sastojaka s kebab-case imenima
 const ikoneSastojaka = {
     rajčica: 'gi-tomato',
     sir: 'gi-cheese-wedge',
@@ -1473,19 +1514,21 @@ const ikoneSastojaka = {
 };
 ```
 
-Još malo moramo izmijeniti **sintaksu učitavanja ikona**, koristit ćemo funkciju `addIcons` iz `oh-vue-icons` paketa kako bismo registrirali ikone koje ćemo koristiti:
+Almost there! Još moramo malo izmijeniti **sintaksu učitavanja ikona**, koristit ćemo funkciju `addIcons` iz `oh-vue-icons` paketa kako bismo registrirali ikone koje ćemo koristiti:
 
 ```javascript
 // app/pizza-vue/src/components/PizzaList.vue
 
 import { addIcons } from 'oh-vue-icons';
 
+// uvoz potrebnih ikona
 import { GiTomato, GiCheeseWedge, GiSlicedMushroom, IoLeafSharp, CoHotjar, GiMilkCarton, GiBellPepper, LaPepperHotSolid, GiCannedFish, GiGarlic, FaBacon, GiHamShank } from 'oh-vue-icons/icons';
 
+// registracija ikona koje ćemo koristiti
 addIcons(GiTomato, GiCheeseWedge, GiSlicedMushroom, IoLeafSharp, GiBellPepper, GiHamShank, LaPepperHotSolid, GiCannedFish, GiGarlic, FaBacon, CoHotjar, GiMilkCarton);
 ```
 
-> Napomena: Moramo registrirati samo one ikone koje ćemo koristiti. Više o tome u dokumentaciji [Oh, Vue, Icons!](https://oh-vue-icons.js.org/docs). Ovo je vrlo važno za optimizaciju web stranice - **ne želimo učitavati na tisuće ikona** ako ćemo koristiti samo nekoliko njih.
+> Napomena: Moramo registrirati samo one ikone koje ćemo koristiti. Više o tome u dokumentaciji [Oh, Vue, Icons!](https://oh-vue-icons.js.org/docs). Ovo je vrlo važno za optimizaciju web stranice - **ne želimo učitavati na tisuće ikona u Vue aplikaciju** ako ćemo koristiti samo nekoliko njih.
 
 Za kraj, moramo registrirati `OhVueIcons` plugin unutar glavne `main.js` datoteke Vue.js projekta:
 
@@ -1494,7 +1537,7 @@ Za kraj, moramo registrirati `OhVueIcons` plugin unutar glavne `main.js` datotek
 
 import OhVueIcons from 'oh-vue-icons';
 
-app.component('v-icon', OhVueIcon); // mapiraj OhVueIcon komponentu na "v-icon"
+app.component('v-icon', OhVueIcon); // mapiraj OhVueIcon komponentu na "v-icon" HTML tag
 ```
 
 Sada možemo iscrtati ikone sastojaka unutar `v-for` direktive u `PizzaList.vue` komponenti:
@@ -1518,26 +1561,28 @@ To je to! Ispravno smo prikazali sve podatke s poslužitelja, uključujući i ik
 
 ## 3.2.3 Dodavanje javnih slika na poslužitelj
 
-Kako nam ne bi svaka slika imala istu ikonu, možemo dodati prave slike pizza u podatke na Express poslužitelju te ih potom prikazati unutar Vue.js aplikacije.
+Kako nam ne bi svaka pizza imala istu sliku, možemo dodati prave slike pizza u podatke na Express poslužitelju te ih potom prikazati unutar Vue.js aplikacije.
 
-Za sada nećemo učitavati slike, već koristiti javno dostupne slike s interneta.
+Za sada nećemo učitavati slike, već ćemo iskoristiti "javno dostupne" slike s interneta. Izvor koji će se koristiti u ovoj skripti su slike s weba [Pulske pizzerije TiVoli](https://www.pizzeria-tivoli.com.hr/pizzeria/pizze/18).
 
-Izvor koji će se koristiti u ovoj skripti su javne slike [Pulske pizzerije TiVoli](https://www.pizzeria-tivoli.com.hr/pizzeria/pizze/18).
-
-Unutar `pizza-express/data/data.js` datoteke, dodajte ključ `slika_url` za svaku sliku te postavite odgovarajući URL slike s interneta.
+Unutar `pizza-express/data/data.js` datoteke, dodajte ključ `slika_url` za svaku sliku te postavite odgovarajući **javni URL** slike s interneta.
 
 _Primjer:_
 
 ```javascript
 // app/pizza-express/data/data.js
 
-  {id: 1, naziv: "Margherita", sastojci: ["rajčica", "sir", "bosiljak"], cijene: {"mala": 7.30, "srednja": 9.20, "jumbo": 16.20},
-  slika_url:"https://pizzeria-tivoli.com.hr/uploads/pizza-margherita-u6kflo.jpg"},
+{id: 1, naziv: "Margherita", sastojci: ["rajčica", "sir", "bosiljak"], cijene: {"mala": 7.30, "srednja": 9.20, "jumbo": 16.20},
+slika_url:"https://pizzeria-tivoli.com.hr/uploads/pizza-margherita-u6kflo.jpg"},
+
+ostale pizze ...
 ```
 
-Provjerite na Postmanu da li se novi podaci ispravno vraćaju s poslužitelja.
+Provjerite na Postmanu da li se novi podaci ispravno vraćaju s poslužitelja. **Ako ne radi u Postmanu, neće raditi ni u Vue.js aplikaciji**.
 
 Vratite se na Vue.js aplikaciju i unutar `PizzaList.vue` komponente, iscrtajte sliku unutar glavnog `div`-a za svaku pizzu:
+
+Koristimo dinamičko svojstvo `:src` za postavljanje URL-a slike te `:alt` za dinamički alternativni tekst slike (možemo kombinirati ternarni operator kao što smo radili s dinamičkim klasama):
 
 ```html
 <!-- app/pizza-vue/src/components/PizzaList.vue -->
@@ -1545,7 +1590,7 @@ Vratite se na Vue.js aplikaciju i unutar `PizzaList.vue` komponente, iscrtajte s
 <img :src="pizza.slika_url" :alt="pizza.naziv" class="w-full h-full object-contain" />
 ```
 
-Malo ćemo izmijeniti stilove kako bi slika zauzela cijeli kontejner i kako bi malo zaokružili rubove, obzirom da više nemamo slike s transparentnom pozadinom.
+Malo ćemo izmijeniti stilove kako bi slika zauzela cijeli kontejner i kako bi malo zaoblili rubove, obzirom da više nemamo slike s transparentnom pozadinom.
 
 ```html
 <div class="w-full h-48 flex items-center justify-center bg-inherit overflow-hidden rounded-xl">
