@@ -960,7 +960,7 @@ _Primjer: Izmijenjeni naziv pizze i dodani `@click` event:_
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizza-click.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 6: Dodan `@click` event na HTML element pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
+> Slika 7: Dodan `@click` event na HTML element pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
 Kako bismo naznačili korisniku da je kliknuo na određenu pizzu, možemo promijeniti stil kartice odabrane pizze koristeći **uvjetno dodavanje/oduzimanje TailwindCSS klasa**.
 
@@ -1033,7 +1033,7 @@ Možemo prebaciti `@click` direktivu na cijeli ovaj `div` budući da želimo da 
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizza-click-highlight.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 7: Uvjetno dodavanje TailwindCSS klasa za označavanje odabrane pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
+> Slika 8: Uvjetno dodavanje TailwindCSS klasa za označavanje odabrane pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
 Za sada toliko od dizajna. Idemo napokon implementirati komunikaciju s Express poslužiteljem kako bismo dohvatili stvarne podatke o pizzama i prikazali ih dinamički unutar `PizzaList.vue` komponente.
 
@@ -1054,9 +1054,9 @@ Instalirajte Axios unutar Vue.js projekta:
 
 Prije nastavka, pogledajte ilustraciju koja prikazuje **razmjenu podataka između klijenta i poslužitelja** (odnosno između Vue.js aplikacije i Express poslužitelja), jer smo do sada uveli niz novih pojmova. Obratite pozornost gdje se u ovom procesu nalazi Axios biblioteka.
 
-<img src="./screenshots/excelidraw/frontend-backend-communication-illustration.png" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/excelidraw/frontend-backend-communication-illustration.png?raw=true" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 8: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) koristeći Axios HTTP klijent
+> Slika 9: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) koristeći Axios HTTP klijent
 
 Prijetimo se ukratko sintakse `Promise` objekata kako bismo lakše razumjeli kako Axios funkcionira.
 
@@ -1137,7 +1137,7 @@ Nažalost, ako pokušate pokrenuti ovaj kod odmah, vjerojatno ćete dobiti greš
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_console.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 7: CORS greška u konzoli preglednika prilikom pokušaja slanja HTTP zahtjeva s Vue.js aplikacije na Express poslužitelj
+> Slika 10: CORS greška u konzoli preglednika prilikom pokušaja slanja HTTP zahtjeva s Vue.js aplikacije na Express poslužitelj
 
 Možemo se dodatno uvjeriti da je došlo do greške tako da otvorimo _Network_ tab u _developer toolsu_ preglednika i pogledamo detalje HTTP zahtjeva.
 
@@ -1147,7 +1147,7 @@ Osvježite ponovo stranicu i pronađite neuspjeli zahtjev prema Expressu obojen 
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_network.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 8: Neuspjeli HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj zbog CORS politike (prikaz u Network tabu developer tools preglednika)
+> Slika 11: Neuspjeli HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj zbog CORS politike (prikaz u Network tabu developer tools preglednika)
 
 Ako otvorite detalje mrežnog zahtjeva, vidjet ćete detalje o HTTP zahtjevu i poslana zaglavlja (_request headers_). Međutim, nećete vidjeti podatke o HTTP odgovoru jer je preglednik blokirao pristup tim podacima zbog CORS politike. Ipak, statusni kod odgovora je `200 OK`, što znači da je poslužitelj ispravno obradio zahtjev.
 
@@ -1165,9 +1165,9 @@ Konkretno, mi **moramo CORS politiku definirati na Express poslužitelju** kako 
 
 Sljedeća ilustracija prikazuje gdje CORS politika "živi" u našem lancu komunikacije između klijenta i poslužitelja:
 
-<img src="./screenshots/excelidraw/frontend-backend-communication-w-cors.png" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/excelidraw/frontend-backend-communication-w-cors.png?raw=true" style="width:70%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 9: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) uz CORS politiku
+> Slika 12: Ilustracija razmjene podataka između klijenta (Vue.js aplikacije) i poslužitelja (Express.js aplikacije) uz CORS politiku
 
 Vratimo se na `pizza-express` projekt i instalirajmo `cors` paket:
 
@@ -1198,13 +1198,13 @@ Vratite se na Vue.js aplikaciju i osvježite stranicu u pregledniku. Sada bi HTT
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-get-pizze-after-cors.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 8: Uspješan HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u konzoli preglednika)
+> Slika 13: Uspješan HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u konzoli preglednika)
 
 Možete otvoriti i **Network tab** i pogledati detalje uspješnog zahtjeva.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-network-tab-get-pizze-after-cors.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 9: Detalji uspješnog HTTP GET zahtjeva s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike na _backendu_ (prikaz u Network tabu _developer toolsa_)
+> Slika 14: Detalji uspješnog HTTP GET zahtjeva s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike na _backendu_ (prikaz u Network tabu _developer toolsa_)
 
 Ipak, na Express poslužitelju **poželjno je dodatno ograničiti CORS politiku** samo na domenu naše Vue.js aplikacije.
 
@@ -1385,7 +1385,7 @@ Ako ste dobro implementirali `v-for` direktivu, sada biste trebali vidjeti ukupn
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/v-for-pizze.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 10: Dodana `v-for` direktiva za dinamičko iscrtavanje pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
+> Slika 15: Dodana `v-for` direktiva za dinamičko iscrtavanje pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
 Kako bismo izmijenili HTML sadržaj iterabilnom podatku iz `pizza` objekta, koristit ćemo **interpolaciju** (`{{ }}`), tj. [Template Syntax](https://vuejs.org/guide/essentials/template-syntax).
 
@@ -1430,7 +1430,7 @@ Ovaj put ju dodajemo na ponavljajući element: `<div> class="w-8 h-8 bg-orange-5
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-v-for-total.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 11: Završena implementacija `v-for` direktive za dinamičko iscrtavanje podataka o pizzama unutar `PizzaList.vue` komponente (prikaz u pregledniku)
+> Slika 16: Završena implementacija `v-for` direktive za dinamičko iscrtavanje podataka o pizzama unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
 Svi podaci se uspješno iscrtavaju dinamički unutar `PizzaList.vue` komponente na temelju podataka dohvaćenih s Express poslužitelja 🚀.
 
@@ -1457,7 +1457,7 @@ Svakoj ikoni pridružen je jedinstveni identifikator koji ćemo koristiti za uvo
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/oh-vue-icons-web.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 12: Oh, Vue, Icons! web stranica za pregled i odabir ikona
+> Slika 17: Oh, Vue, Icons! web stranica za pregled i odabir ikona
 
 Unutar `PizzaList.vue` komponente, uvezite potrebne ikone iz `oh-vue-icons` paketa:
 
@@ -1559,6 +1559,8 @@ To je to! Ispravno smo prikazali sve podatke s poslužitelja, uključujući i ik
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-icons.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
+> Slika 18: Završena implementacija prikaza ikona sastojaka unutar `PizzaList.vue` komponente (prikaz u pregledniku)
+
 ## 3.2.3 Dodavanje javnih slika na poslužitelj
 
 Kako nam ne bi svaka pizza imala istu sliku, možemo dodati prave slike pizza u podatke na Express poslužitelju te ih potom prikazati unutar Vue.js aplikacije.
@@ -1599,5 +1601,7 @@ Malo ćemo izmijeniti stilove kako bi slika zauzela cijeli kontejner i kako bi m
 ```
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-images.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 19: Završena implementacija prikaza slika pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
 > To be continued ...
