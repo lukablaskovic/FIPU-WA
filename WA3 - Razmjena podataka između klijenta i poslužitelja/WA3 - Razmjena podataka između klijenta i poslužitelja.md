@@ -9,7 +9,7 @@
 
 # (3) Razmjena podataka između klijenta i poslužitelja
 
-<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA3%20-%20Komunikacija%20s%20klijentskom%20stranom/WA_3_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/wa-icons/WA_3.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
 Do sada smo obradili izradu Express poslužitelja koji može isporučivati statične datoteke i JSON podatke klijentskoj strani, pri čemu nam je Postman služio kao osnovno klijentsko okruženje. Naučili smo kako validirati i obraditi podatke koji pristižu na poslužitelj putem različitih HTTP metoda (GET, POST, PUT, PATCH, DELETE).
