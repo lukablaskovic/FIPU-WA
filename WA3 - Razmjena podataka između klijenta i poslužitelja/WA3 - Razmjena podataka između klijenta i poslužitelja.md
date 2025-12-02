@@ -344,7 +344,7 @@ Izradit ćemo jednostavno [Vue.js](https://vuejs.org/) korisničko sučelje kori
 
 U osnovi, TailwindCSS djeluje kao alat koja nam pruža **gradivne blokove** kojima slažemo dizajn našeg korisničkog sučelja.
 
-**Vite** je moderno razvojno okruženje i alat za izgradnju web aplikacija, optimiziran za rad s JavaScript okvirima kao što su Vue.js, React.js i Svelte. Temelji se na izuzetno brzom dev server mehanizmu koji omogućuje trenutačno osvježavanje tijekom razvoja, učinkovitu optimizaciju te brzu izgradnju aplikacija. Uz to, nudi izvrsnu podršku za TypeScript i JSX/TSX.
+**Vite** je moderno razvojno okruženje i alat za izgradnju web aplikacija, optimiziran za rad s JavaScript okvirima kao što su Vue.js, React.js i Svelte. Temelji se na izuzetno brzom _dev server_ mehanizmu koji omogućuje trenutačno osvježavanje tijekom razvoja, učinkovitu optimizaciju te brzu izgradnju aplikacija. Uz to, nudi izvrsnu podršku za TypeScript i JSX/TSX.
 
 Iako je **Webpack** dugo bio standard u industriji, Vite je danas sve češći izbor zahvaljujući znatno boljim performansama i minimalnoj konfiguraciji potrebnoj za pokretanje projekta.
 
@@ -1152,7 +1152,7 @@ Osvježite ponovo stranicu i pronađite neuspjeli zahtjev prema Expressu obojen 
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_network.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-> Slika 11: Neuspjeli HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj zbog CORS politike (prikaz u Network tabu developer tools preglednika)
+> Slika 11: Neuspjeli HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj zbog CORS politike (prikaz u Network tabu _developer toolsu_ preglednika)
 
 Ako otvorite detalje mrežnog zahtjeva, vidjet ćete detalje o HTTP zahtjevu i poslana zaglavlja (_request headers_). Međutim, nećete vidjeti podatke o HTTP odgovoru jer je preglednik blokirao pristup tim podacima zbog CORS politike. Ipak, statusni kod odgovora je `200 OK`, što znači da je poslužitelj ispravno obradio zahtjev.
 
@@ -1969,7 +1969,7 @@ Još moramo dodati `@click` event na gumb kako bismo ažurirali `odabranaVelicin
 <button ... @click="odabranaVelicina = velicina">{{ velicina }} – {{ cijena }}€</button>
 ```
 
-Otvorite Vue Devtools u pregledniku i provjerite mijenja li se reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente kada kliknete na različite veličine pizza.
+Otvorite _Vue Devtools_ u pregledniku i provjerite mijenja li se reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente kada kliknete na različite veličine pizza.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-reaktivna-varijabla-devtools.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
@@ -2087,7 +2087,7 @@ Pozivamo `dodajUNarudzbu` funkciju klikom na gumb **Dodaj u košaricu**:
 </button>
 ```
 
-Provjerite u konzoli preglednika i Vue Devtools da li se stavke ispravno dodaju u `narucene_pizze` polje kada kliknete na gumb **Dodaj u košaricu**.
+Provjerite u konzoli preglednika i _Vue Devtools_ da li se stavke ispravno dodaju u `narucene_pizze` polje kada kliknete na gumb **Dodaj u košaricu**.
 
 Kako bismo uvjerili i samog korisnika aplikacije, možemo dodavati mali graditi prikaz stavki:
 
@@ -2208,6 +2208,8 @@ router.post('/', (req, res) => {
 Idemo testirati! Pošaljite narudžbu klikom na gumb **Naruči** unutar Vue.js aplikacije.
 
 <img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/narudzba_uspjesno_dodana_vue.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 24: Uspješno poslana narudžba unutar Vue.js aplikacije (prikaz u pregledniku)
 
 Na Express poslužitelju, trebali bismo vidjeti ispisane podatke narudžbe u konzoli:
 
