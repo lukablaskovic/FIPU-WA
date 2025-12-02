@@ -29,7 +29,7 @@ Preporučuje se da prije početka izrade <i>frontend</i> dijela web aplikacije p
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(3) Razmjena podataka između klijenta i poslužitelja](#3-razmjena-podataka-između-klijenta-i-poslužitelja)
   - [Sadržaj](#sadržaj)
-- [1. Postavljanje `Express` poslužitelja](#1-postavljanje-express-poslužitelja)
+- [1. Postavljanje Express poslužitelja](#1-postavljanje-express-poslužitelja)
   - [1.1 Definiranje osnovnih endpointova i dummy podataka](#11-definiranje-osnovnih-endpointova-i-dummy-podataka)
     - [1.1.1 Implementacija `/pizze Router`](#111-implementacija-pizze-router)
     - [1.1.2 Implementacija `/narudzbe Router`](#112-implementacija-narudzbe-router)
@@ -39,19 +39,23 @@ Preporučuje se da prije početka izrade <i>frontend</i> dijela web aplikacije p
   - [2.3 Dodavanje osnovnih komponenti korisničkog sučelja](#23-dodavanje-osnovnih-komponenti-korisničkog-sučelja)
     - [PizzaList.vue komponenta](#pizzalistvue-komponenta)
     - [Header.vue komponenta](#headervue-komponenta)
-  - [Implementacija odabira pizze](#implementacija-odabira-pizze)
+    - [Implementacija odabira pizze](#implementacija-odabira-pizze)
 - [3. Axios i komunikacija s Express poslužiteljem](#3-axios-i-komunikacija-s-express-poslužiteljem)
   - [3.1 CORS politika](#31-cors-politika)
-  - [3.2 Dinamičko iscrtavanje podataka o pizzama](#32-dinamičko-iscrtavanje-podataka-o-pizzama)
-  - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
-  - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
-  - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
+  - [3.2 Dinamičko iscrtavanje podataka o pizzama (GET /pizze)](#32-dinamičko-iscrtavanje-podataka-o-pizzama-get-pizze)
+    - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
+    - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
+    - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
+  - [3.3 Slanje nove narudžbe (POST /narudzbe)](#33-slanje-nove-narudžbe-post-narudzbe)
+    - [Opcionalno lančanje (Optional Chaining)](#opcionalno-lančanje-optional-chaining)
+    - [Emitiranje događaja (Event Emitting)](#emitiranje-događaja-event-emitting)
+    - [Implementacija preostalih UI funkcionalnosti](#implementacija-preostalih-ui-funkcionalnosti)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
-# 1. Postavljanje `Express` poslužitelja
+# 1. Postavljanje Express poslužitelja
 
-Krenimo s definiranjem osnovnog `Express` poslužitelja koji će služiti kao backend za našu aplikaciju za naručivanje pizze. Možete ponovno iskoristiti kod iz prethodnih skript ili započeti od nule (u tom slučaju preskočite na poglavlje 2).
+Krenimo s definiranjem osnovnog `Express` poslužitelja koji će služiti kao _backend_ za našu aplikaciju za naručivanje pizze. Možete ponovno iskoristiti kod iz prethodnih skript ili započeti od nule (u tom slučaju preskočite na poglavlje 2).
 
 Definirat ćemo dva direktorija naše web aplikacije (`pizza-express` za poslužitelj i `pizza-vue` za klijenta):
 
@@ -502,7 +506,7 @@ Pokrenite sljedeće naredbe za instalaciju TailwindCSS-a i njegovih ovisnosti:
 → npm install tailwindcss @tailwindcss/vite
 ```
 
-Otvorite `vite.config.js` datoteku i dodajte `@tailwindcss/vite` plugin kako bi TailwindCSS mogao biti pravilno integriran s Vite-om:
+Otvorite `vite.config.js` datoteku i dodajte `@tailwindcss/vite` plugin kako bi TailwindCSS mogao biti pravilno integriran s Viteom:
 
 ```javascript
 // vite.config.js
@@ -560,7 +564,7 @@ Općenito, klase za Tailwind CSS ne želite mijenjati direktno u CSS kodu, već 
 
 Preporuka je naučiti služiti se [TailwindCSS dokumentacijom](https://tailwindcss.com/docs/styling-with-utility-classes).
 
-Uspješno smo konfigurirali Vue.js projekt s TailwindCSS-om i Vite-om! 🚀 Naša web aplikacija sada se sastoji od dva dijela:
+Uspješno smo konfigurirali Vue.js projekt s TailwindCSS-om i Viteom! 🚀 Naša web aplikacija sada se sastoji od dva dijela:
 
 1. **Express.js poslužitelj** koji upravlja podacima o pizzama i narudžbama
 2. **Vue.js klijentska aplikacija** koja će komunicirati s Express poslužiteljem i pružiti korisničko sučelje za naručivanje pizza
@@ -627,7 +631,7 @@ U kontekstu poslužitelja, zamislite da moramo prvo implementirati GET `/pizze` 
 
 Izradit ćemo Vue komponentu `PizzaList.vue` koja će dohvaćati i prikazivati popis dostupnih pizza s Express poslužitelja.
 
-Kako frontend dizajn korisničkog sučelja nije tema ovog kolegija, upotrijebit ćemo gotovi _tailwind-HTML_ predložak te raditi na funkcionalnostima Vue komponente. Ako hoćete, možete uređivati stilove prema vlastitim željama i/ili izraditi vlastiti UI dizajn.
+Kako _frontend_ dizajn korisničkog sučelja nije tema ovog kolegija, upotrijebit ćemo gotovi _tailwind-HTML_ predložak te raditi na funkcionalnostima Vue komponente. Ako hoćete, možete uređivati stilove prema vlastitim željama i/ili izraditi vlastiti UI dizajn.
 
 Sve predloške možete pronaći na GitHubu kolegija: [WA3 - Razmjena podataka između klijenta i poslužitelja/vue-templates](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/vue-templates).
 
@@ -837,7 +841,7 @@ To je to! Vaša web aplikacija sada bi trebala imati pozadinsku sliku iza sadrž
 
 > Slika 6: Prikaz u web pregledniku: `PizzaList.vue` komponenta s pozadinskom slikom i `Header.vue` komponentom
 
-## Implementacija odabira pizze
+### Implementacija odabira pizze
 
 **Reaktivnost** (_eng. reactivity_) predstavlja jedan od temeljnih koncepata u Vue.js ekosustavu. Ona omogućuje da se korisničko sučelje automatski osvježi svaki put kada dođe do promjene podataka u pozadini, čineći time reaktivnost ključnim mehanizmom na kojem počiva cijeli Vue.js okvir.
 
@@ -1235,7 +1239,7 @@ Proslijedite ove opcije `cors()` _middleware_ funkciju:
 app.use(cors(corsOptions));
 ```
 
-## 3.2 Dinamičko iscrtavanje podataka o pizzama
+## 3.2 Dinamičko iscrtavanje podataka o pizzama (GET /pizze)
 
 Sada kada smo uspostavili HTTP komunikaciju između Vue.js aplikacije i Express poslužitelja, možemo dinamički iscrtavati podatke o pizzama unutar `PizzaList.vue` komponente.
 
@@ -1320,7 +1324,7 @@ onMounted(() => {
 
 Osvježite web aplikaciju i provjerite u konzoli preglednika dohvaćaju li se podaci o pizzama ispravno i jesu li pohranjeni u `pizze` reaktivnu varijablu.
 
-## 3.2.1 `v-for` direktiva
+### 3.2.1 `v-for` direktiva
 
 Direktiva `v-for` nam omogućuje da iteriramo kroz polja ili objekte i iscrtavamo HTML elemente za svaki element u nizu ili svojstvo u objektu.
 
@@ -1436,7 +1440,7 @@ Svi podaci se uspješno iscrtavaju dinamički unutar `PizzaList.vue` komponente 
 
 Ipak, ne sviđa nam se kako se prikazuju sastojci - želimo vidjeti odgovarajuće ikone umjesto riječi "Icon". Idemo to implementirati.
 
-## 3.2.2 Prikaz ikona sastojaka
+### 3.2.2 Prikaz ikona sastojaka
 
 Da bismo prikazali odgovarajuće ikone sastojaka, možemo definirati mapu (objekt) koja povezuje naziv sastojka s URL-om ikone ili lokalnom putanjom do slike.
 
@@ -1530,7 +1534,7 @@ addIcons(GiTomato, GiCheeseWedge, GiSlicedMushroom, IoLeafSharp, GiBellPepper, G
 
 > Napomena: Moramo registrirati samo one ikone koje ćemo koristiti. Više o tome u dokumentaciji [Oh, Vue, Icons!](https://oh-vue-icons.js.org/docs). Ovo je vrlo važno za optimizaciju web stranice - **ne želimo učitavati na tisuće ikona u Vue aplikaciju** ako ćemo koristiti samo nekoliko njih.
 
-Za kraj, moramo registrirati `OhVueIcons` plugin unutar glavne `main.js` datoteke Vue.js projekta:
+Za kraj, moramo registrirati `OhVueIcons` _plugin_ unutar glavne `main.js` datoteke Vue.js projekta:
 
 ```javascript
 // app/pizza-vue/src/main.js
@@ -1561,7 +1565,7 @@ To je to! Ispravno smo prikazali sve podatke s poslužitelja, uključujući i ik
 
 > Slika 18: Završena implementacija prikaza ikona sastojaka unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
-## 3.2.3 Dodavanje javnih slika na poslužitelj
+### 3.2.3 Dodavanje javnih slika na poslužitelj
 
 Kako nam ne bi svaka pizza imala istu sliku, možemo dodati prave slike pizza u podatke na Express poslužitelju te ih potom prikazati unutar Vue.js aplikacije.
 
@@ -1604,4 +1608,615 @@ Malo ćemo izmijeniti stilove kako bi slika zauzela cijeli kontejner i kako bi m
 
 > Slika 19: Završena implementacija prikaza slika pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
-> To be continued ...
+## 3.3 Slanje nove narudžbe (POST /narudzbe)
+
+Implementirat ćemo funkcionalnost slanja nove narudžbe na Express poslužitelj koristeći definirani `POST /narudzbe` endpoint poslužitelja. Međutim, idemo prvo uključiti UI element za odabir pizza, veličina i količina unutar `PizzaList.vue` komponente.
+
+Odabirom određene pizze, želimo prikazati _footer-izbornik_ na dnu ekrana gdje korisnik može odabrati veličinu pizze te količinu. Izbornik se mora prikazati odabirom pizze iz `PizzaList`.
+
+Dodat ćemo novu komponentu `OrderFooter.vue` unutar `components` direktorija Vue.js projekta.
+
+```bash
+→ cd app/pizza-vue/src/components
+→ touch OrderFooter.vue
+```
+
+Strukturu i stil komponente možete preuzeti iz gotovih predložaka (_vue-templates_) ili možete implementirati sami prema vlastitim željama.
+
+Ovoj komponenti želimo prosljediti podatke o odabranoj pizzi, pa ćemo definirati `props` (_properties_) unutar `OrderFooter.vue` komponente.
+
+U Vue.js, `props` su način na koji roditeljska (_eng. parent_) komponenta može prosljeđivati podatke svojoj djeci (_eng. child_ komponenatama). Djeca komponente predstavljaju komponente koje su ugniježdene (iscrtavaju se) unutar roditeljske komponente. Ovo je korisno raditi kako bismo odvojili **ponavljajuće UI elemente**. Konkretno, `OrderFooter.vue` komponenta će biti dijete `PizzaList.vue` komponente.
+
+U Vue 3, definiramo `props` unutar `<script setup>` bloka koristeći `defineProps` funkciju.
+
+**Sintaksa:**
+
+```javascript
+const props = defineProps({
+    naziv_propa: tip_podatka,
+    drugi_prop: tip_podatka,
+    ...
+});
+```
+
+- moguće je proslijediti bilo koji JavaScript tip kao `prop`
+
+Proslijedit ćemo komponenti objekt odabrane pizze koji sadrži sve potrebne informacije o odabranoj pizzi (naziv, cijene, sastojci, itd.).
+
+```javascript
+const props = defineProps({
+    odabranaPizza: {
+        type: Object,
+        required: true // označava da je ovaj prop obavezan
+    }
+});
+```
+
+Uočite dinamičke elemente unutar `OrderFooter.vue` komponente koje moramo zamijeniti s podacima iz `odabranaPizza` propa:
+
+```html
+<!-- app/pizza-vue/src/components/OrderFooter.vue -->
+
+<!--slika pizze-->
+<img :src="url_slike_ovdje" alt="slika ovdje" class="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover shadow-md shadow-black/40" />
+
+...
+<!--naziv pizze-->
+<h3 class="font-bold tracking-wide text-base sm:text-lg text-orange-400">{{ naziv_pizze_ovdje }}</h3>
+
+...
+
+<!--veličine i cijene-->
+<button
+    v-for="velicina in dostupneVelicine"
+    :key="size.label"
+    class="px-3 py-1 cursor-pointer rounded-lg border border-slate-500 bg-slate-600/40 hover:bg-orange-500 hover:border-orange-400 hover:text-white transition-all text-sm sm:text-base"
+>
+    {{ velicina.oznaka }} – {{ velicina.cijena }}
+</button>
+```
+
+Jedino što nas može zbuniti je: kako iterirati ispravno kroz veličine i cijene pizze budući da je svojstvo `cijene` objekt, a ne polje?
+
+Jednostavno očekujemo dvije varijable `(value, key)` kao lokalni parametar unutar `v-for` direktive:
+
+**Sintaksa:**
+
+```html
+<!--Pripazite! Nije (key, value) već (value, key) kod iteracije objekta-->
+<div v-for="(value, key) in object" :key="key">
+    <!-- sadržaj koji koristi value i key -->
+</div>
+```
+
+U našem slučaju, `key` predstavlja veličinu pizze (`mala`, `srednja`, `jumbo`), dok `value` predstavlja cijenu za tu veličinu. Dakle, radimo sljedeće:
+
+```html
+<div class="flex items-center justify-center sm:justify-start flex-wrap gap-2 w-full sm:w-auto">
+    <button
+        v-for="(cijena, velicina) in odabranaPizza.cijene"
+        :key="velicina"
+        class="px-3 py-1 cursor-pointer rounded-lg border border-slate-500 bg-slate-600/40 hover:bg-orange-500 hover:border-orange-400 hover:text-white transition-all text-sm sm:text-base"
+    >
+        {{ velicina }} – {{ cijena }}€
+    </button>
+</div>
+```
+
+Sada možemo koristiti `OrderFooter.vue` komponentu unutar `PizzaList.vue` komponente i proslijediti odabranu pizzu kao `prop`.
+
+Učitaje `OrderFooter.vue` komponentu unutar `PizzaList.vue` komponente:
+
+```javascript
+// app/pizza-vue/src/components/PizzaList.vue
+
+import OrderFooter from './OrderFooter.vue';
+```
+
+Dodat ćemo komponentu na dnu `PizzaList.vue` predloška, ispod glavnog `div`-a koji sadrži popis pizza. Ipak, prije toga želimo u reaktivnu varijablu `odabranaPizza` pohraniti objekt odabrane pizze (umjesto samo naziva pizze kao do sada).
+
+```javascript
+// app/pizza-vue/src/components/PizzaList.vue
+
+function odaberiPizzu(pizza) {
+    odabrana_pizza.value = pizza; // pohranjujemo cijeli objekt pizze
+    console.log('Odabrana pizza:', pizza);
+}
+```
+
+Reaktivnu varijablu možemo jednostavno ažurirati kod `@click` direktive:
+
+```html
+<!-- app/pizza-vue/src/components/PizzaList.vue -->
+
+<div
+    v-for="pizza in pizze"
+    :key="pizza.id"
+    @click="odaberiPizzu(pizza)" <!-- prosljeđujemo cijeli objekt pizze -->
+    ...
+></div>
+```
+
+Sada ćemo dodati komponentu, ali ćemo ju prikazati samo ako je neka pizza odabrana (kada `odabrana_pizza` nije `null`):
+
+Za to koristimo `v-if` direktivu:
+
+**Sintaksa:**
+
+```html
+<!-- Iscrtava komponentu samo ako je uvjet istinit -->
+<ChildComponent v-if="uvjet" :prop1="vrijednost1" :prop2="vrijednost2" />
+```
+
+Dakle: dodajemo nakon zadnjeg `</div>` unutar `PizzaList.vue` predloška:
+
+```html
+<!-- app/pizza-vue/src/components/PizzaList.vue -->
+...
+  </div>
+  <OrderFooter v-if="odabrana_pizza" :odabrana-pizza="odabrana_pizza" /> <!-- ako je odabrana pizza, prikaži OrderFooter komponentu i proslijedit taj objekt -->
+</template>
+```
+
+Također, sada moramo ažurirati dinamičku klasu kako ne bi izgubili _fancy pizza highlight_ efekt na odabranoj pizzi:
+
+```html
+odabrana_pizza.naziv === pizza.naziv
+```
+
+Ipak, nakon ove promjene i osvježavanja aplikacije dobit ćemo grešku u konzoli.
+
+```javascript
+Uncaught (in promise) TypeError: Cannot read properties of null (reading 'naziv')
+```
+
+Ova greška se događa zato što je početna vrijednost `odabrana_pizza` varijable `null`, pa kada Vue pokuša pristupiti `odabrana_pizza.naziv` prije nego što je neka pizza odabrana, javlja se greška.
+
+### Opcionalno lančanje (Optional Chaining)
+
+U Vue3, problem je moguće riješiti vrlo jednostavno koristeći JavaScript [opcionalno lančanje](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) (_eng. optional chaining_) operatorom `?.`.
+
+Operator `?.` omogućuje sigurno pristupanje svojstvima objekta koji može biti `null` ili `undefined`. Ako je objekt `null` ili `undefined`, izraz će se odmah evaluirati na `undefined` umjesto da baci grešku.
+
+**Sintaksa:**
+
+```javascript
+objekt?.svojstvo;
+
+// ekvivalentno
+objekt == null ? undefined : objekt.svojstvo; // ako je objekt null, vrati undefined, inači vrati svojstvo objekta
+```
+
+Dakle, možemo izmijeniti uvjet unutar `:class` direktive na sljedeći način:
+
+```html
+<!-- app/pizza-vue/src/components/PizzaList.vue -->
+odabrana_pizza?.naziv === pizza.naziv
+```
+
+To je to! Sada kada odaberemo pizzu iz popisa, trebali bismo vidjeti _footer-izbornik_ s podacima o odabranoj pizzi.
+
+<img src="./screenshots/vue-pizzalist-dodan-footer.png " style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 20: Dodana `OrderFooter.vue` komponenta unutar `PizzaList.vue` komponente (prikaz u pregledniku)
+
+### Emitiranje događaja (Event Emitting)
+
+Dodat ćemo još dva načina za zatvaranje _footer-izbornika_, tj. poništavanje odabira pizze:
+
+1. način: klikom na gumb `X` unutar _footer-izbornika_
+2. način: klikom na `ESC` tipku na tipkovnici
+
+**1. način:**
+
+Unutar `OrderFooter.vue` komponente, dodajemo prvo `X` u gornji desni kut _footer-izbornika_:
+
+- dodaje kao prvi element nakon `footer` taga
+
+```html
+<!-- app/pizza-vue/src/components/OrderFooter.vue -->
+
+<button class="absolute top-2 right-2 text-slate-300 hover:text-white text-xl font-bold cursor-pointer">×</button>
+```
+
+E sad, rekli samo da ako želimo proslijediti podatke iz roditeljske komponente u dječju komponentu, možemo koristiti `props`, ali kako ćemo proslijediti podatke (ili signal) iz dječje komponente natrag u roditeljsku komponentu? Tj. kako ćemo reći `PizzaList.vue` komponenti da je korisnik kliknuo na `X` gumb unutar `OrderFooter.vue` komponente i da može poništiti odabir pizze?
+
+Za to koristimo **emitiranje događaja** (_eng. event emitting_) u Vue.js.
+
+**Sintaksa:**
+
+```javascript
+const emit = defineEmits(['naziv_dogadaja']);
+```
+
+Naziv događaja može biti bilo koji string, ali je dobra praksa koristiti opisne nazive koji jasno ukazuju na svrhu događaja. Naziv našeg događaja bit će `close`.
+
+```javascript
+// app/pizza-vue/src/components/OrderFooter.vue
+const emit = defineEmits(['close']);
+```
+
+Zatim, unutar `@click` eventa gumba `X`, pozivamo `emit(emit_naziv)` funkciju kako bismo emitirali `close` događaj:
+
+```html
+<button class="absolute top-2 right-2 text-slate-300 hover:text-white text-xl font-bold cursor-pointer" @click="emit('close')">×</button>
+```
+
+Emit možemo dohvatiti iz roditeljskog _hooka_ na isti način kao što bismo pozivali direktivu, poput `@click`.
+
+Dodajemo `@close` direktivu na `OrderFooter` komponentu unutar `PizzaList.vue` komponente te što se dešava kada se dogodi `close` događaj:
+
+- `@close="odabrana_pizza = null"` - poništavamo odabir pizze postavljanjem `odabrana_pizza` varijable na `null` jednom kad se dogodi `close` emit
+
+```html
+<OrderFooter v-if="odabrana_pizza" :odabrana-pizza="odabrana_pizza" @close="odabrana_pizza = null" />
+```
+
+**2. način:**
+
+Za hvatanje `ESC` tipke na tipkovnici, možemo koristiti `window` objekt za dodavanje globalnog event listenera unutar `onMounted` _hooka_ u `PizzaList.vue` komponenti.
+
+```javascript
+// app/pizza-vue/src/components/PizzaList.vue
+
+onMounted(() => {
+    window.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            odabrana_pizza.value = null; // poništavamo odabir pizze
+        }
+    });
+});
+```
+
+To je to! Sada možemo zatvoriti _footer-izbornik_ klikom na `X` gumb ili pritiskom na `ESC` tipku na tipkovnici 😎.
+
+### Implementacija preostalih UI funkcionalnosti
+
+Sljedeći korak je **evidentirati stavke narudžbe** jednom kad korisnik klikne na gumb `Dodaj u košaricu` unutar `OrderFooter.vue` komponente.
+
+Idemo unaprijediti korisničko sučelje dodavanjem sljedećih funkcionalnosti:
+
+1. Jasno istaknut odabir veličine pizze.
+2. Gumbi `+` i `–` za povećanje ili smanjenje količine naručenih pizza.
+3. Automatski izračun i prikaz cijene prema odabranoj veličini i količini.
+4. Gumb **Dodaj u košaricu** zajedno s prikazom dodane stavke.
+5. Dodavanje i implementacija završnog gumba **Pošalji narudžbu**.
+
+Krenimo redom!
+
+Na Express poslužitelju smo definirali strukturu narudžbe koja izgleda ovako:
+
+```json
+{
+    "narucene_pizze": [
+        {
+            "naziv": "Capricciosa",
+            "velicina": "mala",
+            "kolicina": 3
+        },
+        {
+            "naziv": "Slavonska",
+            "velicina": "srednja",
+            "kolicina": 2
+        }
+    ],
+    "podaci_dostava": {
+        "prezime": "Pilić",
+        "adresa": "Ilica 305, Zagreb",
+        "telefon": "091234567"
+    }
+}
+```
+
+Unutar `OrderFooter.vue` komponente, definirat ćemo reaktivne varijable za pohranu `narucene_pizze` (polje naručenih pizza) i popratnu funkciju `dodajUNarudzbu` koja će se pozivati klikom na gumb **Dodaj u košaricu**.
+
+```javascript
+// app/pizza-vue/src/components/OrderFooter.vue
+
+const narucene_pizze = ref([]);
+
+function dodajUNarudzbu() {
+    // logika za dodavanje pizze u narudžbu
+}
+```
+
+Odabir veličine pizze možemo postići reaktivnim tailwind klasama (UI) kao što smo već radili za odabir pizze.
+
+Definirat ćemo reaktivnu varijablu `odabranaVelicina` koja će pohranjivati trenutno odabranu veličinu pizze. Uz to, možemo postaviti i početnu naručenu količinu na `1`.
+
+```javascript
+const odabranaVelicina = ref('mala'); // početna (zadana) vrijednost
+const kolicina = ref(1); // početna (zadana) količina
+```
+
+Idemo pregledati `button` HTML strukturu:
+
+```html
+<div class="flex items-center justify-center sm:justify-start flex-wrap gap-2 w-full sm:w-auto">
+    <button
+        v-for="(cijena, velicina) in odabranaPizza.cijene"
+        :key="velicina"
+        class="px-3 py-1 cursor-pointer rounded-lg border border-slate-500 bg-slate-600/40 hover:bg-orange-500 hover:border-orange-400 hover:text-white transition-all text-sm sm:text-base"
+    >
+        {{ velicina }} – {{ cijena }}€
+    </button>
+</div>
+```
+
+Tailwind klasa `bg-slate-600/40` definira pozadinsku boju gumba. Možemo ju izmijeniti u `bg-orange-500` kada je veličina odabrana (malo snažnija boja od hover efekta).
+
+Dodajemo dinamičku klasu unutar `:class` direktive:
+
+```html
+<button
+    v-for="(cijena, velicina) in odabranaPizza.cijene"
+    :key="velicina"
+    :class="[
+            'px-3 py-1 rounded-lg border border-slate-500 text-sm sm:text-base hover:bg-orange-500 hover:text-white transition-all cursor-pointer',
+            odabranaVelicina === velicina
+              ? 'bg-orange-500 text-white'
+              : 'bg-slate-600/40 text-white',
+          ]"
+>
+    {{ velicina }} – {{ cijena }}€
+</button>
+```
+
+Još moramo dodati `@click` event na gumb kako bismo ažurirali `odabranaVelicina` varijablu:
+
+```html
+<button ... @click="odabranaVelicina = velicina">{{ velicina }} – {{ cijena }}€</button>
+```
+
+Otvorite Vue Devtools u pregledniku i provjerite mijenja li se reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente kada kliknete na različite veličine pizza.
+
+<img src="./screenshots/orderfooter-reaktivna-varijabla-devtools.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 21: Reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente (prikaz u Vue Devtools)
+
+Idemo dalje!
+
+---
+
+Sličan pristup koristit ćemo za implementaciju gumba `+` i `–` za povećanje i smanjenje količine naručenih pizza.
+
+Prvo moramo hardkodiranu jedinicu `1` unutar HTML strukture zamijeniti s reaktivnom varijablom `kolicina`.
+
+```html
+<!-- app/pizza-vue/src/components/OrderFooter.vue -->
+
+<div class="px-3 py-1 bg-slate-600/40 backdrop-blur-sm rounded-md border border-slate-500 text-sm sm:text-base">{{ kolicina }}</div>
+```
+
+`+` i `-` su nam gumbi kojima možemo dodati `@click` direktive za ažuriranje reaktivne varijable `kolicina`:
+
+```html
+<!-- gumb za smanjenje količine -->
+<button
+    @click="kolicina ? kolicina-- : kolicina = 1"
+    class="w-8 h-8 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition-all cursor-pointer"
+>
+    -
+</button>
+
+<!-- gumb za povećanje količine -->
+
+<button
+    @click="kolicina ? kolicina++ : (kolicina = 1)"
+    class="w-8 h-8 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition-all cursor-pointer"
+>
+    +
+</button>
+```
+
+Izraz: `kolicina ? kolicina++ : (kolicina = 1)` osigurava da količina nikada ne padne ispod `1` te je ekvivalentan sljedećem:
+
+> Hint: JavaScript [Ternarni operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) (`?`) se često koristi u Vue.js aplikacijama kada želimo unutar direktiva ili drugih template izraza napisati kratki logički uvjet.
+
+```javascript
+if (kolicina > 1) {
+    kolicina--;
+} else {
+    kolicina = 1;
+}
+```
+
+Prije implementacije logike za dodavanje stavke u narudžbu, želimo prikazati **automatski izračunatu cijenu** prema odabranoj veličini i količini. Dodat ćemo cijenu **između odabrane količine** i gumba **Dodaj u košaricu**.
+
+```html
+<div class="w-full sm:w-auto text-center font-semibold text-lg text-orange-400 tracking-wide">Ukupno: {{ ukupna_cijena_stavke }}€</div>
+```
+
+Za izračun ukupne cijene stavke, praktično je koristiti Vue 3 [computed properties](https://vuejs.org/guide/essentials/computed.html) unutar `<script setup>` bloka.
+
+**Zašto computed property**? Zašto ne običnu reaktivnu varijablu ili funkciju?
+
+- ne možemo koristiti običnu reaktivnu varijablu jer se vrijednost mora ažurirati svaki put kada se promijeni `odabranaVelicina` ili `kolicina`
+- običnu funkciju bismo mogli koristiti, međutim computed property je puno bolje i optimiziraje rješenje jer Vue _cache_-ira vrijednost dok se ne promijene ovisnosti (u našem slučaju `odabranaVelicina` i `kolicina`)
+
+`computed` svojstvo moramo uključiti iz `vue` paketa:
+
+```javascript
+// app/pizza-vue/src/components/OrderFooter.vue
+
+import { computed } from 'vue';
+
+const ukupna_cijena_stavke = computed(() => {
+    const cijenaPoKomadu = props.odabranaPizza.cijene[odabranaVelicina.value];
+    return (cijenaPoKomadu * kolicina.value).toFixed(2);
+});
+```
+
+```html
+<div class="w-full sm:w-auto text-center font-semibold text-lg text-orange-400 tracking-wide">Ukupno: {{ ukupna_cijena_stavke || '0.00' }}€</div>
+```
+
+<img src="./screenshots/orderfooter-calculating-price.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 22: Prikaz automatski izračunate cijene unutar `OrderFooter.vue` komponente (prikaz u pregledniku) s interaktivnim odabirom veličine i količine
+
+---
+
+Sada možemo implementirati funkcionalnost dodavanja stavke u narudžbu klikom na gumb **Dodaj u košaricu**.
+
+Unutar `dodajUNarudzbu` funkcije, kreiramo novi objekt stavke narudžbe koji sadrži naziv pizze, odabranu veličinu i količinu (onako kako očekuje Express poslužitelj):
+
+```javascript
+// app/pizza-vue/src/components/OrderFooter.vue
+
+function dodajUNarudzbu() {
+    const novaStavka = {
+        naziv: props.odabranaPizza.naziv,
+        velicina: odabranaVelicina.value,
+        kolicina: kolicina.value
+    };
+    narucene_pizze.value.push(novaStavka); // dodajemo stavku u polje naručenih pizza
+    console.log('Naručene pizze:', narucene_pizze.value);
+}
+```
+
+Pozivamo `dodajUNarudzbu` funkciju klikom na gumb **Dodaj u košaricu**:
+
+```html
+<button
+    @click="dodajUNarudzbu"
+    class="bg-orange-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md shadow-black/40 hover:bg-orange-600 transition-all tracking-wide cursor-pointer w-full sm:w-auto text-center"
+>
+    Dodaj u košaricu
+</button>
+```
+
+Provjerite u konzoli preglednika i Vue Devtools da li se stavke ispravno dodaju u `narucene_pizze` polje kada kliknete na gumb **Dodaj u košaricu**.
+
+Kako bismo uvjerili i samog korisnika aplikacije, možemo dodavati mali graditi prikaz stavki:
+
+Možete dodati sljedeći HTML isječak prije zatvaranja `footer` taga unutar `OrderFooter.vue` komponente:
+
+- sljedeći Vue isječak nema ništa posebno novo, već samo iscrtava stavke iz `narucene_pizze` polja koristeći `v-for` direktivu s ključevima i vrijednostima iz objekta
+
+```html
+<!-- app/pizza-vue/src/components/OrderFooter.vue -->
+ ...
+    <div
+      v-if="narucene_pizze.length"
+      class="mt-4 max-w-2xl mx-auto max-h-40 overflow-y-auto bg-slate-800/50 backdrop-blur-sm rounded-lg p-3 border border-slate-600"
+    >
+      <h4 class="font-semibold text-lg text-white mb-2">Stavke u košarici:</h4>
+      <ul class="space-y-2">
+        <li
+          v-for="(stavka, index) in narucene_pizze"
+          :key="index"
+          class="flex items-center justify-between bg-slate-700/50 rounded-md p-2"
+        >
+          <div class="text-white">
+            {{ stavka.naziv }} ({{ stavka.velicina }}) x{{ stavka.kolicina }}
+          </div>
+          <div class="text-orange-400 font-semibold">
+            {{ (props.odabranaPizza.cijene[stavka.velicina] * stavka.kolicina).toFixed(2) }}€
+          </div>
+        </li>
+      </ul>
+    </div>
+  </footer>
+```
+
+Testirajmo aplikaciju! Dodat ćemo 2 srednje Capricciose i 1 jumbo Fantasiu u košaricu.
+
+<img src="./screenshots/orderfooter-pregled-stavki.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 23: Prikaz stavki unutar `OrderFooter.vue` komponente (prikaz u pregledniku)
+
+---
+
+Napokon, dodajmo gumb **Naruči** unutar `OrderFooter.vue` komponente koji će poslati `POST /narudzbe` zahtjev na Express poslužitelj s podacima o narudžbi.
+
+Dodat ćemo gumb pored gumba **Dodaj u košaricu**:
+
+- klikom na gumb, pozvat ćemo `posaljiNarudzbu` funkciju koja će sadržavati logiku slanja narudžbe na Express poslužitelj
+
+```html
+<button
+...
+    Dodaj u košaricu
+</button>
+
+<button
+    @click="posaljiNarudzbu"
+    class="bg-orange-500 text-white font-semibold px-4 py-2 rounded-xl shadow-md shadow-black/40 hover:bg-orange-600 transition-all tracking-wide cursor-pointer w-full sm:w-auto text-center"
+>
+    Naruči
+</button>
+```
+
+Idemo implementirati `posaljiNarudzbu` funkciju unutar `<script setup>` bloka `OrderFooter.vue` komponente.
+
+Nismo nigdje od korisnika prikupili podatke za dostavu (prezime, adresa, telefon), pa ćemo ih hardkodirati unutar funkcije za sada (ostaje za zadaću).
+
+Moramo poslati zahtjev na `http://localhost:3000/narudzbe` s JSON tijelom koje sadrži polje `narucene_pizze` i objekt `podaci_dostava`.
+
+Definirat ćemo asinkronu funkciju `posaljiNarudzbu` koristeći `axios` za slanje `POST` zahtjeva:
+
+```javascript
+// app/pizza-vue/src/components/OrderFooter.vue
+
+import axios from 'axios';
+
+async function posaljiNarudzbu() {
+    try {
+        // alert ako je košarica prazna
+        if (narucene_pizze.value.length === 0) {
+            alert('Košarica je prazna! Molimo dodajte pizze prije narudžbe.');
+            return;
+        }
+
+        // hardkodirani podaci za dostavu
+        const podaciZaDostavu = {
+            prezime: 'Pilić',
+            adresa: 'Ilica 305, Zagreb',
+            telefon: '091234567'
+        };
+
+        const odgovor = await axios.post('http://localhost:3000/narudzbe', {
+            narucene_pizze: narucene_pizze.value,
+            podaci_dostava: podaciZaDostavu
+        });
+
+        console.log('Narudžba uspješno poslana:', odgovor.data);
+        alert('Hvala! Vaša narudžba je uspješno poslana.');
+
+        // Resetiraj narudžbu nakon slanja
+        narucene_pizze.value = [];
+    } catch (error) {
+        console.error('Greška pri slanju narudžbe:', error);
+        alert('Došlo je do greške pri slanju narudžbe. Molimo pokušajte ponovno.');
+    }
+}
+```
+
+Kako bismo bili sigurni da je narudžba pristigla, dodat ćemo `console.log` na Express poslužitelju na poletku `POST /narudzbe` endpointa:
+
+```javascript
+// app/pizza-express/routes/narudzbe.js
+
+router.post('/', (req, res) => {
+    console.log('Primljeni podaci narudžbe:', req.body);
+    // ostatak endpointa ...
+});
+```
+
+Idemo testirati! Pošaljite narudžbu klikom na gumb **Naruči** unutar Vue.js aplikacije.
+
+<img src="./screenshots/narudzba_uspjesno_dodana_vue.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+Na Express poslužitelju, trebali bismo vidjeti ispisane podatke narudžbe u konzoli:
+
+```bash
+Primljeni podaci narudžbe: {
+  narucene_pizze: [ { naziv: 'Al Tonno', velicina: 'jumbo', kolicina: 2 } ],
+  podaci_dostava: {
+    prezime: 'Pilić',
+    adresa: 'Ilica 305, Zagreb',
+    telefon: '091234567'
+  }
+}
+```
