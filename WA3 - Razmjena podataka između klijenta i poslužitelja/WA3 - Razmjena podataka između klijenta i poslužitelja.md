@@ -1796,7 +1796,7 @@ odabrana_pizza?.naziv === pizza.naziv
 
 To je to! Sada kada odaberemo pizzu iz popisa, trebali bismo vidjeti _footer-izbornik_ s podacima o odabranoj pizzi.
 
-<img src="./screenshots/vue-pizzalist-dodan-footer.png " style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-dodan-footer.png?raw=true " style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 20: Dodana `OrderFooter.vue` komponenta unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
@@ -1970,7 +1970,7 @@ Još moramo dodati `@click` event na gumb kako bismo ažurirali `odabranaVelicin
 
 Otvorite Vue Devtools u pregledniku i provjerite mijenja li se reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente kada kliknete na različite veličine pizza.
 
-<img src="./screenshots/orderfooter-reaktivna-varijabla-devtools.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-reaktivna-varijabla-devtools.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 21: Reaktivna varijabla `odabranaVelicina` unutar `OrderFooter.vue` komponente (prikaz u Vue Devtools)
 
@@ -2051,7 +2051,7 @@ const ukupna_cijena_stavke = computed(() => {
 <div class="w-full sm:w-auto text-center font-semibold text-lg text-orange-400 tracking-wide">Ukupno: {{ ukupna_cijena_stavke || '0.00' }}€</div>
 ```
 
-<img src="./screenshots/orderfooter-calculating-price.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-calculating-price.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 22: Prikaz automatski izračunate cijene unutar `OrderFooter.vue` komponente (prikaz u pregledniku) s interaktivnim odabirom veličine i količine
 
@@ -2122,7 +2122,7 @@ Možete dodati sljedeći HTML isječak prije zatvaranja `footer` taga unutar `Or
 
 Testirajmo aplikaciju! Dodat ćemo 2 srednje Capricciose i 1 jumbo Fantasiu u košaricu.
 
-<img src="./screenshots/orderfooter-pregled-stavki.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-pregled-stavki.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 23: Prikaz stavki unutar `OrderFooter.vue` komponente (prikaz u pregledniku)
 
@@ -2206,7 +2206,7 @@ router.post('/', (req, res) => {
 
 Idemo testirati! Pošaljite narudžbu klikom na gumb **Naruči** unutar Vue.js aplikacije.
 
-<img src="./screenshots/narudzba_uspjesno_dodana_vue.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/narudzba_uspjesno_dodana_vue.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 Na Express poslužitelju, trebali bismo vidjeti ispisane podatke narudžbe u konzoli:
 
