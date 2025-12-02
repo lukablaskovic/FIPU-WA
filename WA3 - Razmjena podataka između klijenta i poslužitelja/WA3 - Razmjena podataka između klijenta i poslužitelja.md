@@ -31,23 +31,23 @@ Preporučuje se da prije početka izrade <i>frontend</i> dijela web aplikacije p
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(3) Razmjena podataka između klijenta i poslužitelja](#3-razmjena-podataka-između-klijenta-i-poslužitelja)
-  - [Sadržaj](#sadržaj)
+    - [Sadržaj](#sadržaj)
 - [1. Postavljanje `Express` poslužitelja](#1-postavljanje-express-poslužitelja)
-  - [1.1 Definiranje osnovnih endpointova i dummy podataka](#11-definiranje-osnovnih-endpointova-i-dummy-podataka)
-    - [1.1.1 Implementacija `/pizze Router`](#111-implementacija-pizze-router)
-    - [1.1.2 Implementacija `/narudzbe Router`](#112-implementacija-narudzbe-router)
+    - [1.1 Definiranje osnovnih endpointova i dummy podataka](#11-definiranje-osnovnih-endpointova-i-dummy-podataka)
+        - [1.1.1 Implementacija `/pizze Router`](#111-implementacija-pizze-router)
+        - [1.1.2 Implementacija `/narudzbe Router`](#112-implementacija-narudzbe-router)
 - [2. Implementacija Vue.js klijentske strane](#2-implementacija-vuejs-klijentske-strane)
-  - [2.1 Konfiguracija Vue.js projekta s TailwindCSS-om i Vite-om](#21-konfiguracija-vuejs-projekta-s-tailwindcss-om-i-vite-om)
-  - [2.2 Dodavanje osnovnih komponenti korisničkog sučelja](#22-dodavanje-osnovnih-komponenti-korisničkog-sučelja)
-    - [PizzaList.vue komponenta](#pizzalistvue-komponenta)
-    - [Header.vue komponenta](#headervue-komponenta)
-  - [Implementacija odabira pizze](#implementacija-odabira-pizze)
+    - [2.1 Konfiguracija Vue.js projekta s TailwindCSS-om i Vite-om](#21-konfiguracija-vuejs-projekta-s-tailwindcss-om-i-vite-om)
+    - [2.2 Dodavanje osnovnih komponenti korisničkog sučelja](#22-dodavanje-osnovnih-komponenti-korisničkog-sučelja)
+        - [PizzaList.vue komponenta](#pizzalistvue-komponenta)
+        - [Header.vue komponenta](#headervue-komponenta)
+    - [Implementacija odabira pizze](#implementacija-odabira-pizze)
 - [3. Axios i komunikacija s Express poslužiteljem](#3-axios-i-komunikacija-s-express-poslužiteljem)
-  - [3.1 CORS politika](#31-cors-politika)
-  - [3.2 Dinamičko iscrtavanje podataka o pizzama](#32-dinamičko-iscrtavanje-podataka-o-pizzama)
-  - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
-  - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
-  - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
+    - [3.1 CORS politika](#31-cors-politika)
+    - [3.2 Dinamičko iscrtavanje podataka o pizzama](#32-dinamičko-iscrtavanje-podataka-o-pizzama)
+    - [3.2.1 `v-for` direktiva](#321-v-for-direktiva)
+    - [3.2.2 Prikaz ikona sastojaka](#322-prikaz-ikona-sastojaka)
+    - [3.2.3 Dodavanje javnih slika na poslužitelj](#323-dodavanje-javnih-slika-na-poslužitelj)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -233,7 +233,7 @@ app.use('/pizze', pizzeRouter); // dodavanje prefiksa "/pizze" za svaki endpoint
 
 Otvorite Postman, dodajte odgovarajuće testove i provjerite ispravnost implementacije.
 
-<img src="./screenshots/postman_sve_pizze.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/postman_sve_pizze.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 1: Testiranje GET /pizze _endpointa_ u Postmanu (odabrani prikaz `Preview` HTTP odgovora)
 
@@ -327,7 +327,7 @@ app.use('/narudzbe', narudzbeRouter); // dodavanje prefiksa "/narudzbe" za svaki
 
 Otvorite Postman, dodajte odgovarajući test i provjerite ispravnost implementacije.
 
-<img src="./screenshots/postman_dodavanje_pizze.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/postman_dodavanje_pizze.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 2: Testiranje POST /pizze _endpointa_ u Postmanu (odabrani prikaz `Preview` HTTP odgovora i JSON tijela zahtjeva)
 
@@ -349,7 +349,7 @@ Iako je **Webpack** dugo bio standard u industriji, Vite je danas sve češći i
 
 Pustite otvoren Express.js poslužitelj te u novom terminalu inicijalizirajte Vue.js projekt.
 
-<img src="./screenshots/vs-code-split-terminal.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vs-code-split-terminal.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 Prebacit ćemo se u `pizza-vue` direktorij i inicijalizirati Vue.js projekt koristeći Vite.
 
@@ -478,7 +478,7 @@ Sada možemo pokrenuti razvojni poslužitelj koristeći naredbu `npm run dev`:
 
 Otvorite web preglednik i posjetite `http://localhost:5173/` kako biste vidjeli početnu stranicu Vue.js aplikacije.
 
-<img src="./screenshots/vue-dev-server-start.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-dev-server-start.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 3: Početna stranica Vue.js aplikacije pokrenute s Vite razvojnim poslužiteljem na zadanom portu `5173`. Vue.js developer tools možete otvoriti putem preglednika za lakše debugiranje Vue komponenti kraticom `SHIFT + ALT/OPT + D`.
 
@@ -549,7 +549,7 @@ To je to! Sada možete ponovno pokrenuti Vite razvojni poslužitelj i provjeriti
 
 Pokrenite Vite razvojni poslužitelj, trebali biste vidjeti crveni tekst <span style="color:red">You did it!</span> i veliki podcrtani naslov <u>**Hello world!**</u>.
 
-<img src="./screenshots/tailwind_ready_wohoo.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/tailwind_ready_wohoo.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 4: Ispravno integriran TailwindCSS u Vue.js aplikaciju (prikaz u pregledniku)
 
@@ -743,7 +743,7 @@ Na ovaj način žemo iscrtati `PizzaList` komponentu unutar glavne aplikacije.
 </template>
 ```
 
-<img src="./screenshots/vue_pizzalist_first_render.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue_pizzalist_first_render.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 5: Prikaz Vue.js aplikacije s dodanim HTML predloškom u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
@@ -823,7 +823,7 @@ Uvezite komponentu unutar `App.vue` datoteke i koristite je iznad `PizzaList` ko
 
 To je to! Vaša web aplikacija sada bi trebala imati pozadinsku sliku iza sadržaja i zaglavlje na vrhu stranice.
 
-<img src="./screenshots/vue-pizzalist-w-bg-header.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-bg-header.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 ## Implementacija odabira pizze
 
@@ -935,7 +935,7 @@ _Primjer: Izmijenjeni naziv pizze i dodani `@click` event:_
 </div>
 ```
 
-<img src="./screenshots/vue-pizza-click.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizza-click.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 6: Dodan `@click` event na HTML element pizze u `PizzaList.vue` komponenti (prikaz u pregledniku)
 
@@ -1004,7 +1004,7 @@ Promijenit ćemo i zadanu klasu kako bismo dobili **tranzicijski efekt prilikom 
 
 Možemo prebaciti `@click` event na cijeli ovaj `div` budući da želimo da se pizza odabere kada korisnik klikne bilo gdje unutar kartice pizze.
 
-<img src="./screenshots/vue-pizza-click-highlight.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizza-click-highlight.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 Za sada toliko od dizajna. Idemo napokon implementirati komunikaciju s Express poslužiteljem kako bismo dohvatili stvarne podatke o pizzama i prikazali ih dinamički unutar `PizzaList.vue` komponente.
 
@@ -1100,7 +1100,7 @@ Ubacite ovaj kod u `PizzaList.vue` komponentu i pokušajte osvježite stranicu u
 
 Nažalost, ako pokušate pokrenuti ovaj kod odmah, vjerojatno ćete dobiti grešku vezanu uz CORS (_Cross-Origin Resource Sharing_) politiku u pregledniku.
 
-<img src="./screenshots/cors_error_console.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_console.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 7: CORS greška u konzoli preglednika prilikom pokušaja slanja HTTP zahtjeva s Vue.js aplikacije na Express poslužitelj
 
@@ -1110,13 +1110,13 @@ Možemo se dodatno uvjeriti da je došlo do greške tako da otvorimo _Network_ t
 
 Osvježite ponovo stranicu i pronađite neuspjeli zahtjev obojen u crveno.
 
-<img src="./screenshots/cors_error_network.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors_error_network.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 Ako otvorite detalje mrežnog zahtjeva, vidjet ćete detalje o HTTP zahtjevu i poslana zaglavlja (_request headers_). Međutim, nećete vidjeti podatke o HTTP odgovoru jer je preglednik blokirao pristup tim podacima zbog CORS politike. Ipak, statusni kod odgovora je `200 OK`, što znači da je poslužitelj ispravno obradio zahtjev.
 
 [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) je sigurnosna značajka web preglednika koja kontrolira kako web stranice/aplikacije mogu komunicirati/zatražiti određene resurse preko poslužitelja koji se nalazi na drugoj domeni (ili samo portu u našem slučaju).
 
-<img src="./screenshots/cors-illustration.png" style="width:40%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/cors-illustration.png?raw=true" style="width:40%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 Drugim riječima, CORS politika definira smije li razvojni poslužitelj na domeni `http://localhost:5173` (Vite poslužitelj) komunicirati s Express poslužiteljem na domeni `http://localhost:3000`.
 
@@ -1153,13 +1153,13 @@ Na ovaj način smo dozvolili **svim domenama** da šalju zahtjeve našem Express
 
 Vratite se na Vue.js aplikaciju i osvježite stranicu u pregledniku. Sada bi HTTP zahtjev trebao uspješno proći bez CORS greške, a podaci o pizzama trebali bi se ispisati u **konzoli preglednika**.
 
-<img src="./screenshots/vue-get-pizze-after-cors.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-get-pizze-after-cors.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 8: Uspješan HTTP GET zahtjev s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u konzoli preglednika)
 
 Možete otvoriti i **Network tab** u developer tools preglednika i pogledati detalje uspješnog zahtjeva.
 
-<img src="./screenshots/vue-network-tab-get-pizze-after-cors.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-network-tab-get-pizze-after-cors.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 9: Detalji uspješnog HTTP GET zahtjeva s Vue.js aplikacije na Express poslužitelj nakon konfiguracije CORS politike (prikaz u Network tabu developer tools preglednika)
 
@@ -1340,7 +1340,7 @@ Sada **obrišite preostale pizze** iz HTML predloška budući da će se one sada
 
 Ako ste dobro implementirali `v-for` direktivu, sada biste trebali vidjeti ukupno pet pizza iscrtano u pregledniku, ali s pogrešnim podacima.
 
-<img src="./screenshots/v-for-pizze.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/v-for-pizze.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 10: Dodana `v-for` direktiva za dinamičko iscrtavanje pizza unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
@@ -1385,7 +1385,7 @@ Ovaj put ju dodajemo na ponavljajući `<div> class="w-8 h-8 bg-orange-500 rounde
 </div>
 ```
 
-<img src="./screenshots/vue-v-for-total.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-v-for-total.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 11: Završena implementacija `v-for` direktive za dinamičko iscrtavanje podataka o pizzama unutar `PizzaList.vue` komponente (prikaz u pregledniku)
 
@@ -1414,7 +1414,7 @@ Otvorite stranicu [Oh, Vue, Icons!](https://oh-vue-icons.js.org/) i potražite i
 
 Svakoj ikoni pridružen je jedinstveni identifikator koji ćemo koristiti za uvoz ikona, npr. za rajčicu može biti ikona `GiTomato`.
 
-<img src="./screenshots/oh-vue-icons-web.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/oh-vue-icons-web.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 12: Oh, Vue, Icons! web stranica za pregled i odabir ikona
 
@@ -1514,7 +1514,7 @@ Sada možemo iscrtati ikone sastojaka unutar `v-for` direktive u `PizzaList.vue`
 
 To je to! Ispravno smo prikazali sve podatke s poslužitelja, uključujući i ikone sastojaka za svaku pizzu.
 
-<img src="./screenshots/vue-pizzalist-w-icons.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-icons.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 ## 3.2.3 Dodavanje javnih slika na poslužitelj
 
@@ -1553,6 +1553,6 @@ Malo ćemo izmijeniti stilove kako bi slika zauzela cijeli kontejner i kako bi m
 </div>
 ```
 
-<img src="./screenshots/vue-pizzalist-w-images.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/vue-pizzalist-w-images.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > To be continued ...
