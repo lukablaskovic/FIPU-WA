@@ -50,6 +50,7 @@ Preporučuje se da prije početka izrade <i>frontend</i> dijela web aplikacije p
     - [Opcionalno lančanje (Optional Chaining)](#opcionalno-lančanje-optional-chaining)
     - [Emitiranje događaja (Event Emitting)](#emitiranje-događaja-event-emitting)
     - [Implementacija preostalih UI funkcionalnosti](#implementacija-preostalih-ui-funkcionalnosti)
+- [Samostalni zadatak za Vježbu 3](#samostalni-zadatak-za-vježbu-3)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -2220,3 +2221,17 @@ Primljeni podaci narudžbe: {
   }
 }
 ```
+
+# Samostalni zadatak za Vježbu 3
+
+Potrebno je implementirati Vue.js aplikaciju i Express poslužitelj prema uputama u ovoj skripti. Rezultat treba biti **funkcionalna Vue/Express aplikacija** za pregled dostupnih pizza, prikaz svih podataka o pizzama dohvaćenih s Expressa, te mogućnost slanja narudžbi na poslužitelj kao što je prikazano u primjerima.
+
+Nakon što završite implementaciju, implementirajte sljedeće dodatne funkcionalnosti:
+
+1. **Unos podataka za dostavu**: Umjesto hardkodiranih podataka za dostavu unutar `OrderFooter.vue` komponente, implementirajte obrazac koji omogućuje korisnicima da unesu svoje prezime, adresu i broj telefona prije slanja narudžbe. Validirajte unos kako biste osigurali da su svi potrebni podaci uneseni.
+
+2. **Brisanje stavki iz košarice**: Dodajte mogućnost brisanja pojedinačnih stavki iz košarice unutar `OrderFooter.vue` komponente. Korisnici bi trebali moći ukloniti stavke prije nego što pošalju narudžbu.
+
+3. **Prikaz statusa narudžbe**: Nakon slanja narudžbe, prikažite korisniku status narudžbe (npr. "Narudžba je uspješno poslana" ili "Došlo je do greške pri slanju narudžbe") unutar same aplikacije, umjesto korištenja `alert` funkcija. **Poruku koju prikažete potrebno je dohvatiti s Express poslužitelja**!
+
+4. Koristeći Vue Router, **implementirajte komponentu za pregled detalja o pojedinoj pizzi** na frontend adresi: `/pizze/:naziv`. Primjer: `/pizze/Margherita` bi trebao prikazati detalje o Margherita pizzi. Podaci koji se prikazuju trebaju biti dohvaćeni s Express poslužitelja koristeći definirani `GET /pizze/:naziv` endpoint. Korisnik se mora moći vratiti na popis svih pizza klikom na gumb "Natrag na popis".
