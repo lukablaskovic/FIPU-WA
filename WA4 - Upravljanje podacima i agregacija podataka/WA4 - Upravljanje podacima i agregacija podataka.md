@@ -7,35 +7,36 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
 
-# (4) Upravljanje podacima na poslužiteljskoj strani
+# (4) Upravljanje datotekama i agregacija podataka
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/WA_4_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
-Učinkovita pohrana podataka od presudne je važnosti za osiguravanje visoke kvalitete i pouzdanosti svake web aplikacije. Način na koji se podaci pohranjuju ovisi o specifičnim potrebama aplikacije, vrsti podataka te zahtjevima za sigurnost i skalabilnost. Kod web aplikacija podaci se najčešće čuvaju na udaljenim bazama podataka, čime se osigurava jednostavan pristup i pouzdano upravljanje. Kroz sljedeća 2 poglavlja koja se bave pohranom podataka, naučit ćete kako ispravno spremati podatke u web aplikaciju, bilo da se radi o lokalnoj ili udaljenoj pohrani na poslužiteljskoj strani.
+Ispravna upotreba i upravljanje podacima ključni su aspekti razvoja web aplikacija. U ovom poglavlju, fokusirat ćemo se na dvije važne teme: upravljanje datotekama na poslužiteljskoj strani i agregaciju podataka putem <i>query</i> parametara. Odabir načina pohrane ovisi o funkcionalnim zahtjevima sustava, strukturi podataka te potrebama u pogledu sigurnosti i skalabilnosti. U praksi se podaci najčešće pohranjuju na udaljenim bazama podataka, čime se omogućuje centralizirano upravljanje te jednostavan i siguran pristup. Međutim, postoje situacije u kojima je prikladno koristiti datoteke za pohranu podataka, osobito za manje količine podataka ili specifične formate koji nam se ne uklapaju u strukturu baze podataka. U tom slučaju moramo naučiti kako ispravno upravljati datotekama na poslužiteljskoj strani.
 </div>
 
 <br>
 
-**🆙 Posljednje ažurirano: 19.11.2024.**
+**🆙 Posljednje ažurirano: 8.12.2025.**
 
 ## Sadržaj
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
-- [(4) Upravljanje podacima na poslužiteljskoj strani](#4-upravljanje-podacima-na-poslužiteljskoj-strani)
+- [(4) Upravljanje datotekama i agregacija podataka](#4-upravljanje-datotekama-i-agregacija-podataka)
   - [Sadržaj](#sadržaj)
 - [1. Gdje pohranjujemo podatke u web aplikacijama?](#1-gdje-pohranjujemo-podatke-u-web-aplikacijama)
 - [2. Podaci na poslužiteljskoj strani](#2-podaci-na-poslužiteljskoj-strani)
-  - [2.1 Čitanje datoteka kroz `fs` modul](#21-čitanje-datoteka-kroz-fs-modul)
+  - [2.1 Čitanje tekstualnih datoteka kroz `fs` modul](#21-čitanje-tekstualnih-datoteka-kroz-fs-modul)
       - [2.1.1 Asinkroni pristup čitanju datoteke](#211-asinkroni-pristup-čitanju-datoteke)
       - [2.1.2 Apsolutna i Relativna putanja do datoteke](#212-apsolutna-i-relativna-putanja-do-datoteke)
-      - [2.1.3 `Callback` vs `Promise` pristup](#213-callback-vs-promise-pristup)
+      - [2.1.3 Modul `path` za upravljanje putanjama](#213-modul-path-za-upravljanje-putanjama)
+      - [2.1.4 `Callback` vs `Promise` pristup](#214-callback-vs-promise-pristup)
   - [2.2 Pohrana u datoteke kroz `fs` modul](#22-pohrana-u-datoteke-kroz-fs-modul)
     - [2.2.1 Pohrana `String` sadržaja u datoteku](#221-pohrana-string-sadržaja-u-datoteku)
     - [2.2.2 Čitanje i pohrana `JSON` podataka u datoteku](#222-čitanje-i-pohrana-json-podataka-u-datoteku)
-- [3. Agregacija podataka kroz `Query` parametre](#3-agregacija-podataka-kroz-query-parametre)
-  - [3.1 Filtriranje podataka](#31-filtriranje-podataka)
-  - [3.2 Sortiranje podataka](#32-sortiranje-podataka)
+- [3. Agregacija podataka kroz `query` parametre](#3-agregacija-podataka-kroz-query-parametre)
+  - [3.1 Query parametri: Filtriranje podataka](#31-query-parametri-filtriranje-podataka)
+  - [3.2 Query parametri: Sortiranje podataka](#32-query-parametri-sortiranje-podataka)
 - [Samostalni zadatak za Vježbu 4](#samostalni-zadatak-za-vježbu-4)
 
 <div style="page-break-after: always; break-after: page;"></div>
@@ -44,19 +45,19 @@ Učinkovita pohrana podataka od presudne je važnosti za osiguravanje visoke kva
 
 # 1. Gdje pohranjujemo podatke u web aplikacijama?
 
-Kada govorimo o pohrani podataka u web aplikacijama, važno je odmah razjasniti razliku između **klijentske** i **poslužiteljske** pohrane podataka. Web aplikacije u produkcijskom okruženju obično pohranjuju podatke na **obje razine**, kako bi se osigurala brza i učinkovita komunikacija između klijenta i poslužitelja.
+Kada govorimo o pohrani podataka u web aplikacijama, važno je odmah razjasniti razliku između **klijentske** i **poslužiteljske** pohrane podataka. Web aplikacije u produkcijskom okruženju obično pohranjuju podatke na **obje razine**, kako bi se osigurala učinkovita i sigurna komunikacija između klijenta i poslužitelja.
 
-**Klijentska pohrana podataka** (_eng. client-side storage_) odnosi se na spremanje podataka na korisničkom uređaju, obično unutar web preglednika, u obliku kolačića (cookies), lokalne memorije (_eng. local storage_), sesijske memorije (_eng. session storage_), ili drugih tehnologija (npr. IndexedDB) koje omogućuju privremeno ili trajno pohranjivanje podataka. Kod mobilnih aplikacija, klijentska pohrana može uključivati pohranu na prijenosnim uređajima (poput mobilnih telefona i tableta) putem tehnologija specifičnih za mobilne platforme.
+**Klijentska pohrana podataka** (_eng. client-side storage_) odnosi se na spremanje podataka na korisničkom uređaju, obično unutar web preglednika, u obliku kolačića (*eng. cookies*), lokalne memorije (_eng. local storage_), sesijske memorije (_eng. session storage_), ili drugih tehnologija (npr. IndexedDB, WebSQL) koje omogućuju privremeno ili trajno pohranjivanje podataka. Kod mobilnih aplikacija, klijentska pohrana može uključivati pohranu na prijenosnim uređajima (poput mobilnih telefona i tableta) putem tehnologija specifičnih za mobilne platforme.
 
 Podaci koji se pohranjuju na **klijentskoj strani** obično se koriste (samim time i pohranjuju) u sljedeće svrhe:
 
-- personalizacija korisničkog iskustva (npr. boja pozadine, postavke jezika, odabrana paleta boja/tema, itd.)
-- čuvanje korisničkih postavki (npr. preferirani način prikaza podataka, odabrane opcije, itd.)
-- praćenje korisničkih aktivnosti (npr. praćenje kretanja korisnika kroz web stranicu, praćenje klikova na određene elemente)
-- održavanje prethodne aktivnosti (npr. povijest pretraživanja, popis proizvoda u košarici, itd.)
-- pohrana određenih podataka u svrhu optimizacije performansi (npr. predmemoriranje podataka, spremanje rezultata pretrage, itd.)
+- **personalizacija korisničkog iskustva** (npr. boja pozadine, postavke jezika, odabrana paleta boja/tema, itd.)
+- **čuvanje korisničkih postavki** (npr. preferirani način prikaza podataka, odabrane opcije, itd.)
+- **praćenje korisničkih aktivnosti** (npr. praćenje kretanja korisnika kroz web stranicu, praćenje klikova na određene elemente)
+- **održavanje prethodne aktivnosti** (npr. povijest pretraživanja, popis proizvoda u košarici, itd.)
+- **pohrana određenih podataka u svrhu optimizacije performansi** (npr. predmemoriranje velikih podataka, spremanje rezultata pretrage, itd.)
 
-**Poslužiteljska pohrana podataka** (_eng. server-side storage_) odnosi se na pohranu podataka na udaljenom poslužitelju, obično u obliku baze podataka. Poslužiteljska pohrana omogućuje centralizirano upravljanje podacima, skalabilnost, sigurnost i pouzdanost. Baze podataka mogu biti relacijske (SQL) ili nerelacijske (NoSQL), ovisno o specifičnim potrebama aplikacije i karakteristikama pohranjenih podataka.
+**Poslužiteljska pohrana podataka** (_eng. server-side storage_) odnosi se na pohranu podataka na udaljenom poslužitelju, obično u obliku **baze podataka**. Poslužiteljska pohrana omogućuje centralizirano upravljanje podacima, skalabilnost, sigurnost i pouzdanost u pristupu podacima. Baze podataka mogu se u grubo podijeliti na relacijske (SQL) ili nerelacijske (NoSQL), ovisno o specifičnim potrebama aplikacije i karakteristikama pohranjenih podataka.
 
 Prednosti pohrane na poslužiteljskoj strani uključuju:
 
@@ -64,9 +65,7 @@ Prednosti pohrane na poslužiteljskoj strani uključuju:
 - visoka razina sigurnosti (pristup podacima kontroliran je na razini poslužitelja, što je _must-have_ za osjetljive podatke)
 - mogućnost skaliranja (u slučaju povećanja opterećenja, moguće je dodati nove poslužitelje ili resurse)
 
-<a href="https://www.postman.com/downloads/" target="_blank"><img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/pohrana_ilustracija.png" style="width:50%"> </a>
-
-> **Ilustracija**: Pohrana podataka u web aplikacijama (klijentska i poslužiteljska pohrana)
+<a href="https://www.postman.com/downloads/" target="_blank"><img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/pohrana_ilustracija.png" style="width:70%"> </a>
 
 <div class="page-break"></div>
 
@@ -78,13 +77,15 @@ Možemo zaključiti zašto ovakav pristup nije prikladan za stvarne web aplikaci
 
 Za vrijeme razvoja prethodnih primjera, osim _in-memory_ pohrane podataka, iskoristili smo i lokalne datoteke - ručno smo zapisivali neke podatke u `js` datoteke te ih koristili kao vanjske resurse. Ovo je također jedan od načina pohrane podataka - **spremanje podataka u datoteke na poslužitelju**.
 
-Naravno, podatke je na ovaj način moguće spremati u različitim formatima (npr. JSON, XML, CSV, itd.). Iako se na prvu čini kao solidna opcija za pohranu podataka, vidjet ćemo zašto ovaj pristup nije prikladan za stvarne web aplikacije. Ipak, neke web aplikacije na poslužiteljskoj (kao i klijentskoj) strani pohranjuju podatke u datoteke, međutim treba biti oprezan, vidjet ćete što je prikladno za pohranu u datoteke, a što nije.
+Naravno, podatke je ovim pristupom moguće pohraniti u različite formate (npr. JSON, XML, CSV i dr.). Iako se na prvi pogled čini kao razumna opcija za upravljanje podacima, pokazat ćemo zbog čega takav način pohrane nije prikladan za stvarne web aplikacije. Ipak, valja naglasiti da određene web aplikacije, kako na poslužiteljskoj tako i na klijentskoj strani, podatke doista pohranjuju u datoteke. Pri tome je nužno biti oprezan: objasnit ćemo što je primjereno pohranjivati u datoteke, a što nije.
 
-## 2.1 Čitanje datoteka kroz `fs` modul
+## 2.1 Čitanje tekstualnih datoteka kroz `fs` modul
 
-Krenimo s primjerom **čitanja podataka iz datoteka na poslužiteljskoj strani**. Za potrebe ovog primjera, koristit ćemo Node.js okruženje i ugrađeni `fs` modul ([File System](https://nodejs.org/api/fs.html)) koji omogućuje čitanje i pisanje u datoteke datotečnog sustava (_eng. file system_). Kako smo već prešli na `ES6` sintakse, držat ćemo se istog pristupa i prilikom korištenja `fs` modula.
+Krenimo s primjerom **čitanja tekstualnih podataka iz datoteka na poslužiteljskoj strani**. Za potrebe ovog primjera, koristit ćemo Node.js okruženje i ugrađeni `fs` modul ([File System](https://nodejs.org/api/fs.html)) koji omogućuje čitanje i pisanje u datoteke datotečnog sustava (_eng. file system_).
 
-Idemo definirati osnovni Express poslužitelj:
+Koristeći `fs` modul, možemo čitati različite formate tekstualnih datoteka, uključujući običan tekst, JSON, CSV, XML, HTML i dr.
+
+Definirajmo osnovni Express poslužitelj:
 
 ```javascript
 import express from 'express';
@@ -100,7 +101,9 @@ app.listen(3000, () => {
 });
 ```
 
-Uključit ćemo i `fs` modul (nije ga potrebno instalirati jer je ugrađen u Node.js):
+> Napomena, određeni *bundleri* (npr. Vite, Webpack, esbuild) omogućuju uvoz tekstualnih datoteka ili podataka direktno kroz `import` sintaksu. Ovo nije zadano JavaScript ponašanje te zahtijeva dodatnu konfiguraciju tih bundlera.
+
+Uključit ćemo i `fs` modul (nije ga potrebno ručno instalirati):
 
 ```javascript
 import fs from 'fs';
@@ -111,34 +114,34 @@ Općenito, pohranu i čitanje podataka u datoteke možemo podijeliti na dva osno
 1. **Asinkroni pristup**
 2. **Sinkroni pristup**
 
-JavaScript je jednodretveni jezik (_eng. single-threaded_), što znači da se kod izvršava redom, u jednoj sekvencijalnoj niti (dretvi). Međutim, mehanizmi poput **asinkronog programiranja** i [event loopa](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) omogućuju nam da izvršavamo više operacija istovremeno, **bez blokiranja glavne dretve**. Na ovaj način, JavaScript se izvršava konkurentno, premda daje iluziju paralelnog izvršavanja. Blokiranjem glavne dretve, aplikacija bi postala neodaziva, odnosno korisniku bi se jednostavno "zamrznula".
+JavaScript je jednodretveni programski jezik (_eng. single-threaded_), što znači da se kôd izvršava redom, u jednoj sekvencijalnoj niti (dretvi). Međutim, mehanizmi poput **asinkronog programiranja** i implementacije [JavaScript Execution modela](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) omogućuju nam da izvršavamo više operacija istovremeno, **bez blokiranja glavne dretve**. Na ovaj način, JavaScript kôd se ustvari izvršava [konkurentno](https://en.wikipedia.org/wiki/Concurrency_(computer_science)), premda daje iluziju paralelnog izvršavanja. Blokiranjem glavne dretve, aplikacija bi postala neodaziva, odnosno korisniku bi se jednostavno "zamrznula".
 
-U praksi, **asinkrono programiranje** koristimo za izvođenje operacija koje zahtijevaju vremenski zahtjevne operacije (npr. dohvaćanje podataka s udaljenog poslužitelja). Međutim, pisanje i čitanje datotečnog sustava također može biti vremenski zahtjevno, stoga je **preporučljivo koristiti asinkrone metode za pisanje i čitanje datoteka**.
+> Napomena: Više o asinkronom programiranju i konkurentnom izvođenju kôda učit ćete na kolegiju [Raspodijeljeni sustavi](https://fipu.unipu.hr/fipu/predmet/rassus_a) na Diplomskom studiju. Za sada je dovoljno razumjeti osnovne koncepte asinkronog programiranja i kako ih primijeniti u praksi.
+
+U praksi, **asinkrono programiranje** koristimo za izvođenje operacija koje zahtijevaju vremenski zahtjevne operacije (npr. dohvaćanje podataka s udaljenog poslužitelja). Međutim, pisanje i čitanje podataka iz datotečnog sustava također može biti vremenski zahtjevno, stoga je **preporučljivo koristiti asinkrone metode za pisanje i čitanje datoteka**. Zašto? Ukratko, ne želimo da naš poslužitelj čeka ili se "zamrzne" dok se datoteka čita ili piše ili dok se ne dovrši neka druga vremenski zahtjevna operacija.
 
 #### 2.1.1 Asinkroni pristup čitanju datoteke
 
-Krenimo s primjerom asinkronog čitanja datoteke. Izradit ćemo datoteku `story.txt` i ručno pohraniti u nju neku kratku priču. Koristeći `fs` modul, čitat ćemo sadržaj datoteke i ispisivati ga u konzolu. Datoteku možete pronaći u direktoriju `app/data` repozitorija ovih vježbi.
+Krenimo s primjerom asinkronog čitanja datoteke. Izradit ćemo datoteku `story.txt` i ručno pohraniti u nju neku kratku priču (priča u prilogu na Merlinu/GitHubu). Koristeći `fs` modul, čitat ćemo sadržaj datoteke i ispisivati ga u konzolu. Datoteku možete pronaći u direktoriju `app/data` repozitorija ovih vježbi.
 
 Za **asinkrono čitanje datoteke**, koristimo metodu `fs.readFile()`:
 
-Sintaksa:
+**Sintaksa:**
 
 ```javascript
 fs.readFile(path, options, callback);
 ```
 
-gdje su:
-
-- `path` - putanja do datoteke (**obavezno**)
+- `path` - relativna ili apsolutna putanja do datoteke (**obavezno**)
 - `options` - specifikacija enkodiranja datoteke (opcionalno)
   - `encoding` - encoding datoteke (npr. `'utf8'`)
-  - `flag` - opcionalni znak kojim se označava način pristupa datoteci (npr. `'r'` za čitanje)
-- `callback` - callback funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
+  - `flag` - opcionalni *char* kojim se označava način pristupa datoteci (npr. `'r'` za čitanje)
+- `callback` - *callback* funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
 
 `callback` funkcija prima dva argumenta:
 
-1. `err` - greška (ako postoji)
-2. `data` - sadržaj datoteke (ako je pročitan)
+1. `err` - greška (ako je nastala prilikom čitanja datoteke)
+2. `data` - sadržaj datoteke (ako je sadržaj datoteke uspješno pročitan)
 
 Primjer čitanja datoteke `story.txt`:
 
@@ -156,11 +159,12 @@ fs.readFile('./data/story.txt', 'utf8', (err, data) => {
 });
 ```
 
-U ovom primjeru, čitamo datoteku `story.txt` u [utf-8](https://en.wikipedia.org/wiki/UTF-8) formatu. `utf-8` format je najčešće korišteni format za čitanje i pisanje tekstualnih datoteka u digitalnoj formi budući da podržava sve znakove [Unicode](https://home.unicode.org/) standarda. Gotovo svaka web stranica, dokument ili programski kod napisan je u `utf-8` formatu.
+**`utf-8` encoding standard:**
 
-Ako kod samo zaljepimo unutar poslužitelja, datoteka `story.txt` će se pročitati asinkrono čim se poslužitelj pokrene. Ukoliko datoteka ne postoji, bit će ispisana greška.
+U ovom primjeru, čitamo datoteku `story.txt` u [utf-8](https://en.wikipedia.org/wiki/UTF-8) formatu. `utf-8` format je najčešće korišteni format za čitanje i pisanje tekstualnih datoteka u digitalnoj formi budući da podržava sve znakove [Unicode](https://home.unicode.org/) standarda. Danas je gotovo svaka web stranica, dokument ili programski kôd pohranjen u `utf-8` standardu.
+Ako kôd samo zaljepimo unutar poslužitelja, datoteka `story.txt` će se pročitati asinkrono čim se poslužitelj pokrene. Ukoliko datoteka ne postoji, bit će ispisana greška.
 
-Možemo vidjeti ispis u konzoli:
+Ispis u konzoli:
 
 ```bash
 Sadržaj datoteke: Već trideset i tri godine jedan stari ribar i njegova žena živjeli su siromašno.
@@ -183,22 +187,41 @@ A starica prela svoju pređu”
 
 Prije nego nastavimo, važno je razumjeti razliku između **apsolutne** i **relativne** putanje do datoteke (_eng. file path_).
 
-**Apsolutna putanja** (_eng. absolute path_) je putanja koja **počinje od korijenskog direktorija datotečnog sustava**. Na primjer, u Unix/Linux sustavima, korijenski direktorij je `/`, dok je u Windows sustavima to `C:\` (pretpostavka).
+**Apsolutna putanja** (_eng. absolute path_) je putanja koja **počinje od korijenskog (*eng. root*) direktorija datotečnog sustava**. Na primjer, u Unix/Linux sustavima, korijenski direktorij je `/`, dok je u Windows sustavima to najčešće `C:\`, ali može biti i neki drugi disk (npr. `D:\`, `E:\`, itd.) ovisno o konfiguraciji sustava.
 
-> Apsolutna putanja uvijek **počinje s korijenskim direktorijem** i **sadrži sve direktorije i datoteke koje se nalaze između korijenskog direktorija i ciljne datoteke**.
+Bash naredbom `pwd` (*print working directory*) možemo dobiti apsolutnu putanju do **trenutnog radnog direktorija** u kojem se nalazimo:
 
-Primjer apsolutne putanje do datoteke `story.txt` na Windows sustavu:
+```bash
+→ pwd
 
-```plaintext
-C:\Users\Username\Documents\GitHub\WA4 - Pohrana podataka\data\story.txt
+# Na Linux OS-u
+/home/username/Documents/GitHub/WA4 - Pohrana podataka/app
+# Na Windows OS-u:
+C:\Users\Username\Documents\GitHub\WA4 - Pohrana podataka\app
+# Na Mac OS-u:
+/Users/username/Documents/GitHub/WA4 - Pohrana podataka/app
 ```
 
-> **VAŽNO**: Windows sustavi koriste `\` kao separator direktorija, dok Unix/Linux sustavi koriste `/`.
+Apsolutna putanja uvijek **započinje s korijenskim direktorijem** i **sadrži sve direktorije i datoteke koje se nalaze između korijenskog direktorija i ciljane datoteke/direktorija** (`Apsolutna putanja` = `korijenski direktorij` + `svi direktoriji na putu` + `ciljna datoteka/direktorij`).
 
-Datoteku `story.txt` možemo pročitati koristeći apsolutnu putanju:
+Primjer apsolutne putanje do datoteke `story.txt`
+
+```plaintext
+# Na MacOS-u (Linux bi samo umjesto 'Users' imao 'home')
+/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka/app/data/story.txt
+
+# Na Windows OS-u
+C:\Users\LukaBlaskovic\Github\FIPU-WA\WA4 - Upravljanje podacima i agregacija podataka\app\data\story.txt
+```
+
+> Uočite: Windows sustavi koriste `\` (backslash) kao **separator direktorija**, dok Unix/Linux sustavi koriste `/` (forward slash).
+
+Datoteku `story.txt` možemo pročitati na sljedeći način koristeći apsolutnu putanju:
 
 ```javascript
-fs.readFile('C:\\Users\\Username\\Documents\\GitHub\\WA4 - Pohrana podataka\\data\\story.txt', 'utf8', (err, data) => {
+// apsolutna putanja do datoteke 'story.txt' na Windows OS-u pohranjena u string varijablu u JavaScriptu
+fs.readFile('C:\\Users\\Username\\Documents\\GitHub\\WA4 - Upravljanje podacima i agregacija podataka\\data\\story.txt', 'utf8',
+ (err, data) => {
   if (err) {
     console.error('Greška prilikom čitanja datoteke:', err);
     return;
@@ -208,58 +231,60 @@ fs.readFile('C:\\Users\\Username\\Documents\\GitHub\\WA4 - Pohrana podataka\\dat
 });
 ```
 
-Međutim, apsolutna putanja je specifična za svakog korisnika i njegov datotečni sustav. Također, teško je čitljiva i često je podložna greškama prilikom pisanja.
+Navedeno je **loša praksa** bududći da je apsolutna putanja specifična za svakog korisnika i njegov datotečni sustav. Također, teško je čitljiva i često je podložna greškama kod ručnog unosa, pogotovo ako je putanja dugačka i sadrži razne direktorije.
 
-Osim toga, vidimo da smo u kodu koristili dvostruke kosine (`\\`) kao separator direktorija. Ovo je specifično za Windows sustave budući da jedna kosa crta (`\`) predstavlja **escape znak** u JavaScriptu. Kako bismo izbjegli ovu konflikt, koristimo dvostruke kose crte. Primjer, escape znak za novi red je `\n` pa samim tim `\\` predstavlja jednu kosa crtu unutar stringa.
+*Primjer:* Kada bi netko klonirao ovaj repozitorij na svoje računalo i pokušao pokrenuti gornji kôd, došlo bi do greške budući da apsolutna putanja ne bi odgovarala njegovom datotečnom sustavu.
+
+Osim toga, vidimo da smo u kôdu koristili dvostruke kose crte (`\\`) kao **separator direktorija**. Ovo je specifično za Windows sustave budući da jedna kosa crta (`\`) predstavlja ***escape* znak** u JavaScriptu. Kako bismo izbjegli ovu konflikt, koristimo dvostruke kose crte. Primjer, *escape* znak za novi red je `\n` pa samim tim `\\` predstavlja jednu kosa crtu unutar stringa. Lista čestih *escape* znakova u JavaScriptu dostupna je [ovdje](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_escape).
 
 <hr>
 
 > **Relativna putanja** (_eng. relative path_) je putanja koja **počinje od trenutnog radnog direktorija**. Relativna putanja **ne počinje s korijenskim direktorijem** i sadrži samo direktorije i datoteke koji se nalaze **između trenutnog radnog direktorija i ciljne datoteke**.
 
-Trenutni radni direktorij možemo dobiti pomoću globalne varijable `__dirname` u CommonJS modulu ili putem `import.meta.url` u ES modulima. Ova varijabla sadrži putanju do trenutnog direktorija u kojem se nalazi trenutni modul, npr. `index.js` u našem slučaju.
+Trenutni radni direktorij možemo dobiti pomoću globalne varijable `__dirname` u CommonJS modulu ili putem `import.meta.url` u ES modulima (ipak, ovo je bolje raditi s `path` modulom). Ove varijable sadrži putanju do trenutnog direktorija u kojem se nalazi trenutni modul, npr. `index.js` u našem slučaju.
 
-_Primjer relativne putanje_ do datoteke `story.txt`:
+_Primjer relativne putanje_ do datoteke `story.txt` ako se nalazimo u direktoriju: `/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka/app`:
 
 ```plaintext
 ./data/story.txt
 ```
 
-Važno je naglasiti da se relativna putanja **ne mijenja** ovisno o korisniku ili operacijskom sustavu. Međutim, **moramo biti oprezni prilikom pokretanja aplikacije iz različitih direktorija**.
+**Moramo biti oprezni prilikom pokretanja aplikacije iz različitih direktorija**. Relativna putanja je relativna u **odnosu na trenutni radni direktorij** iz kojeg pokrećemo aplikaciju.
 
-Na primjer, ako se definicija poslužitelja `index.js` nalazi u direktoriju `app`, a datoteka `story.txt` u direktoriju `data` koji se također nalazi unutar direktorija `app`:
+Na primjer, ako se datoteka `index.js` nalazi u direktoriju `app`, a datoteka `story.txt` u poddirektoriju `data` unutar istog direktorija `app`:
 
 ```bash
-app
+app <-- radni direktorij
 ├── data
-│   └── story.txt
+│   └── story.txt <-- ciljna datoteka
 ├── index.js
 ├── node_modules
 ├── package-lock.json
 └── package.json
 ```
 
-relativna putanja do datoteke `story.txt` bit će:
+Relativna putanja od `index.js` do datoteke `story.txt` bit će:
 
 ```plaintext
 ./data/story.txt
 ```
 
-> Točkom `.` označavamo **trenutni direktorij**, a zatim nizom direktorija i datoteka definiramo putanju do ciljne datoteke.
+> Zapamti: Točkom `.` označavamo **trenutni direktorij**, a zatim nizom direktorija definiramo relativnu putanju do ciljne datoteke.
 
-Međutim, ako se datoteka `story.txt` nalazi u direktoriju `data` koji se nalazi u korijenskom direktoriju projekta, npr:
+Međutim, ako se datoteka `story.txt` nalazi u direktoriju `data` koji se nalazi u direktoriju `WA4 - Upravljanje podacima i agregacija podataka`, a datoteka `index.js` u direktoriju `app`, tada struktura direktorija izgleda ovako:
 
 ```bash
-WA4 - Pohrana podataka
+WA4 - Upravljanje podacima i agregacija podataka
 ├── data
-│   └── story.txt
-├── app
+│   └── story.txt <-- ciljna datoteka
+├── app <-- radni direktorij
     ├── index.js
     ├── node_modules
     ├── package-lock.json
     └── package.json
 ```
 
-tada će relativna putanja biti:
+tada će relativna putanja do datoteke `story.txt` (u odnosu na datoteku `index.js`) biti:
 
 ```plaintext
 ../data/story.txt
@@ -267,13 +292,20 @@ tada će relativna putanja biti:
 
 > Dvije točke `..` označavaju **roditeljski direktorij** (_eng. parent directory_), a zatim nizom direktorija i datoteka definiramo putanju do ciljne datoteke.
 
-**Trebamo paziti u kojem se direktoriju nalazi instanca terminala** kako bismo mogli koristiti relativne putanje bez problema. Trenutnu putanju u direktoriju možemo provjeriti koristeći `pwd` naredbu u terminalu.
+**Trebamo paziti i u kojem se radnom direktoriju nalazi instanca terminala** kako bismo mogli koristiti relativne putanje bez problema. Trenutnu putanju u direktoriju možemo provjeriti koristeći `pwd` naredbu u terminalu.
+
+Oznake `.` i `..` su vrlo korisne kod definiranja relativnih putanja, stoga ih je važno zapamtiti, a predstavljaju **pokazivače** na **trenutni** i **roditeljski** direktorij.
+
+> Napomena: Pokazivače na roditeljski direktorij moguće je i ponavljati, kako bismo došli do željenog direktorija. Na primjer, `../../data/story.txt` označava da se iz trenutnog direktorija trebamo vratiti **dva direktorija unatrag** (u roditeljski direktorij roditeljskog direktorija), a zatim ući u direktorij `data` iz tog (*grandparent* direktorija) i pristupiti datoteci `story.txt`.
+
+> Studenti koji žele ponoviti rad s datotekama i direktorijima u terminalu, preporučuje se skripta [OS1 - Uvod u operacijske sustave](https://github.com/lukablaskovic/FIPU-OS/tree/main/OS1%20-%20Uvod%20u%20operacijske%20sustave).
+
+Kako bi pokrenuli sljedeći kôd bez greške, odnosno kako bi se datoteka `story.txt` ispravno pročitala, **moramo terminal pozicionirati u direktorij gdje se nalazi** `index.js` datoteka; dakle unutar: `app` direktorija.
 
 ```bash
-pwd
+→ cd app
+→ node index.js
 ```
-
-Kako bi pokrenuli sljedeći kod bez greške, odnosno kako bi se datoteka `story.txt` ispravno pročitala, moramo se **s terminalom nalaziti u direktoriju gdje se nalazi** `index.js` datoteka. Dakle unutar: `app/`.
 
 ```javascript
 fs.readFile('./data/story.txt', 'utf8', (err, data) => {
@@ -286,15 +318,17 @@ fs.readFile('./data/story.txt', 'utf8', (err, data) => {
 });
 ```
 
-`./data/story.txt` znači:
+Međutim, **ako se s terminalom nalazimo u korijenskom direktoriju projekta** (`WA4 - Upravljanje datotekama i agregacija podataka`), te pokušamo pokrenuti poslužitelj, **dobit ćemo grešku prilikom čitanja datoteke**.
 
-- `./` - trenutni direktorij (gdje se nalazi `index.js`)
-- `data/` - direktorij `data` unutar trenutnog direktorija
-- `story.txt` - datoteka `story.txt` unutar direktorija `data`
+```bash
+→ cd .. # prebacujemo se u korijenski direktorij projekta
+→ node app/index.js # upisujemo ispravnu putanju do index.js datoteke
+# svejedno greška!
+```
 
-Međutim, ako se s terminalom nalazimo u korijenskom direktoriju projekta (`WA4 - Pohrana podataka`), te pokušamo pokrenuti poslužitelj, **dobit ćemo grešku prilikom čitanja datoteke**.
+Preciznije, ako poslužitelj pokrećemo naredbom node `app/index.js`, datoteka `story.txt` neće biti pronađena. Unatoč tome, poslužitelj će se normalno pokrenuti.
 
-Primjerice, ako pokrećemo poslužitelj s: `node app/index.js`, pa i ako pokrećemo poslužitelj putem VS Code Run naredbe (problem je što ona koristi korijenski direktorij projekta), datoteka `story.txt` **neće biti pronađena**. Međutim, poslužitelj će se pokrenuti bez problema.
+Problem nije u relativnoj putanji koju smo koristili naredbom `node` za pokretanje poslužitelja, već u samoj relativnoj putanji do datoteke `story.txt` unutar `fs.readFile()` metode. Budući da se nalazimo u korijenskom direktoriju projekta, relativna putanja `./data/story.txt` traži datoteku `story.txt` unutar direktorija `WA4 - Upravljanje podacima i agregacija podataka/data/`, **koja ne postoji na toj lokaciji**.
 
 ```bash
 Poslužitelj je pokrenut na portu 3000
@@ -306,7 +340,7 @@ Greška prilikom čitanja datoteke: [Error: ENOENT: no such file or directory, o
 }
 ```
 
-Dakle, ako se nalazimo u korijenskom direktoriju projekta, trebali bismo izmjeniti putanju do datoteke u:
+Dakle, ako se nalazimo u korijenskom direktoriju projekta, trebali bismo izmjeniti putanju do datoteke u sljedeće:
 
 ```javascript
 fs.readFile('./app/data/story.txt', 'utf8', (err, data) => {
@@ -319,11 +353,124 @@ fs.readFile('./app/data/story.txt', 'utf8', (err, data) => {
 });
 ```
 
-> Sada radi, međutim ako terminalom opet uđemo u direktorij `app/`, kod će opet baciti grešku. Dakle, **relativne putanje ovise o trenutnom radnom direktoriju**.
+Sada radi, međutim ako terminalom opet uđemo u direktorij `app/`, kôd će opet baciti grešku. Dakle, **relativne putanje ovise o trenutnom radnom direktoriju** (zato ih i nazivmo relativnima).
+
+#### 2.1.3 Modul `path` za upravljanje putanjama
+
+Kako bismo minimizirali probleme s relativnim putanjama, možemo koristiti ugrađeni Node.js modul [`path`](https://nodejs.org/api/path.html) koji nam omogućuje jednostavno upravljanje putanjama do datoteka i direktorija na ***platform-independent***.
+
+`path` je također ugrađeni modul u Node.js, stoga ga nije potrebno ručno instalirati. Uključujemo ga na sljedeći način:
+
+```javascript
+import path from 'path';
+```
+
+Koristeći `path` modul, možemo generirati apsolutnu putanju do datoteke `story.txt`, pomoću metode `path.join()` koja spaja različite dijelove putanje u jednu ispravnu putanju. Ovo je korisno zbog različitih operacijskih sustava koji koriste različite separatore direktorija (`/` vs `\`) ali i različite definicije korijenskog direktorija.
+
+**Sintaksa:**
+
+```javascript
+path.join([...paths])
+
+# ili
+
+path.join(path1, path2, ..., pathN)
+```
+
+- `paths` - niz dijelova putanje koje želimo spojiti u jednu ispravnu putanju
+
+*Primjer:*
+
+```javascript
+const storyPath = path.join(korijenski_direktorij, 'data', 'story.txt');
+```
+
+Rekli smo da `__dirname` varijabla sadrži apsolutnu putanju do **trenutnog** direktorija (ne korijenskog!). Ipak, u ES modulima nije dostupna, stoga možemo koristiti ekvivalent `import.meta.url` za dobivanje apsolutne putanje do trenutnog modula.
+
+**Sintaksa:**
+
+```javascript
+__dirname # nije dostupan u ES modulima
+import.meta.url # dostupan u ES modulima
+```
+
+Dakle, sljedeće je greška:
+
+```javascript
+const storyPath = path.join(import.meta.url, 'data', 'story.txt'); // Pogrešna putanja!
+```
+
+> Napomena: Ova funkcija ne vraća čisti Path string, već URL string koji počinje s `file:`. Ovo možemo riješiti korištenjem `fileURLToPath` funkcije iz `url` modula.
+
+Ovakvo definirana putanja glasila bi: `file:/Users/lukablaskovic/Github/FIPU-WA/WA4%20-%20Upravljanje%20podacima%20i%20agregacija%20podataka/app/index.js/data/story.txt`
+
+- `import.meta.url` vraća apsolutnu putanju do trenutnog modula, ali s prefiksom `file:` koji označava da se radi o datoteci na disku.
+- Nadalje, nemojte da vas zbuni `%20` unutar putanje - to je URL enkodirani znak za razmak (space) budući da URL ne može sadržavati razmake.
+- Konačno, pokušavamo dodati `/data/story.txt` na kraj putanje do `index.js` datoteke, što nije ispravno budući da `data` direktorij nije unutar `app/index.js` datoteke.
+
+**Direktorij** gdje se nalazi određena (na danoj putanji) može se dobiti pomoću `path.dirname()` metode:
+
+```javascript
+const currentDir = path.dirname(import.meta.url);
+// Ispisuje: file:/Users/lukablaskovic/Github/FIPU-WA/WA4%20-%20Upravljanje%20podacima%20i%20agregacija%20podataka/app
+```
+
+Pretvorbu `file:` URL-a u čisti string putanje možemo napraviti pomoću `fileURLToPath` funkcije iz `url` modula:
+
+**Sintaksa:**
+
+```javascript
+import { fileURLToPath } from 'url';
+
+const currentDirPath = fileURLToPath(currentDir);
+// Ispisuje: /Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka/app
+```
+
+Ovo sada možemo upotrijebiti za generiranje apsolutne putanje do datoteke `story.txt` na sljedeći način:
+
+```javascript
+const storyPath = path.join(currentDirPath, 'data', 'story.txt');
+// Ispisuje: /Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka/app/data/story.txt
+```
+
+Ipak, našim mukama ovdje nije kraj. Ne postoji jedinstveni način kako dobiti **korijenski direktorij projekta** u Node.js aplikaciji, tako da ostaje problem definiranja apsolutne putanje do datoteke `story.txt` ako se nalazimo u različitim direktorijima.
+
+**Najbolje rješenje je samostalno definirati korijenski direktorij projekta**, npr. pomoću `path.resolve()` metode koja vraća apsolutnu putanju do određenog direktorija, a ako ne definiramo argument, vraća apsolutnu putanju do trenutnog radnog direktorija.
+
+**Sintaksa:**
+
+```javascript
+path.resolve([...paths])
+
+# ili
+path.resolve(path1, path2, ..., pathN)
+
+# ili samo
+
+path.resolve() // vraća apsolutnu putanju do trenutnog radnog direktorija
+```
+
+*Primjer:*
+
+```javascript
+const rootDir = path.resolve(); // apsolutna putanja do trenutnog radnog direktorija
+const storyPath = path.join(rootDir, 'data', 'story.txt');
+```
+
+Ako bismo htijeli dobiti direktorij iznad trenutnog radnog direktorija, možemo koristiti `..` pokazivač:
+
+```javascript
+const parentDir = path.resolve('..'); // apsolutna putanja do roditeljskog direktorija (u odnosu na trenutni radni direktorij)
+const storyPath = path.join(parentDir, 'app', 'data', 'story.txt'); // ali onda ovdje dodajemo i 'app' direktorij
+```
+
+Ako se prebacimo u direktorij `/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka`, i pokušamo pokrenuti poslužitelj naredbom `node app/index.js`, **ponovno dobivamo grešku** budući da naredba `path.resolve('..')` računa putanju iznad trenutnog radnog direktorija, a ne iznad direktorija gdje se nalazi `index.js` datoteka.
+
+**Zaključno:** treba pripaziti u radu s relativnim i apsolutnim putanjama do datoteka, te koristiti `path` modul kako bismo minimizirali probleme s različitim operacijskim sustavima. **Relativna putanja** relativna je u odnosu na **trenutni radni direktorij** iz kojeg pokrećemo aplikaciju pa trebamo biti oprezni gdje se nalazimo u datotečnom sustavu prilikom pokretanja aplikacije, dok je **apsolutna putanja** uvijek ista bez obzira na trenutni radni direktorij - ali može stvoriti probleme prilikom pokretanja *developerskih* okruženja na različitim računalima. 
 
 <div class="page-break"></div>
 
-#### 2.1.3 `Callback` vs `Promise` pristup
+#### 2.1.4 `Callback` vs `Promise` pristup
 
 Rekli smo da ćemo operacije s datotekama obavljati asinkrono, budući da one mogu potrajati i ne želimo zaustaviti rad poslužitelja dok se operacija ne završi. Idemo nadograditi naš poslužitelj na način da ćemo definirati endpoint `/story` koji će čitati datoteku `story.txt` i vraćati njen sadržaj kao odgovor.
 
@@ -350,13 +497,13 @@ app.listen(3000, () => {
 });
 ```
 
-Međutim, nije uobičajeno da se kod koji se odnosi na čitanje datoteke nalazi unutar funkcije koja definira rutu, odnosno endpoint. Idemo ga prebaciti u zasebnu funkciju.
+Međutim, nije uobičajeno da se kôd koji se odnosi na čitanje datoteke nalazi unutar funkcije koja definira rutu, odnosno endpoint. Idemo ga prebaciti u zasebnu funkciju.
 
 <div class="page-break"></div>
 
-**Česta greška 1:**
+**Česta greška #1:**
 
-Prebacit ćemo kod koji se odnosi na čitanje datoteke u zasebnu funkciju `read_story()`. Zatim ćemo definirati rutu `/story` koja će slati JSON odgovor rezultat poziva ove funkcije. Funkcija `read_story()` definira prazan string `story_text` koji će se popuniti sadržajem datoteke, a zatim se isti vraća kao rezultat funkcije. **Ovo je pogrešan pristup!**
+Prebacit ćemo kôd koji se odnosi na čitanje datoteke u zasebnu funkciju `read_story()`, a zatim ćemo definirati endpoint `/story` koja će slati JSON odgovor rezultat poziva ove funkcije natrag korisniku. Funkcija `read_story()` definira prazan string `story_text` koji će se popuniti sadržajem datoteke, a zatim se isti vraća kao rezultat funkcije. **Ovo je pogrešan pristup iako na prvi pogled izgleda ispravno!**
 
 ```javascript
 function read_story() {
@@ -380,15 +527,16 @@ app.get('/story', (req, res) => {
 
 **Zašto ovo ne radi? 🤔**
 
-- `fs.readFile` je **asinkrona funkcija**. Kada se pozove `read_story()`, instancira se proces čitanja datoteke, međutim funkcija odmah vrati prazan string `story_text` prije nego što se datoteka pročita budući da je to radnja koja traje dulje. Kada se datoteka pročita, `story_text` se popuni sadržajem datoteke, međutim funkcija je već završila i vratila prazan string.
-- `story_text` se nadopunjuje unutar callback funkcije koja se poziva **nakon što se datoteka pročita**. Međutim, prošao je voz, JavaScript je sekvencijalno izvršio kod u nastavku i vratio prazan string.
-- mi ustvari ovdje pokušavamo upravljati asinkronim kodom na sinkroni način, što nije moguće.
+- `fs.readFile` je **asinkrona funkcija**. Kada se pozove `read_story()`, instancira se proces čitanja datoteke, međutim funkcija odmah vrati prazan string `story_text` prije nego što se datoteka pročita budući da je to radnja koja traje dulje vrijeme. Jednom kada se datoteka pročita, `story_text` se popuni sadržajem datoteke, međutim funkcija je već završila i vratila prazan string.
+- `story_text` se **nadopunjuje unutar callback funkcije koja se poziva nakon što se datoteka pročita**. Međutim, prošao je voz, JavaScript je sekvencijalno izvršio kôd u nastavku te funkcija `read_story()` je već vratila prazan string.
+
+Mi ustvari ovdje pokušavamo upravljati asinkronim kôdom na sinkroni način, što je pogrešno.
 
 <div class="page-break"></div>
 
 **Česta greška 2:**
 
-U redu, nećemo se predati. Pokušat ćemo riješiti problem tako da ćemo ustvari pohraniti rezultat izvršavanja funkcije `readFile` u varijablu `story_text`, a zatim vratiti tu varijablu kao rezultat funkcije `read_story()`. U endpointu ćemo prvo podatke definirati u varijablu, a zatim je poslati kao odgovor. **Ovo je isto pogrešan pristup!**
+U redu, nećemo se predati. Pokušat ćemo riješiti problem tako da ćemo ustvari pohraniti rezultat izvršavanja funkcije `readFile` u varijablu `story_text`, a zatim **vratiti tu varijablu kao rezultat funkcije** `read_story()`. U endpointu ćemo poziv funkcije `read_story()` spremiti u varijablu `data`, a zatim poslati kao odgovor klijentu.
 
 ```javascript
 function read_story() {
@@ -411,7 +559,7 @@ app.get('/story', (req, res) => {
 
 **Zašto ovo ne radi? 🤔**
 
-- iz istog razloga kao i prije, `fs.readFile` je asinkrona funkcija, a mi pokušavamo vratiti rezultat prije nego što se datoteka pročita. Drugim riječima, opet pokušavamo upravljati asinkronim kodom na sinkroni način.
+- iz istog razloga kao i prije, `fs.readFile` je asinkrona funkcija, a mi pokušavamo vratiti rezultat `read_story()` prije nego što se datoteka pročita. Funkcija `readFile` ne vraća sadržaj datoteke te ju ne možemo pohraniti u varijablu na ovaj način.
 
 <hr>
 
@@ -419,13 +567,13 @@ Problem je moguće riješiti na 2 načina, **ovisno kako odaberemo obrađivati a
 
 > 1. Način: **Callback pattern**
 
-Callback pattern u JavaScriptu predstavlja rješenje za upravljanje asinkronim operacijama koje sa bazira na pozivanju callback funkcija nakon što se operacija završi. Već ste naučili da je `callback` jednostavno funkcija koja se prosljeđuje kao argument drugoj funkciji, a koja se poziva nakon što se izvrši određena operacija (u nekom kasnijem vremenskom trenutku).
+Callback *pattern* u JavaScriptu predstavlja rješenje za upravljanje asinkronim operacijama koje sa bazira na pozivanju callback funkcija nakon što se operacija završi. Već ste naučili da je `callback` jednostavno funkcija koja se prosljeđuje kao argument drugoj funkciji, a koja se poziva nakon što se izvrši određena operacija (u nekom kasnijem vremenskom trenutku).
 
-Kako radi callback pattern?
+Kako radi callback *pattern*?
 
-1. Prosljeđujemo callback funkciju kao argument drugoj funkciju
-2. Funkcija koja prima callback funkciju izvršava isti callback jednom kad odradi svoj posao, odnosno kad se zadovolji neki uvjet
-3. Navedeno dozvoljava "non-blocking", asinkrono programiranje
+1. Prosljeđujemo *callback* funkciju kao argument drugoj funkciju
+2. Funkcija koja prima *callback* funkciju izvršava isti *callback* jednom kad odradi svoj posao, odnosno kad se zadovolji neki uvjet
+3. Navedeno dozvoljava "non-blocking" (*non-blocking IO*), asinkrono programiranje
 
 Sinkroni primjer:
 
@@ -476,9 +624,11 @@ fetch_data(handle_data);
 // Podaci su dohvaćeni: { racun: "HR1234567890" , stanje: 5000 };
 ```
 
-Idemo isto primijeniti na naš primjer čitanja datoteke:
+---
 
-Kojoj funkciji ćemo u primjeru iznad proslijediti callback argument? 🤔
+Idemo izmijeniti i naš primjer s čitanjem datoteke `story.txt` koristeći *callback* pattern.
+
+Kojoj funkciji ćemo u primjeru iznad proslijediti *callback* argument? 🤔
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
@@ -502,7 +652,7 @@ app.get('/story', (req, res) => {
 });
 ```
 
-Callback funkcija je definirana arrow sintaksom, i izgleda ovako:
+*Callback* funkcija je definirana *arrow* sintaksom, i izgleda ovako:
 
 ```javascript
 (err, data) => {
@@ -514,15 +664,15 @@ Callback funkcija je definirana arrow sintaksom, i izgleda ovako:
 };
 ```
 
-Dakle, kod koji šalje odgovor klijentu nalazi se unutar callback funkcije koja se poziva nakon što se datoteka pročita. Na ovaj način, osiguravamo da se odgovor šalje tek nakon što se datoteka pročita, odnosno nakon što se završi asinkrona operacija. Bez obzira što implementacija callback funkcije možda izgleda kao da se izvršava odmah nakon poziva `read_story()`, ona se zapravo izvršava nakon što se datoteka pročita.
+Dakle, kôd koji šalje odgovor klijentu nalazi se unutar *callback* funkcije koja se poziva nakon što se datoteka pročita. Na ovaj način, osiguravamo da se odgovor šalje tek nakon što se datoteka pročita, odnosno nakon što se završi asinkrona operacija. Bez obzira što implementacija *callback* funkcije možda izgleda kao da se izvršava odmah nakon poziva `read_story()`, ona se zapravo izvršava nakon što se datoteka pročita.
 
 <div class="page-break"></div>
 
 > 2. Način: **Promise pattern**
 
-Kako bismo izbjegli ["callback hell"](http://callbackhell.com/) (duboko gniježđenje callback funkcija), možemo koristiti `Promise` pattern. Sintaksa iznad možda izgleda neintuitivno, a kod postaje teško čitljiv i održiv s više callback funkcija. `Promise` pattern je moderniji pristup i omogućuje nam da se rješavamo callback funkcija i pišemo čišći i čitljiviji kod.
+Kako bismo izbjegli [callback hell](http://callbackhell.com/) (duboko gniježđenje *callback* funkcija), možemo koristiti `Promise` *pattern*. Sintaksa iznad možda izgleda neintuitivno, a kôd postaje teško čitljiv i održiv s više *callback* funkcija. `Promise` *pattern* je moderniji pristup i omogućuje nam da se rješavamo *callback* funkcija i pišemo čišći i čitljiviji kôd.
 
-Međutim, kako bismo koristili `Promise` pattern, koristit ćemo ekstenziju `fs` modula - `fs.promises`. Ova ekstenzija omogućuje nam da koristimo `Promise` pattern za čitanje, kao i za pisanje u datoteke. Naravno, samim time možemo koristiti `async/await` sintaksu kako bi riješili `then` i `catch` lanca.
+Međutim, kako bismo koristili `Promise` *pattern*, koristit ćemo ekstenziju `fs` modula - `fs.promises`. Ova ekstenzija omogućuje nam da koristimo `Promise` *pattern* za čitanje, kao i za pisanje u datoteke. Naravno, samim time možemo koristiti `async/await` sintaksu kako bi riješili `.then` i `.catch` lanca.
 
 ```javascript
 import fs from 'fs/promises';
@@ -541,7 +691,7 @@ app.get('/story', (req, res) => {
 });
 ```
 
-Vidimo da sad možemo koristiti `then` i `catch` lanac, što može biti čitljivije i čišće od korištenja callback funkcija. Međutim, najbolji način je sintaksu prenijeti u zasebnu funkciju i koristiti alternativnu `async/await` sintaksu.
+Vidimo da sad možemo koristiti `then` i `catch` lanac, što može biti čitljivije i čišće od korištenja *callback* funkcija. Međutim, najbolji način je sintaksu prenijeti u zasebnu funkciju i koristiti alternativnu `async/await` sintaksu.
 
 Za početak ćemo samo primijeniti `async/await` sintaksu na prethodni primjer:
 
@@ -559,7 +709,7 @@ app.get('/story', async (req, res) => {
 });
 ```
 
-Kod za čitanje možemo prebaciti u zasebnu asinkronu funkciju:
+Kôd za čitanje možemo prebaciti u zasebnu asinkronu funkciju:
 
 ```javascript
 async function read_story() {
@@ -586,8 +736,8 @@ Vidimo grešku, zašto? 🤔
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
-  await ključna riječ ne može se koristiti izvan asinkronih funkcija. Callback funkcija (req, res) => {...} nije asinkrona funkcija, stoga ne možemo koristiti await unutar nje.
-  <p> Rješenje je jednostavno - pretvoriti callback funkciju u asinkronu funkciju. Odnosno, samo dodati ključnu riječ async ispred </p>
+  <code>await</code> ključna riječ ne može se koristiti izvan asinkronih funkcija. <i>Callback</i> funkcija <code>(req, res) => {...}</code> nije asinkrona funkcija, stoga ne možemo koristiti <code>await</code> unutar nje.
+  <p> Rješenje je jednostavno - pretvoriti <i>callback</i> funkciju u asinkronu funkciju. Odnosno, samo dodati ključnu riječ <code>async</code> ispred </p>
 </details>
 
 Ispravno:
@@ -613,7 +763,7 @@ Rekli smo da pohrana u datoteke, kao i čitanje, može biti vremenski zahtjevno,
 
 Za asinkronu pohranu u datoteku, koristimo metodu fs.writeFile():
 
-Sintaksa:
+**Sintaksa:**
 
 ```javascript
 fs.writeFile(path, data, options, callback);
@@ -626,16 +776,16 @@ gdje su:
 - `options` - specifikacija enkodiranja datoteke (opcionalno)
   - `encoding` - encoding datoteke (npr. `'utf8'`)
   - `flag` - opcionalni znak kojim se označava način pristupa datoteci (npr. `'w'` za pohranu (_default_))
-- `callback` - callback funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
+- `callback` - *callback* funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
 
 `callback` funkcija prima dva argumenta:
 
 1. `err` - greška (ako postoji)
 2. `data` - sadržaj datoteke (ako je pročitan)
 
-Jednako kao i kod čitanja, moguće je koristiti `Callback` i `Promise` pattern za pohranu u datoteke. Međutim ponovo, `Promise` pattern i `async/await` sintaksa su moderniji pristupi.
+Jednako kao i kod čitanja, moguće je koristiti `callback` i `Promise` pattern za pohranu u datoteke. Međutim ponovo, `Promise` pattern i `async/await` sintaksa su moderniji pristupi.
 
-Primjer pohrane u datoteku kroz `Callback` pattern:
+Primjer pohrane u datoteku kroz *callback* pattern:
 
 ```javascript
 app.get('/write', (req, res) => {
@@ -654,7 +804,7 @@ app.get('/write', (req, res) => {
 
 Vidjet ćete novu datoteku `write.txt` u direktoriju `data` s tekstom: `Ovo je tekst koji želimo zapisati u datoteku.`.
 
-Isto možemo postići i kroz `Promise` pattern odnosno `fs/promises` ekstenziju:
+Isto možemo postići i kroz `Promise` *pattern* odnosno **`fs/promises`** ekstenziju biblioteke `fs`:
 
 ```javascript
 app.get('/write', async (req, res) => {
@@ -697,9 +847,9 @@ app.get('/write', async (req, res) => {
 
 **Uočite jednu stvar koja nam ovdje ne odgovara**. Implementacija je dobra i funkcionira, međutim mi šaljemo GET zahtjev za pohranu u datoteku. To naravno nije dobra praksa jer GET zahtjevi ne smiju mijenjati stanje na poslužitelju (također, ne šaljemo podatke već samo signal da želimo zapisati u datoteku, a zapisujemo tekst koji je hardkodiran).
 
-U praksi, pohrana u datoteku obično se obavlja kroz `POST zahtjev ako se radi o kreiranju novih podataka ili `PUT`i`PATCH` zahtjev ako se radi o ažuriranju postojećih podataka.
+U praksi, pohrana u datoteku obično se obavlja kroz `POST` zahtjev ako se radi o kreiranju novih podataka ili `PUT`i `PATCH` zahtjev ako se radi o ažuriranju postojećih podataka.
 
-Ako pogledati sintaksu iznad, možete vidjeti u opcijama `flag` parametar. Ovaj parametar označava način pristupa datoteci. Po _defaultu_, koristi se `w` flag koji označava zamjenu sadržaja datoteke novim sadržajem. Međutim, možemo koristiti i druge flagove:
+Ako pogledate sintaksu iznad, možete vidjeti u opcijama `flag` parametar. Ovaj parametar označava način pristupa datoteci. Po _defaultu_, koristi se `w` flag koji označava zamjenu sadržaja datoteke novim sadržajem. Međutim, možemo koristiti i druge flagove:
 
 - `r` - čitanje datoteke (_default_ kod `fs.readFile`)
 - `w` - pohrana u datoteku (_default_ kod `fs.writeFile`), zamjena sadržaja datoteke novim sadržajem (najviše odgovara HTTP metodi `PUT`)
@@ -712,7 +862,7 @@ U nastavku ćemo prikazati primjere pohrane u datoteku kroz oba pristupa (Callba
 
 ### 2.2.1 Pohrana `String` sadržaja u datoteku
 
-U ovom primjeru, pohranit ćemo string sadržaj u datoteku `text.txt` kroz `Callback` pattern:
+U ovom primjeru, pohranit ćemo string sadržaj u datoteku `text.txt` kroz `callback` pattern:
 
 ```javascript
 import fs from 'fs';
@@ -822,7 +972,7 @@ app.get('/write-json-promise', async (req, res) => {
 
 <hr>
 
-Kako se radi o pohrani u datoteku, moramo zamijeniti kod iznad `POST` metodom, dok ćemo JSON direktno preuzeti iz tijela zahtjeva:
+Kako se radi o pohrani u datoteku, moramo zamijeniti kôd iznad `POST` metodom, dok ćemo JSON direktno preuzeti iz tijela zahtjeva:
 
 ```javascript
 import fs from 'fs/promises';
@@ -845,7 +995,7 @@ app.post('/student', async (req, res) => {
 });
 ```
 
-Dakle kod iznad zamjenjuje cijeli resurs. Ako bismo dodavali podatke na kraj datoteke, koristili bismo `a` flag. Međutim, u tom slučaju pravilno je koristiti `PUT` metodu budući da se radi o ažuriranju postojećeg resursa `data.json`.
+Dakle kôd iznad zamjenjuje cijeli resurs. Ako bismo dodavali podatke na kraj datoteke, koristili bismo `a` flag. Međutim, u tom slučaju pravilno je koristiti `PUT` metodu budući da se radi o ažuriranju postojećeg resursa `data.json`.
 
 ```js
 import fs from 'fs/promises';
@@ -922,7 +1072,7 @@ app.put('/student', async (req, res) => {
 });
 ```
 
-Koristeći kod iznad, poslat ćemo `PUT` zahtjev s novim studentom, a on će se dodati na kraj polja objekata u datoteci `data.json`.
+Koristeći kôd iznad, poslat ćemo `PUT` zahtjev s novim studentom, a on će se dodati na kraj polja objekata u datoteci `data.json`.
 
 Tijelo `PUT` zahtjeva:
 
@@ -935,7 +1085,7 @@ Tijelo `PUT` zahtjeva:
 }
 ```
 
-Vidimo da smo dobili dosta zapetljan kod, gdje moramo prvo čitati, a nakon tog dodavati, serijalizirati i pohranjivati objekte. Stvari možemo pojednostaviti još jednom ekstenzijom, ovaj put `fs-extra`. Ova ekstenzija nudi mnoge korisne metode koje olakšavaju rad s datotekama, uključujući gotove metode za čitanje i pisanje JSON podataka.
+Vidimo da smo dobili dosta zapetljan kôd, gdje moramo prvo čitati, a nakon tog dodavati, serijalizirati i pohranjivati objekte. Stvari možemo pojednostaviti još jednom ekstenzijom, ovaj put `fs-extra`. Ova ekstenzija nudi mnoge korisne metode koje olakšavaju rad s datotekama, uključujući gotove metode za čitanje i pisanje JSON podataka.
 
 Ovaj modul moramo naknadno instalirati:
 
@@ -956,8 +1106,9 @@ app.put('/student', async (req, res) => {
   }
 
   try {
-    const students = await fs.readJson('data/data.json'); // pročitaj datoteku, deserijaliziraj JSON podatke i pohrani u varijablu
-    students.push(student); // dodaj novog studenta u polje
+    // pročitaj datoteku, deserijaliziraj JSON podatke i pohrani u varijablu
+    const students = await fs.readJson('data/data.json');
+    students.push(student);
     await fs.writeJson('data/data.json', students); // serijaliziraj i pohrani u datoteku
 
     console.log('Podaci uspješno zapisani u datoteku.');
@@ -969,7 +1120,7 @@ app.put('/student', async (req, res) => {
 });
 ```
 
-Koristeći `fs-extra` modul, možemo pojednostaviti kod i izbjeći ručno čitanje i pisanje JSON podataka, odnosno serijalizaciju i deserijalizaciju.
+Koristeći `fs-extra` modul, možemo pojednostaviti kôd i izbjeći ručno čitanje i pisanje JSON podataka, odnosno serijalizaciju i deserijalizaciju.
 
 <hr>
 
@@ -981,22 +1132,42 @@ Problemi **skalabilnosti** su očiti. Što je potrebno promijeniti strukturu pod
 
 Što ako želimo pretraživati podatke, filtrirati, sortirati, spajati, grupirati? Sve ove operacije su moguće, ali su puno jednostavnije i efikasnije kroz **baze podataka**.
 
-Jedan od većih problema je i **konkurentnost** i **sigurnost**. Što ako više korisnika istovremeno pokuša čitati i pisati u istu datoteku? Kako ćemo osigurati da se podaci ne izgube, ne prepišu, ne završe u nekom nevaljalom stanju?
+Jedan od većih problema je i **konkurentnost** i **sigurnost**. Što ako više korisnika istovremeno pokuša čitati i pisati u istu datoteku? Kako ćemo osigurati da se podaci ne izgube, ne prepišu (*eng. overvrite*), ne završe u nekom nevaljalom stanju (*eng. corrupted data state*)?
 
-> Ovo su se pitanja kojima se bave developeri koji aktivno rade na razvoju baza podataka. **DBMS** (eng. Database Management System) su sustavi koji su razvijeni upravo iz ovih razloga; kako bi olakšali pohranu, upravljanje, pretraživanje, ažuriranje i brisanje podataka na siguran i efikasan način, uz osiguranje konzistentnosti i integriteta podataka.
+> Ovo su se pitanja kojima se bave developeri koji aktivno rade na razvoju baza podataka. **DBMS** (*eng. Database Management System*) su sustavi koji su razvijeni upravo iz ovih razloga; kako bi olakšali pohranu, upravljanje, pretraživanje, ažuriranje i brisanje podataka na siguran i učinkovit način, uz osiguranje konzistentnosti i integriteta podataka. O DBMS sustavima i relacijskim bazama podataka detaljno ste učili na kolegijima Baze podataka 1 i Baze podataka 2.
 
 <div class="page-break"></div>
 
-# 3. Agregacija podataka kroz `Query` parametre
+# 3. Agregacija podataka kroz `query` parametre
 
-Ipak, prije nego se krenemo baviti bazama podataka (u sljedećem poglavlju), moramo naučiti kako agregirati podatke na poslužiteljskoj strani kroz `query` parametre.
+Ipak, prije nego se krenemo baviti bazama podataka (na sljedećim vježbama), moramo naučiti kako agregirati podatke na poslužiteljskoj strani kroz `query` parametre.
 
-[Query](https://en.wikipedia.org/wiki/Query_string) parametri su dio URL-a koji se koristi za prenošenje informacije o resursu koji se traži ili o akciji koja se želi izvršiti. `Query` parametri se dodaju na URL nakon znaka `?` i odvajaju se znakom `&`. Svaki `query` parametar sastoji se od imena i vrijednosti, odvojenih znakom `=`.
+[Query](https://en.wikipedia.org/wiki/Query_string) ili *search* parametri su dio URL-a koji služi za prenošenje **dodatnih informacija o resursu** koji se traži ili ponekad o **radnji koju je potrebno izvršiti**. `Query` parametri se dodaju na URL nakon znaka `?` i odvajaju se znakom `&`. Svaki `query` parametar sastoji se od imena i vrijednosti, odvojenih znakom `=`.
 
-Sintaksa:
+Sigurno smo svi bar jednom vidjeli URL s `query` parametrima, npr.:
+
+```
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+```
+
+- **query parametar** je ovdje `v`, a vrijednost `dQw4w9WgXcQ` predstavlja jedinstveni identifikator videa na YouTube platformi.
+
+Ipak, zadnjih godina YouTube je počeo koristiti i skraćenu domenu koja videi identificira kroz **route parametar**, npr.
+
+```
+https://youtu.be/dQw4w9WgXcQ
+```
+
+Query parametri su često korišteni za **filtriranje**, **sortiranje**, **paginaciju** i druge operacije nad podacima koje se dohvaćaju s poslužitelja. Međutim, kao što vidite iz primjera YouTube-a, query parametri se mogu koristiti i za **identifikaciju resursa**.
+
+Query parametri nisu obavezni dio URL-a, za razliku od **parametara rute** koji su definirani unutar same rute (npr. `/users/:userId`).
+
+**Sintaksa:**
 
 ```js
 http://localhost:3000/route?key1=value1
+
+http://localhost:3000/route?key1=value1&key2=value2
 ```
 
 gdje je:
@@ -1007,9 +1178,9 @@ gdje je:
 
 Dakle, ove parametre šaljemo kao dio URL-a, najčešće je to unutar `GET` zahtjeva.
 
-Zašto `GET`? Uobičajeno je koristiti ovu vrstu parametra za slanje `GET` zahtjeva kada želimo dohvatiti određeni podskup podataka, npr. filtrirati po nekom kriteriju, sortirati, paginirati i slično.
+Zašto `GET`? Uobičajeno je koristiti ovu vrstu parametra za slanje `GET` zahtjeva kada želimo dohvatiti određeni **podskup podataka** (*eng. subset*), npr. filtrirati po nekom kriteriju, sortirati, paginirati stranice i sl.
 
-## 3.1 Filtriranje podataka
+## 3.1 Query parametri: Filtriranje podataka
 
 Uzet ćemo primjer poslužitelja sa studentima iz prethodnog poglavlja:
 
@@ -1039,6 +1210,7 @@ app.listen(3000, () => {
 U datoteku `students.json` pohranit ćemo ručno nekoliko studenata:
 
 ```json
+// data/students.json
 [
   { "ime": "Pero", "prezime": "Perić", "godine": 20, "fakultet": "FIPU" },
   { "ime": "Ana", "prezime": "Anić", "godine": 18, "fakultet": "FIPU" },
@@ -1061,7 +1233,7 @@ http://localhost:3000/students?fakultet=FIPU
 
 Međutim, samu rutu **nećemo izmjenjivati**, već ćemo dohvaćati `query` parametre iz `req.query` objekta.
 
-> **Uočite**, `req.query` je objekt koji sadrži sve `query` **parametre** poslane u URL-u. Nemojte ovo miješati s `req.params` objektom koji drugu vrstu parametara - **parametre rute**.
+> **Uočite**, `req.query` je objekt koji sadrži sve `query` **parametre** poslane u URL-u. Nemojte ovo miješati s `req.params` objektom koji predstavlja drugu vrstu parametara - **parametre rute**.
 
 ```js
 app.get('/students', async (req, res) => {
@@ -1101,13 +1273,17 @@ app.get('/students', async (req, res) => {
 
 <div class="page-break"></div>
 
-Možemo testirati kroz web preglednik ili Thunder Client/Postman. HTTP klijenti nude opciju unosa `query` parametara kao ključ vrijednost parova pa ih možemo unijeti i na taj način ili direktno u URL.
+Možemo testirati kroz web preglednik ili Postman. HTTP klijenti nude opciju unosa `query` parametara kao ključ vrijednost parova pa ih možemo unijeti i na taj način ili direktno u URL.
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 1: Filtriranje studenata po fakultetu kroz `query` parametar `fakultet` u Postmanu
 
 Ako maknemo `query` parametar, dobit ćemo sve studente.
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_studenti_all.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_studenti_all.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 2: Uklanjanjem `query` parametra vraćamo sve studente
 
 Moguće je definirati i više `query` parametara, npr. `godine`, `prezime`, `ime` i slično. Ukoliko želimo filtrirati studente po više kriterija, možemo koristiti `&` operator unutar URL-a:
 
@@ -1117,7 +1293,7 @@ Recimo, želimo studente s fakulteta `FIPU` i godinama `20`:
 http://localhost:3000/students?fakultet=FIPU&godine=20
 ```
 
-U kodu moramo samo dohvatiti dodatni parametar i nadograditi filter:
+U kôdu moramo samo dohvatiti dodatni parametar i nadograditi filter:
 
 ```js
 app.get('/students', async (req, res) => {
@@ -1128,7 +1304,9 @@ app.get('/students', async (req, res) => {
     const students = JSON.parse(data);
 
     if (fakultet_query && godine_query) {
-      const filtered_students = students.filter(student => student.fakultet === fakultet_query && student.godine === parseInt(godine_query));
+      const filtered_students = students.filter(
+        student => student.fakultet === fakultet_query 
+        && student.godine === parseInt(godine_query));
       res.status(200).send(filtered_students);
     } else if (fakultet_query) {
       const filtered_students = students.filter(student => student.fakultet === fakultet_query);
@@ -1143,7 +1321,9 @@ app.get('/students', async (req, res) => {
 });
 ```
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet_godine.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_query_fakultet_godine.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 3: Filtriranje studenata po fakultetu i godinama kroz `query` parametre u Postmanu
 
 To je to! Filtriranje možemo implementirati po želji puno različitih načina kroz `query` parametre.
 
@@ -1152,7 +1332,7 @@ To je to! Filtriranje možemo implementirati po želji puno različitih načina 
 **Važno je ovdje uočiti sljedeće:**
 
 - `query` parametri su **opcionalni**. Ako ih ne pošaljemo, dobit ćemo sve studente.
-- `query` parametri su **neovisni**. Ako pošaljemo samo jedan parametar, dobit ćemo filtrirane studente samo prema tom parametru.
+- `query` parametri su **neovisni**. Ako pošaljemo samo jedan parametar, dobit ćemo filtrirane studente samo prema tom parametru, ali možemo ih slati i više ili nijedan.
 - `query` parametre želimo koristiti isključivo za neki oblik **agregacije podataka**
 - `query` parametre **ne želimo koristiti** kao zamjenu za **parametre rute**. Parametri rute su **obavezni** ako postoje i koriste se dohvat **pojedinog resursa**
 
@@ -1172,12 +1352,17 @@ app.get('/students', async (req, res) => {
     const data = await fs.readFile('data/students.json', 'utf8');
     const students = JSON.parse(data);
 
+    // ako su prisutni oba query parametra
     if (fakultet_query && godine_query) {
-      const filtered_students = students.filter(student => student.fakultet === fakultet_query && student.godine === parseInt(godine_query));
+      const filtered_students = students.filter(
+        student => student.fakultet === fakultet_query 
+        && student.godine === parseInt(godine_query));
       res.status(200).send(filtered_students);
+    // ako je prisutan samo fakultet query parametar
     } else if (fakultet_query) {
       const filtered_students = students.filter(student => student.fakultet === fakultet_query);
       res.status(200).send(filtered_students);
+    // ako nema query parametara, vrati sve studente
     } else {
       res.status(200).send(students);
     }
@@ -1187,34 +1372,9 @@ app.get('/students', async (req, res) => {
   }
 });
 ```
-
-Dohvat pojedinog studenta definiramo kao **zasebnu rutu** na sljedeći način, uz lošu pretpostavku da su ime i prezime jedinstveni:
-
-```js
-app.get('/students/:ime/:prezime', async (req, res) => {
-  let ime = req.params.ime;
-  let prezime = req.params.prezime;
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
-    const student = students.find(student => student.ime === ime && student.prezime === prezime);
-    if (student) {
-      res.status(200).send(student);
-    } else {
-      res.status(404).send('Student nije pronađen.');
-    }
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
-});
-```
-
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/get_params_ime_prezime.png?raw=true" style="width:80%; box-shadow: none !important; "></img>
-
 <div class="page-break"></div>
 
-## 3.2 Sortiranje podataka
+## 3.2 Query parametri: Sortiranje podataka
 
 `Query` parametre ne moramo koristiti samo za filtriranje podataka, možemo i za sortiranje. Uzmimo primjer gdje želimo sortirati studente po godinama uzlazno ili silazno.
 
@@ -1224,7 +1384,7 @@ U tom slučaju možemo definirati `query` parametar `sortiraj_po_godinama` koji 
 http://localhost:3000/students?sortiraj_po_godinama=uzlazno
 ```
 
-U kodu, dohvatimo `query` parametar i sortirajmo studente koristeći metodu `Arary.sort()`:
+U kôdu, dohvatimo `query` parametar i sortirajmo studente koristeći metodu `Arary.sort()`:
 
 Radi jednostavnosti, izostavit ćemo logiku za filtriranje:
 
@@ -1253,11 +1413,15 @@ app.get('/students', async (req, res) => {
 
 Sortiranje po godinama **uzlazno**:
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_uzlazno_query.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_uzlazno_query.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 4: Sortiranje studenata po godinama uzlazno kroz `query` parametar u Postmanu
 
 Sortiranje po godinama **silazno**:
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_silazno_query.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/sort_godine_silazno_query.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+
+> Slika 5: Sortiranje studenata po godinama silazno kroz `query` parametar u Postmanu
 
 Za kraj, dozvoljeno je i kombiniranje `query` parametra i parametra rute. Recimo da želimo dohvatiti resurs našeg studenta po imenu i prezimenu (param `:ime/:prezime`), ali dodati dodatni filter `fakultet` putem `query` parametra:
 
@@ -1267,11 +1431,12 @@ Za kraj, dozvoljeno je i kombiniranje `query` parametra i parametra rute. Recimo
 http://localhost:3000/students/Pero/Perić?fakultet=FIPU
 ```
 
-> **Čitamo**: Dohvati određenog studenta s imenom `Pero` i prezimenom `Perić` koji studira na fakultetu `FIPU`. Bilo bi točnije dohvaćati po `id` parametru, ali za potrebe primjera koristimo ime i prezime.
+**Čitamo**: Dohvati određenog studenta s imenom `Pero` i prezimenom `Perić` koji studira na fakultetu `FIPU`. Bilo bi točnije dohvaćati po `id` parametru, ali za potrebe primjera koristimo ime i prezime.
 
-U kodu, dohvatimo `query` parametar i parametre rute:
+U kôdu, dohvatimo `query` parametar i parametre rute:
 
 ```js
+// loš primjer: ažuriram boljim.
 app.get('/students/:ime/:prezime', async (req, res) => {
   let ime = req.params.ime; //parametar rute ime
   let prezime = req.params.prezime; // parametar rute prezime
@@ -1279,7 +1444,10 @@ app.get('/students/:ime/:prezime', async (req, res) => {
   try {
     const data = await fs.readFile('data/students.json', 'utf8');
     const students = JSON.parse(data);
-    const student = students.find(student => student.ime === ime && student.prezime === prezime && student.fakultet === fakultet_query);
+    const student = students.find(
+      student => student.ime === ime 
+      && student.prezime === prezime 
+      && student.fakultet === fakultet_query);
     if (student) {
       res.status(200).send(student);
     } else {
@@ -1292,19 +1460,19 @@ app.get('/students/:ime/:prezime', async (req, res) => {
 });
 ```
 
-Primjer dohvaćanja studenta s imenom `Ivo` i prezimenom `Ivić` (:ime/:prezime) koji studira na fakultetu `FIPU` (`?fakultet=FIPU`):
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_pronadeno.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_pronadeno.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
+> Slika 6: Primjer dohvaćanja studenta s imenom `Ivo` i prezimenom `Ivić` (:ime/:prezime) koji studira na fakultetu `FIPU` (`?fakultet=FIPU`)
 
-Primjer dohvaćanja istog resursa, ali s pogrešnim fakultetom u `query` parametru:
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_nema_ga.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/screenshots/kombinacija_query_route_nema_ga.png?raw=true" style="width:70%; box-shadow: none !important; "></img>
+> Slika 7: Primjer dohvaćanja studenta s imenom `Ivo` i prezimenom `Ivić` (:ime/:prezime) koji studira na fakultetu `FET` (`?fakultet=FET`). Student nije pronađen.
 
 <div class="page-break"></div>
 
 # Samostalni zadatak za Vježbu 4
 
-Izradite novi Express poslužitelj i definirajte jednostavni API za upravljanje podacima o zaposlenicima neke organizacije. API treba imati sljedeće rute:
+Izradite novi Express poslužitelj i definirajte jednostavni *restful *API za upravljanje podacima o zaposlenicima neke organizacije. API treba imati sljedeće rute:
 
 - `GET /zaposlenici` - dohvat svih zaposlenika
 - `GET /zaposlenici/:id` - dohvat zaposlenika po ID-u
