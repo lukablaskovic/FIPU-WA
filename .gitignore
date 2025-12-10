@@ -24,3 +24,6 @@ checkpoints
 /WA2 - Usmjeravanje na Express poslužitelju/app
 wa-mid
 /WA3 - Razmjena podataka između klijenta i poslužitelja/app
+/WA4 - Upravljanje podacima i agregacija podataka/app-sat
+/WA3 - Razmjena podataka između klijenta i poslužitelja/pizza-app
+/WA4 - Upravljanje datotekama, Asinkroni Pristupi i Agregacija podataka/app

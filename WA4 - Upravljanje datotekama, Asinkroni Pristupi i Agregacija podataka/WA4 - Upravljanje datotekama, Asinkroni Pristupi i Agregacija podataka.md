@@ -7,7 +7,7 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
 
-# (4) Upravljanje datotekama i agregacija podataka
+# (4) Upravljanje datotekama, Asinkroni Pristupi i Agregacija podataka
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA4%20-%20Upravljanje%20podacima%20na%20poslu%C5%BEiteljskoj%20strani/WA_4_logo.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
@@ -17,26 +17,28 @@ Ispravna upotreba i upravljanje podacima ključni su aspekti razvoja web aplikac
 
 <br>
 
-**🆙 Posljednje ažurirano: 8.12.2025.**
+**🆙 Posljednje ažurirano: 10.12.2025.**
 
 ## Sadržaj
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
-- [(4) Upravljanje datotekama i agregacija podataka](#4-upravljanje-datotekama-i-agregacija-podataka)
-  - [Sadržaj](#sadržaj)
+- [(4) Upravljanje datotekama, Asinkroni Pristupi i Agregacija podataka](#4-upravljanje-datotekama-asinkroni-pristupi-i-agregacija-podataka)
+    - [Sadržaj](#sadržaj)
 - [1. Gdje pohranjujemo podatke u web aplikacijama?](#1-gdje-pohranjujemo-podatke-u-web-aplikacijama)
 - [2. Podaci na poslužiteljskoj strani](#2-podaci-na-poslužiteljskoj-strani)
-  - [2.1 Čitanje tekstualnih datoteka kroz `fs` modul](#21-čitanje-tekstualnih-datoteka-kroz-fs-modul)
-      - [2.1.1 Asinkroni pristup čitanju datoteke](#211-asinkroni-pristup-čitanju-datoteke)
-      - [2.1.2 Apsolutna i Relativna putanja do datoteke](#212-apsolutna-i-relativna-putanja-do-datoteke)
-      - [2.1.3 Modul `path` za upravljanje putanjama](#213-modul-path-za-upravljanje-putanjama)
-      - [2.1.4 `Callback` vs `Promise` pristup](#214-callback-vs-promise-pristup)
-  - [2.2 Pohrana u datoteke kroz `fs` modul](#22-pohrana-u-datoteke-kroz-fs-modul)
-    - [2.2.1 Pohrana `String` sadržaja u datoteku](#221-pohrana-string-sadržaja-u-datoteku)
-    - [2.2.2 Čitanje i pohrana `JSON` podataka u datoteku](#222-čitanje-i-pohrana-json-podataka-u-datoteku)
-- [3. Agregacija podataka kroz `query` parametre](#3-agregacija-podataka-kroz-query-parametre)
-  - [3.1 Query parametri: Filtriranje podataka](#31-query-parametri-filtriranje-podataka)
-  - [3.2 Query parametri: Sortiranje podataka](#32-query-parametri-sortiranje-podataka)
+    - [2.1 Čitanje tekstualnih datoteka kroz `fs` modul](#21-čitanje-tekstualnih-datoteka-kroz-fs-modul)
+        - [2.1.1 Asinkroni pristup čitanju datoteke](#211-asinkroni-pristup-čitanju-datoteke)
+        - [2.1.2 Apsolutna i Relativna putanja do datoteke](#212-apsolutna-i-relativna-putanja-do-datoteke)
+        - [2.1.3 Modul `path` za upravljanje putanjama](#213-modul-path-za-upravljanje-putanjama)
+        - [2.1.4 `Callback` vs `Promise` pristup](#214-callback-vs-promise-pristup)
+        - [Česta greška #1](#česta-greška-1)
+        - [Česta greška #2](#česta-greška-2)
+    - [2.2 Pohrana u datoteke kroz `fs` modul](#22-pohrana-u-datoteke-kroz-fs-modul)
+        - [2.2.1 Pohrana `String` sadržaja u datoteku](#221-pohrana-string-sadržaja-u-datoteku)
+        - [2.2.2 Čitanje i pohrana `JSON` podataka u datoteku](#222-čitanje-i-pohrana-json-podataka-u-datoteku)
+- [3. Agregacija podataka kroz parametre upita (Query Parameters)](#3-agregacija-podataka-kroz-parametre-upita-query-parameters)
+    - [3.1 Query parametri: Filtriranje podataka](#31-query-parametri-filtriranje-podataka)
+    - [3.2 Query parametri: Sortiranje podataka](#32-query-parametri-sortiranje-podataka)
 - [Samostalni zadatak za Vježbu 4](#samostalni-zadatak-za-vježbu-4)
 
 <div style="page-break-after: always; break-after: page;"></div>
@@ -47,7 +49,7 @@ Ispravna upotreba i upravljanje podacima ključni su aspekti razvoja web aplikac
 
 Kada govorimo o pohrani podataka u web aplikacijama, važno je odmah razjasniti razliku između **klijentske** i **poslužiteljske** pohrane podataka. Web aplikacije u produkcijskom okruženju obično pohranjuju podatke na **obje razine**, kako bi se osigurala učinkovita i sigurna komunikacija između klijenta i poslužitelja.
 
-**Klijentska pohrana podataka** (_eng. client-side storage_) odnosi se na spremanje podataka na korisničkom uređaju, obično unutar web preglednika, u obliku kolačića (*eng. cookies*), lokalne memorije (_eng. local storage_), sesijske memorije (_eng. session storage_), ili drugih tehnologija (npr. IndexedDB, WebSQL) koje omogućuju privremeno ili trajno pohranjivanje podataka. Kod mobilnih aplikacija, klijentska pohrana može uključivati pohranu na prijenosnim uređajima (poput mobilnih telefona i tableta) putem tehnologija specifičnih za mobilne platforme.
+**Klijentska pohrana podataka** (_eng. client-side storage_) odnosi se na spremanje podataka na korisničkom uređaju, obično unutar web preglednika, u obliku kolačića (_eng. cookies_), lokalne memorije (_eng. local storage_), sesijske memorije (_eng. session storage_), ili drugih tehnologija (npr. IndexedDB, WebSQL) koje omogućuju privremeno ili trajno pohranjivanje podataka. Kod mobilnih aplikacija, klijentska pohrana može uključivati pohranu na prijenosnim uređajima (poput mobilnih telefona i tableta) putem tehnologija specifičnih za mobilne platforme.
 
 Podaci koji se pohranjuju na **klijentskoj strani** obično se koriste (samim time i pohranjuju) u sljedeće svrhe:
 
@@ -93,15 +95,15 @@ import express from 'express';
 const app = express();
 
 app.get('/', (req, res) => {
-  res.status(200).send('Vrijeme je za čitanje datoteka!');
+    res.status(200).send('Vrijeme je za čitanje datoteka!');
 });
 
 app.listen(3000, () => {
-  console.log('Poslužitelj je pokrenut na portu 3000');
+    console.log('Poslužitelj je pokrenut na portu 3000');
 });
 ```
 
-> Napomena, određeni *bundleri* (npr. Vite, Webpack, esbuild) omogućuju uvoz tekstualnih datoteka ili podataka direktno kroz `import` sintaksu. Ovo nije zadano JavaScript ponašanje te zahtijeva dodatnu konfiguraciju tih bundlera.
+> Napomena, određeni _bundleri_ (npr. Vite, Webpack, esbuild) omogućuju uvoz tekstualnih datoteka ili podataka direktno kroz `import` sintaksu. Ovo nije zadano JavaScript ponašanje te zahtijeva dodatnu konfiguraciju tih bundlera.
 
 Uključit ćemo i `fs` modul (nije ga potrebno ručno instalirati):
 
@@ -114,7 +116,7 @@ Općenito, pohranu i čitanje podataka u datoteke možemo podijeliti na dva osno
 1. **Asinkroni pristup**
 2. **Sinkroni pristup**
 
-JavaScript je jednodretveni programski jezik (_eng. single-threaded_), što znači da se kôd izvršava redom, u jednoj sekvencijalnoj niti (dretvi). Međutim, mehanizmi poput **asinkronog programiranja** i implementacije [JavaScript Execution modela](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) omogućuju nam da izvršavamo više operacija istovremeno, **bez blokiranja glavne dretve**. Na ovaj način, JavaScript kôd se ustvari izvršava [konkurentno](https://en.wikipedia.org/wiki/Concurrency_(computer_science)), premda daje iluziju paralelnog izvršavanja. Blokiranjem glavne dretve, aplikacija bi postala neodaziva, odnosno korisniku bi se jednostavno "zamrznula".
+JavaScript je jednodretveni programski jezik (_eng. single-threaded_), što znači da se kôd izvršava redom, u jednoj sekvencijalnoj niti (dretvi). Međutim, mehanizmi poput **asinkronog programiranja** i implementacije [JavaScript Execution modela](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop) omogućuju nam da izvršavamo više operacija istovremeno, **bez blokiranja glavne dretve**. Na ovaj način, JavaScript kôd se ustvari izvršava [konkurentno](<https://en.wikipedia.org/wiki/Concurrency_(computer_science)>), premda daje iluziju paralelnog izvršavanja. Blokiranjem glavne dretve, aplikacija bi postala neodaziva, odnosno korisniku bi se jednostavno "zamrznula".
 
 > Napomena: Više o asinkronom programiranju i konkurentnom izvođenju kôda učit ćete na kolegiju [Raspodijeljeni sustavi](https://fipu.unipu.hr/fipu/predmet/rassus_a) na Diplomskom studiju. Za sada je dovoljno razumjeti osnovne koncepte asinkronog programiranja i kako ih primijeniti u praksi.
 
@@ -134,9 +136,9 @@ fs.readFile(path, options, callback);
 
 - `path` - relativna ili apsolutna putanja do datoteke (**obavezno**)
 - `options` - specifikacija enkodiranja datoteke (opcionalno)
-  - `encoding` - encoding datoteke (npr. `'utf8'`)
-  - `flag` - opcionalni *char* kojim se označava način pristupa datoteci (npr. `'r'` za čitanje)
-- `callback` - *callback* funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
+    - `encoding` - encoding datoteke (npr. `'utf8'`)
+    - `flag` - opcionalni _char_ kojim se označava način pristupa datoteci (npr. `'r'` za čitanje)
+- `callback` - _callback_ funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
 
 `callback` funkcija prima dva argumenta:
 
@@ -148,14 +150,14 @@ Primjer čitanja datoteke `story.txt`:
 ```javascript
 // relativna putanja do datoteke 'story.txt'
 fs.readFile('./data/story.txt', 'utf8', (err, data) => {
-  // čitanje datoteke 'story.txt' u utf8 formatu
-  if (err) {
-    // ako se dogodila greška
-    console.error('Greška prilikom čitanja datoteke:', err); // ispisuje grešku
-    return;
-  }
+    // čitanje datoteke 'story.txt' u utf8 formatu
+    if (err) {
+        // ako se dogodila greška
+        console.error('Greška prilikom čitanja datoteke:', err); // ispisuje grešku
+        return;
+    }
 
-  console.log('Sadržaj datoteke:', data); // ispisuje sadržaj datoteke
+    console.log('Sadržaj datoteke:', data); // ispisuje sadržaj datoteke
 });
 ```
 
@@ -187,9 +189,9 @@ A starica prela svoju pređu”
 
 Prije nego nastavimo, važno je razumjeti razliku između **apsolutne** i **relativne** putanje do datoteke (_eng. file path_).
 
-**Apsolutna putanja** (_eng. absolute path_) je putanja koja **počinje od korijenskog (*eng. root*) direktorija datotečnog sustava**. Na primjer, u Unix/Linux sustavima, korijenski direktorij je `/`, dok je u Windows sustavima to najčešće `C:\`, ali može biti i neki drugi disk (npr. `D:\`, `E:\`, itd.) ovisno o konfiguraciji sustava.
+**Apsolutna putanja** (_eng. absolute path_) je putanja koja **počinje od korijenskog (_eng. root_) direktorija datotečnog sustava**. Na primjer, u Unix/Linux sustavima, korijenski direktorij je `/`, dok je u Windows sustavima to najčešće `C:\`, ali može biti i neki drugi disk (npr. `D:\`, `E:\`, itd.) ovisno o konfiguraciji sustava.
 
-Bash naredbom `pwd` (*print working directory*) možemo dobiti apsolutnu putanju do **trenutnog radnog direktorija** u kojem se nalazimo:
+Bash naredbom `pwd` (_print working directory_) možemo dobiti apsolutnu putanju do **trenutnog radnog direktorija** u kojem se nalazimo:
 
 ```bash
 → pwd
@@ -220,22 +222,21 @@ Datoteku `story.txt` možemo pročitati na sljedeći način koristeći apsolutnu
 
 ```javascript
 // apsolutna putanja do datoteke 'story.txt' na Windows OS-u pohranjena u string varijablu u JavaScriptu
-fs.readFile('C:\\Users\\Username\\Documents\\GitHub\\WA4 - Upravljanje podacima i agregacija podataka\\data\\story.txt', 'utf8',
- (err, data) => {
-  if (err) {
-    console.error('Greška prilikom čitanja datoteke:', err);
-    return;
-  }
+fs.readFile('C:\\Users\\Username\\Documents\\GitHub\\WA4 - Upravljanje podacima i agregacija podataka\\data\\story.txt', 'utf8', (err, data) => {
+    if (err) {
+        console.error('Greška prilikom čitanja datoteke:', err);
+        return;
+    }
 
-  console.log('Sadržaj datoteke:', data);
+    console.log('Sadržaj datoteke:', data);
 });
 ```
 
 Navedeno je **loša praksa** bududći da je apsolutna putanja specifična za svakog korisnika i njegov datotečni sustav. Također, teško je čitljiva i često je podložna greškama kod ručnog unosa, pogotovo ako je putanja dugačka i sadrži razne direktorije.
 
-*Primjer:* Kada bi netko klonirao ovaj repozitorij na svoje računalo i pokušao pokrenuti gornji kôd, došlo bi do greške budući da apsolutna putanja ne bi odgovarala njegovom datotečnom sustavu.
+_Primjer:_ Kada bi netko klonirao ovaj repozitorij na svoje računalo i pokušao pokrenuti gornji kôd, došlo bi do greške budući da apsolutna putanja ne bi odgovarala njegovom datotečnom sustavu.
 
-Osim toga, vidimo da smo u kôdu koristili dvostruke kose crte (`\\`) kao **separator direktorija**. Ovo je specifično za Windows sustave budući da jedna kosa crta (`\`) predstavlja ***escape* znak** u JavaScriptu. Kako bismo izbjegli ovu konflikt, koristimo dvostruke kose crte. Primjer, *escape* znak za novi red je `\n` pa samim tim `\\` predstavlja jednu kosa crtu unutar stringa. Lista čestih *escape* znakova u JavaScriptu dostupna je [ovdje](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_escape).
+Osim toga, vidimo da smo u kôdu koristili dvostruke kose crte (`\\`) kao **separator direktorija**. Ovo je specifično za Windows sustave budući da jedna kosa crta (`\`) predstavlja **_escape_ znak** u JavaScriptu. Kako bismo izbjegli ovu konflikt, koristimo dvostruke kose crte. Primjer, _escape_ znak za novi red je `\n` pa samim tim `\\` predstavlja jednu kosa crtu unutar stringa. Lista čestih _escape_ znakova u JavaScriptu dostupna je [ovdje](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_escape).
 
 <hr>
 
@@ -296,7 +297,7 @@ tada će relativna putanja do datoteke `story.txt` (u odnosu na datoteku `index.
 
 Oznake `.` i `..` su vrlo korisne kod definiranja relativnih putanja, stoga ih je važno zapamtiti, a predstavljaju **pokazivače** na **trenutni** i **roditeljski** direktorij.
 
-> Napomena: Pokazivače na roditeljski direktorij moguće je i ponavljati, kako bismo došli do željenog direktorija. Na primjer, `../../data/story.txt` označava da se iz trenutnog direktorija trebamo vratiti **dva direktorija unatrag** (u roditeljski direktorij roditeljskog direktorija), a zatim ući u direktorij `data` iz tog (*grandparent* direktorija) i pristupiti datoteci `story.txt`.
+> Napomena: Pokazivače na roditeljski direktorij moguće je i ponavljati, kako bismo došli do željenog direktorija. Na primjer, `../../data/story.txt` označava da se iz trenutnog direktorija trebamo vratiti **dva direktorija unatrag** (u roditeljski direktorij roditeljskog direktorija), a zatim ući u direktorij `data` iz tog (_grandparent_ direktorija) i pristupiti datoteci `story.txt`.
 
 > Studenti koji žele ponoviti rad s datotekama i direktorijima u terminalu, preporučuje se skripta [OS1 - Uvod u operacijske sustave](https://github.com/lukablaskovic/FIPU-OS/tree/main/OS1%20-%20Uvod%20u%20operacijske%20sustave).
 
@@ -309,12 +310,12 @@ Kako bi pokrenuli sljedeći kôd bez greške, odnosno kako bi se datoteka `story
 
 ```javascript
 fs.readFile('./data/story.txt', 'utf8', (err, data) => {
-  if (err) {
-    console.error('Greška prilikom čitanja datoteke:', err);
-    return;
-  }
+    if (err) {
+        console.error('Greška prilikom čitanja datoteke:', err);
+        return;
+    }
 
-  console.log('Sadržaj datoteke:', data);
+    console.log('Sadržaj datoteke:', data);
 });
 ```
 
@@ -344,12 +345,12 @@ Dakle, ako se nalazimo u korijenskom direktoriju projekta, trebali bismo izmjeni
 
 ```javascript
 fs.readFile('./app/data/story.txt', 'utf8', (err, data) => {
-  if (err) {
-    console.error('Greška prilikom čitanja datoteke:', err);
-    return;
-  }
+    if (err) {
+        console.error('Greška prilikom čitanja datoteke:', err);
+        return;
+    }
 
-  console.log('Sadržaj datoteke:', data);
+    console.log('Sadržaj datoteke:', data);
 });
 ```
 
@@ -357,7 +358,7 @@ Sada radi, međutim ako terminalom opet uđemo u direktorij `app/`, kôd će ope
 
 #### 2.1.3 Modul `path` za upravljanje putanjama
 
-Kako bismo minimizirali probleme s relativnim putanjama, možemo koristiti ugrađeni Node.js modul [`path`](https://nodejs.org/api/path.html) koji nam omogućuje jednostavno upravljanje putanjama do datoteka i direktorija na ***platform-independent***.
+Kako bismo minimizirali probleme s relativnim putanjama, možemo koristiti ugrađeni Node.js modul [`path`](https://nodejs.org/api/path.html) koji nam omogućuje jednostavno upravljanje putanjama do datoteka i direktorija na **_platform-independent_**.
 
 `path` je također ugrađeni modul u Node.js, stoga ga nije potrebno ručno instalirati. Uključujemo ga na sljedeći način:
 
@@ -379,7 +380,7 @@ path.join(path1, path2, ..., pathN)
 
 - `paths` - niz dijelova putanje koje želimo spojiti u jednu ispravnu putanju
 
-*Primjer:*
+_Primjer:_
 
 ```javascript
 const storyPath = path.join(korijenski_direktorij, 'data', 'story.txt');
@@ -450,7 +451,7 @@ path.resolve(path1, path2, ..., pathN)
 path.resolve() // vraća apsolutnu putanju do trenutnog radnog direktorija
 ```
 
-*Primjer:*
+_Primjer:_
 
 ```javascript
 const rootDir = path.resolve(); // apsolutna putanja do trenutnog radnog direktorija
@@ -466,7 +467,7 @@ const storyPath = path.join(parentDir, 'app', 'data', 'story.txt'); // ali onda 
 
 Ako se prebacimo u direktorij `/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka`, i pokušamo pokrenuti poslužitelj naredbom `node app/index.js`, **ponovno dobivamo grešku** budući da naredba `path.resolve('..')` računa putanju iznad trenutnog radnog direktorija, a ne iznad direktorija gdje se nalazi `index.js` datoteka.
 
-**Zaključno:** treba pripaziti u radu s relativnim i apsolutnim putanjama do datoteka, te koristiti `path` modul kako bismo minimizirali probleme s različitim operacijskim sustavima. **Relativna putanja** relativna je u odnosu na **trenutni radni direktorij** iz kojeg pokrećemo aplikaciju pa trebamo biti oprezni gdje se nalazimo u datotečnom sustavu prilikom pokretanja aplikacije, dok je **apsolutna putanja** uvijek ista bez obzira na trenutni radni direktorij - ali može stvoriti probleme prilikom pokretanja *developerskih* okruženja na različitim računalima. 
+**Zaključno:** treba pripaziti u radu s relativnim i apsolutnim putanjama do datoteka, te koristiti `path` modul kako bismo minimizirali probleme s različitim operacijskim sustavima. **Relativna putanja** relativna je u odnosu na **trenutni radni direktorij** iz kojeg pokrećemo aplikaciju pa trebamo biti oprezni gdje se nalazimo u datotečnom sustavu prilikom pokretanja aplikacije, dok je **apsolutna putanja** uvijek ista bez obzira na trenutni radni direktorij - ali može stvoriti probleme prilikom pokretanja _developerskih_ okruženja na različitim računalima.
 
 <div class="page-break"></div>
 
@@ -481,19 +482,19 @@ import fs from 'fs';
 const app = express();
 
 app.get('/story', (req, res) => {
-  fs.readFile('./data/story.txt', 'utf8', (err, data) => {
-    if (err) {
-      console.error('Greška prilikom čitanja datoteke:', err);
-      return;
-    }
+    fs.readFile('./data/story.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Greška prilikom čitanja datoteke:', err);
+            return;
+        }
 
-    console.log('Sadržaj datoteke:', data);
-    res.status(200).send(data);
-  });
+        console.log('Sadržaj datoteke:', data);
+        res.status(200).send(data);
+    });
 });
 
 app.listen(3000, () => {
-  console.log('Poslužitelj je pokrenut na portu 3000');
+    console.log('Poslužitelj je pokrenut na portu 3000');
 });
 ```
 
@@ -501,27 +502,27 @@ Međutim, nije uobičajeno da se kôd koji se odnosi na čitanje datoteke nalazi
 
 <div class="page-break"></div>
 
-**Česta greška #1:**
+#### Česta greška #1
 
 Prebacit ćemo kôd koji se odnosi na čitanje datoteke u zasebnu funkciju `read_story()`, a zatim ćemo definirati endpoint `/story` koja će slati JSON odgovor rezultat poziva ove funkcije natrag korisniku. Funkcija `read_story()` definira prazan string `story_text` koji će se popuniti sadržajem datoteke, a zatim se isti vraća kao rezultat funkcije. **Ovo je pogrešan pristup iako na prvi pogled izgleda ispravno!**
 
 ```javascript
 function read_story() {
-  let story_text = '';
-  fs.readFile('./data/story.txt', 'utf8', (err, data) => {
-    if (err) {
-      console.error('Greška prilikom čitanja datoteke:', err);
-      return;
-    }
+    let story_text = '';
+    fs.readFile('./data/story.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Greška prilikom čitanja datoteke:', err);
+            return;
+        }
 
-    console.log('Sadržaj datoteke:', data);
-    story_text = data;
-  });
-  return story_text;
+        console.log('Sadržaj datoteke:', data);
+        story_text = data;
+    });
+    return story_text;
 }
 
 app.get('/story', (req, res) => {
-  res.status(200).send(read_story());
+    res.status(200).send(read_story());
 });
 ```
 
@@ -534,26 +535,26 @@ Mi ustvari ovdje pokušavamo upravljati asinkronim kôdom na sinkroni način, š
 
 <div class="page-break"></div>
 
-**Česta greška 2:**
+#### Česta greška #2
 
 U redu, nećemo se predati. Pokušat ćemo riješiti problem tako da ćemo ustvari pohraniti rezultat izvršavanja funkcije `readFile` u varijablu `story_text`, a zatim **vratiti tu varijablu kao rezultat funkcije** `read_story()`. U endpointu ćemo poziv funkcije `read_story()` spremiti u varijablu `data`, a zatim poslati kao odgovor klijentu.
 
 ```javascript
 function read_story() {
-  let story_text = fs.readFile('./data/story.txt', 'utf8', (err, data) => {
-    if (err) {
-      console.error('Greška prilikom čitanja datoteke:', err);
-      return;
-    }
-    console.log('Sadržaj datoteke:', data);
-    story_text = data;
-  });
-  return story_text;
+    let story_text = fs.readFile('./data/story.txt', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Greška prilikom čitanja datoteke:', err);
+            return;
+        }
+        console.log('Sadržaj datoteke:', data);
+        story_text = data;
+    });
+    return story_text;
 }
 
 app.get('/story', (req, res) => {
-  let data = read_story();
-  res.status(200).send(data);
+    let data = read_story();
+    res.status(200).send(data);
 });
 ```
 
@@ -567,24 +568,24 @@ Problem je moguće riješiti na 2 načina, **ovisno kako odaberemo obrađivati a
 
 > 1. Način: **Callback pattern**
 
-Callback *pattern* u JavaScriptu predstavlja rješenje za upravljanje asinkronim operacijama koje sa bazira na pozivanju callback funkcija nakon što se operacija završi. Već ste naučili da je `callback` jednostavno funkcija koja se prosljeđuje kao argument drugoj funkciji, a koja se poziva nakon što se izvrši određena operacija (u nekom kasnijem vremenskom trenutku).
+Callback _pattern_ u JavaScriptu predstavlja rješenje za upravljanje asinkronim operacijama koje sa bazira na pozivanju callback funkcija nakon što se operacija završi. Već ste naučili da je `callback` jednostavno funkcija koja se prosljeđuje kao argument drugoj funkciji, a koja se poziva nakon što se izvrši određena operacija (u nekom kasnijem vremenskom trenutku).
 
-Kako radi callback *pattern*?
+Kako radi callback _pattern_?
 
-1. Prosljeđujemo *callback* funkciju kao argument drugoj funkciju
-2. Funkcija koja prima *callback* funkciju izvršava isti *callback* jednom kad odradi svoj posao, odnosno kad se zadovolji neki uvjet
-3. Navedeno dozvoljava "non-blocking" (*non-blocking IO*), asinkrono programiranje
+1. Prosljeđujemo _callback_ funkciju kao argument drugoj funkciju
+2. Funkcija koja prima _callback_ funkciju izvršava isti _callback_ jednom kad odradi svoj posao, odnosno kad se zadovolji neki uvjet
+3. Navedeno dozvoljava "non-blocking" (_non-blocking IO_), asinkrono programiranje
 
 Sinkroni primjer:
 
 ```javascript
 function pozdrav(ime, callback) {
-  console.log(`Pozdrav, ${ime}!`);
-  callback(); // poziv callback funkcije nakon što se ispiše pozdravna poruka
+    console.log(`Pozdrav, ${ime}!`);
+    callback(); // poziv callback funkcije nakon što se ispiše pozdravna poruka
 }
 
 function dovidenja() {
-  console.log('Doviđenja!');
+    console.log('Doviđenja!');
 }
 
 // pozivamo funkciju 'pozdrav' s callback funkcijom 'dovidenja'
@@ -601,16 +602,16 @@ Asinkroni primjer:
 
 ```javascript
 function fetch_data(callback) {
-  console.log('Dohvaćam podatke s udaljenog poslužitelja...');
+    console.log('Dohvaćam podatke s udaljenog poslužitelja...');
 
-  setTimeout(() => {
-    const podaci = { racun: 'HR1234567890', stanje: 5000 };
-    callback(podaci); // poziv callback funkcije nakon što se dohvate podaci
-  }, 2000); // simulacija čekanja 2 sekunde na dohvat podataka
+    setTimeout(() => {
+        const podaci = { racun: 'HR1234567890', stanje: 5000 };
+        callback(podaci); // poziv callback funkcije nakon što se dohvate podaci
+    }, 2000); // simulacija čekanja 2 sekunde na dohvat podataka
 }
 
 function handle_data(podaci) {
-  console.log('Podaci su dohvaćeni:', podaci);
+    console.log('Podaci su dohvaćeni:', podaci);
 }
 
 // pozivamo funkciju 'simuliraj_dohvat_podataka' s callback funkcijom 'prikazi_podatke'
@@ -626,9 +627,9 @@ fetch_data(handle_data);
 
 ---
 
-Idemo izmijeniti i naš primjer s čitanjem datoteke `story.txt` koristeći *callback* pattern.
+Idemo izmijeniti i naš primjer s čitanjem datoteke `story.txt` koristeći _callback_ pattern.
 
-Kojoj funkciji ćemo u primjeru iznad proslijediti *callback* argument? 🤔
+Kojoj funkciji ćemo u primjeru iznad proslijediti _callback_ argument? 🤔
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
@@ -637,75 +638,75 @@ Kojoj funkciji ćemo u primjeru iznad proslijediti *callback* argument? 🤔
 
 ```javascript
 function read_story(callback) {
-  fs.readFile('./data/story.txt', 'utf8', callback); // ovdje prosljeđujemo callback funkciju iz argumenta
+    fs.readFile('./data/story.txt', 'utf8', callback); // ovdje prosljeđujemo callback funkciju iz argumenta
 }
 
 app.get('/story', (req, res) => {
-  read_story((err, data) => {
-    // kao argument prosljeđujemo cijelu implementaciju callback funkcije
-    if (err) {
-      res.status(500).send('Greška prilikom čitanja priče');
-    } else {
-      res.send(data);
-    }
-  });
+    read_story((err, data) => {
+        // kao argument prosljeđujemo cijelu implementaciju callback funkcije
+        if (err) {
+            res.status(500).send('Greška prilikom čitanja priče');
+        } else {
+            res.send(data);
+        }
+    });
 });
 ```
 
-*Callback* funkcija je definirana *arrow* sintaksom, i izgleda ovako:
+_Callback_ funkcija je definirana _arrow_ sintaksom, i izgleda ovako:
 
 ```javascript
 (err, data) => {
-  if (err) {
-    res.status(500).send('Greška prilikom čitanja priče');
-  } else {
-    res.send(data);
-  }
+    if (err) {
+        res.status(500).send('Greška prilikom čitanja priče');
+    } else {
+        res.send(data);
+    }
 };
 ```
 
-Dakle, kôd koji šalje odgovor klijentu nalazi se unutar *callback* funkcije koja se poziva nakon što se datoteka pročita. Na ovaj način, osiguravamo da se odgovor šalje tek nakon što se datoteka pročita, odnosno nakon što se završi asinkrona operacija. Bez obzira što implementacija *callback* funkcije možda izgleda kao da se izvršava odmah nakon poziva `read_story()`, ona se zapravo izvršava nakon što se datoteka pročita.
+Dakle, kôd koji šalje odgovor klijentu nalazi se unutar _callback_ funkcije koja se poziva nakon što se datoteka pročita. Na ovaj način, osiguravamo da se odgovor šalje tek nakon što se datoteka pročita, odnosno nakon što se završi asinkrona operacija. Bez obzira što implementacija _callback_ funkcije možda izgleda kao da se izvršava odmah nakon poziva `read_story()`, ona se zapravo izvršava nakon što se datoteka pročita.
 
 <div class="page-break"></div>
 
 > 2. Način: **Promise pattern**
 
-Kako bismo izbjegli [callback hell](http://callbackhell.com/) (duboko gniježđenje *callback* funkcija), možemo koristiti `Promise` *pattern*. Sintaksa iznad možda izgleda neintuitivno, a kôd postaje teško čitljiv i održiv s više *callback* funkcija. `Promise` *pattern* je moderniji pristup i omogućuje nam da se rješavamo *callback* funkcija i pišemo čišći i čitljiviji kôd.
+Kako bismo izbjegli [callback hell](http://callbackhell.com/) (duboko gniježđenje _callback_ funkcija), možemo koristiti `Promise` _pattern_. Sintaksa iznad možda izgleda neintuitivno, a kôd postaje teško čitljiv i održiv s više _callback_ funkcija. `Promise` _pattern_ je moderniji pristup i omogućuje nam da se rješavamo _callback_ funkcija i pišemo čišći i čitljiviji kôd.
 
-Međutim, kako bismo koristili `Promise` *pattern*, koristit ćemo ekstenziju `fs` modula - `fs.promises`. Ova ekstenzija omogućuje nam da koristimo `Promise` *pattern* za čitanje, kao i za pisanje u datoteke. Naravno, samim time možemo koristiti `async/await` sintaksu kako bi riješili `.then` i `.catch` lanca.
+Međutim, kako bismo koristili `Promise` _pattern_, koristit ćemo ekstenziju `fs` modula - `fs.promises`. Ova ekstenzija omogućuje nam da koristimo `Promise` _pattern_ za čitanje, kao i za pisanje u datoteke. Naravno, samim time možemo koristiti `async/await` sintaksu kako bi riješili `.then` i `.catch` lanca.
 
 ```javascript
 import fs from 'fs/promises';
 
 app.get('/story', (req, res) => {
-  fs.readFile('data/story.txt', 'utf8')
-    .then(data => {
-      // uspješno čitanje datoteke
-      res.status(200).send(data);
-    })
-    .catch(error => {
-      // greška prilikom čitanja datoteke
-      console.error('Error reading file:', error);
-      res.status(500).send('Error reading story file.');
-    });
+    fs.readFile('data/story.txt', 'utf8')
+        .then(data => {
+            // uspješno čitanje datoteke
+            res.status(200).send(data);
+        })
+        .catch(error => {
+            // greška prilikom čitanja datoteke
+            console.error('Error reading file:', error);
+            res.status(500).send('Error reading story file.');
+        });
 });
 ```
 
-Vidimo da sad možemo koristiti `then` i `catch` lanac, što može biti čitljivije i čišće od korištenja *callback* funkcija. Međutim, najbolji način je sintaksu prenijeti u zasebnu funkciju i koristiti alternativnu `async/await` sintaksu.
+Vidimo da sad možemo koristiti `then` i `catch` lanac, što može biti čitljivije i čišće od korištenja _callback_ funkcija. Međutim, najbolji način je sintaksu prenijeti u zasebnu funkciju i koristiti alternativnu `async/await` sintaksu.
 
 Za početak ćemo samo primijeniti `async/await` sintaksu na prethodni primjer:
 
 ```javascript
 app.get('/story', async (req, res) => {
-  try {
-    // pokušaj izvršiti asinkronu operaciju
-    const data = await fs.readFile('data/story.txt', 'utf8'); // pročitaj datoteku 'story.txt'
-    res.status(200).send(data); // uspješan rezultat čitanja datoteke vrati u HTTP odgovoru
-  } catch (error) {
-    // uhvati grešku
-    console.error('Error reading file:', error);
-    res.status(500).send('Error reading story file.'); // greška prilikom čitanja datoteke
-  }
+    try {
+        // pokušaj izvršiti asinkronu operaciju
+        const data = await fs.readFile('data/story.txt', 'utf8'); // pročitaj datoteku 'story.txt'
+        res.status(200).send(data); // uspješan rezultat čitanja datoteke vrati u HTTP odgovoru
+    } catch (error) {
+        // uhvati grešku
+        console.error('Error reading file:', error);
+        res.status(500).send('Error reading story file.'); // greška prilikom čitanja datoteke
+    }
 });
 ```
 
@@ -744,12 +745,12 @@ Ispravno:
 
 ```javascript
 app.get('/story', async (req, res) => {
-  const data = await read_story(); // await budući da je read_story također asinkrona funkcija
-  if (data) {
-    res.status(200).send(data);
-  } else {
-    res.status(500).send('Error reading story file.');
-  }
+    const data = await read_story(); // await budući da je read_story također asinkrona funkcija
+    if (data) {
+        res.status(200).send(data);
+    } else {
+        res.status(500).send('Error reading story file.');
+    }
 });
 ```
 
@@ -774,9 +775,9 @@ gdje su:
 - `path` - putanja do datoteke (**obavezno**)
 - `data` - podaci koje želimo zapisati u datoteku (**obavezno**)
 - `options` - specifikacija enkodiranja datoteke (opcionalno)
-  - `encoding` - encoding datoteke (npr. `'utf8'`)
-  - `flag` - opcionalni znak kojim se označava način pristupa datoteci (npr. `'w'` za pohranu (_default_))
-- `callback` - *callback* funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
+    - `encoding` - encoding datoteke (npr. `'utf8'`)
+    - `flag` - opcionalni znak kojim se označava način pristupa datoteci (npr. `'w'` za pohranu (_default_))
+- `callback` - _callback_ funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
 
 `callback` funkcija prima dva argumenta:
 
@@ -785,38 +786,38 @@ gdje su:
 
 Jednako kao i kod čitanja, moguće je koristiti `callback` i `Promise` pattern za pohranu u datoteke. Međutim ponovo, `Promise` pattern i `async/await` sintaksa su moderniji pristupi.
 
-Primjer pohrane u datoteku kroz *callback* pattern:
+Primjer pohrane u datoteku kroz _callback_ pattern:
 
 ```javascript
 app.get('/write', (req, res) => {
-  const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
-  fs.writeFile('data/write.txt', data, 'utf8', err => {
-    if (err) {
-      console.error('Greška prilikom pohrane u datoteku:', err);
-      res.status(500).send('Greška prilikom pohrane u datoteku.');
-    } else {
-      console.log('Podaci uspješno zapisani u datoteku.');
-      res.status(200).send('Podaci uspješno zapisani u datoteku.');
-    }
-  });
+    const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
+    fs.writeFile('data/write.txt', data, 'utf8', err => {
+        if (err) {
+            console.error('Greška prilikom pohrane u datoteku:', err);
+            res.status(500).send('Greška prilikom pohrane u datoteku.');
+        } else {
+            console.log('Podaci uspješno zapisani u datoteku.');
+            res.status(200).send('Podaci uspješno zapisani u datoteku.');
+        }
+    });
 });
 ```
 
 Vidjet ćete novu datoteku `write.txt` u direktoriju `data` s tekstom: `Ovo je tekst koji želimo zapisati u datoteku.`.
 
-Isto možemo postići i kroz `Promise` *pattern* odnosno **`fs/promises`** ekstenziju biblioteke `fs`:
+Isto možemo postići i kroz `Promise` _pattern_ odnosno **`fs/promises`** ekstenziju biblioteke `fs`:
 
 ```javascript
 app.get('/write', async (req, res) => {
-  const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
-  try {
-    await fs.writeFile('data/write.txt', data, 'utf8');
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
+    try {
+        await fs.writeFile('data/write.txt', data, 'utf8');
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -824,24 +825,24 @@ Ili kroz zasebnu asinkronu funkciju:
 
 ```javascript
 async function write_data(data) {
-  try {
-    await fs.writeFile('data/write.txt', data, 'utf8');
-    console.log('Podaci uspješno zapisani u datoteku.');
-    return true;
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    return false;
-  }
+    try {
+        await fs.writeFile('data/write.txt', data, 'utf8');
+        console.log('Podaci uspješno zapisani u datoteku.');
+        return true;
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        return false;
+    }
 }
 
 app.get('/write', async (req, res) => {
-  const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
-  const success = await write_data(data);
-  if (success) {
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } else {
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
+    const success = await write_data(data);
+    if (success) {
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } else {
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -868,17 +869,17 @@ U ovom primjeru, pohranit ćemo string sadržaj u datoteku `text.txt` kroz `call
 import fs from 'fs';
 
 app.get('/write-callback', (req, res) => {
-  const string = 'Ovo je tekst koji smo pohranili asinkrono u datoteku kroz Callback pattern i w flag.';
-  // flag je `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke
-  fs.writeFile('data/text.txt', string, { encoding: 'utf8', flag: 'w' }, err => {
-    if (err) {
-      console.error('Greška prilikom pohrane u datoteku:', err);
-      res.status(500).send('Greška prilikom pohrane u datoteku.');
-    } else {
-      console.log('Podaci uspješno zapisani u datoteku.');
-      res.status(200).send('Podaci uspješno zapisani u datoteku.');
-    }
-  });
+    const string = 'Ovo je tekst koji smo pohranili asinkrono u datoteku kroz Callback pattern i w flag.';
+    // flag je `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke
+    fs.writeFile('data/text.txt', string, { encoding: 'utf8', flag: 'w' }, err => {
+        if (err) {
+            console.error('Greška prilikom pohrane u datoteku:', err);
+            res.status(500).send('Greška prilikom pohrane u datoteku.');
+        } else {
+            console.log('Podaci uspješno zapisani u datoteku.');
+            res.status(200).send('Podaci uspješno zapisani u datoteku.');
+        }
+    });
 });
 ```
 
@@ -911,10 +912,10 @@ U ovom primjeru, pohranit ćemo JSON podatke u datoteku `data.json` kroz `Callba
 
 ```javascript
 let student_pero = {
-  ime: 'Pero',
-  prezime: 'Perić',
-  godine: 20,
-  fakultet: 'FIPU'
+    ime: 'Pero',
+    prezime: 'Perić',
+    godine: 20,
+    fakultet: 'FIPU'
 };
 ```
 
@@ -922,10 +923,10 @@ Podsjetnik kako izgleda JSON objekt koji ćemo pohraniti:
 
 ```json
 {
-  "ime": "Pero",
-  "prezime": "Perić",
-  "godine": 20,
-  "fakultet": "FIPU"
+    "ime": "Pero",
+    "prezime": "Perić",
+    "godine": 20,
+    "fakultet": "FIPU"
 }
 ```
 
@@ -939,16 +940,16 @@ Podsjetnik: **Serijalizacija/Deserijalizacija**:
 ```javascript
 import fs from 'fs';
 app.get('/write-json-callback', (req, res) => {
-  // flag je defaultni `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke. Serijalizacija kroz JSON.stringify()
-  fs.writeFile('data/data.json', JSON.stringify(student_pero), err => {
-    if (err) {
-      console.error('Greška prilikom pohrane u datoteku:', err);
-      res.status(500).send('Greška prilikom pohrane u datoteku.');
-    } else {
-      console.log('Podaci uspješno zapisani u datoteku.');
-      res.status(200).send('Podaci uspješno zapisani u datoteku.');
-    }
-  });
+    // flag je defaultni `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke. Serijalizacija kroz JSON.stringify()
+    fs.writeFile('data/data.json', JSON.stringify(student_pero), err => {
+        if (err) {
+            console.error('Greška prilikom pohrane u datoteku:', err);
+            res.status(500).send('Greška prilikom pohrane u datoteku.');
+        } else {
+            console.log('Podaci uspješno zapisani u datoteku.');
+            res.status(200).send('Podaci uspješno zapisani u datoteku.');
+        }
+    });
 });
 ```
 
@@ -958,15 +959,15 @@ Isto možemo postići i kroz `Promise` pattern:
 import fs from 'fs/promises';
 
 app.get('/write-json-promise', async (req, res) => {
-  // flag je defaultni `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke. Serijalizacija kroz JSON.stringify()
-  try {
-    await fs.writeFile('data/data.json', JSON.stringify(student_pero));
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    // flag je defaultni `w`, dakle svaki put ćemo zamijeniti sadržaj datoteke. Serijalizacija kroz JSON.stringify()
+    try {
+        await fs.writeFile('data/data.json', JSON.stringify(student_pero));
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -978,20 +979,20 @@ Kako se radi o pohrani u datoteku, moramo zamijeniti kôd iznad `POST` metodom, 
 import fs from 'fs/promises';
 
 app.post('/student', async (req, res) => {
-  const student = req.body;
+    const student = req.body;
 
-  if (Object.keys(student).length === 0) {
-    return res.status(400).send('Niste poslali podatke.');
-  }
+    if (Object.keys(student).length === 0) {
+        return res.status(400).send('Niste poslali podatke.');
+    }
 
-  try {
-    await fs.writeFile('data/data.json', JSON.stringify(student));
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    try {
+        await fs.writeFile('data/data.json', JSON.stringify(student));
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -1002,20 +1003,20 @@ import fs from 'fs/promises';
 
 // endpoint ima isti naziv, promijenili smo samo metodu u PUT
 app.put('/student', async (req, res) => {
-  const student = req.body;
+    const student = req.body;
 
-  if (Object.keys(student).length === 0) {
-    return res.status(400).send('Niste poslali podatke.');
-  }
+    if (Object.keys(student).length === 0) {
+        return res.status(400).send('Niste poslali podatke.');
+    }
 
-  try {
-    await fs.writeFile('data/data.json', JSON.stringify(student), { flag: 'a' });
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    try {
+        await fs.writeFile('data/data.json', JSON.stringify(student), { flag: 'a' });
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -1033,12 +1034,12 @@ Ispraznite JSON datoteku i pošaljite `POST` zahtjev s JSON tijelom:
 
 ```json
 [
-  {
-    "ime": "Pero",
-    "prezime": "Perić",
-    "godine": 20,
-    "fakultet": "FIPU"
-  }
+    {
+        "ime": "Pero",
+        "prezime": "Perić",
+        "godine": 20,
+        "fakultet": "FIPU"
+    }
 ]
 ```
 
@@ -1048,27 +1049,27 @@ Sada kada deserijaliziramo JSON podatke, dobit ćemo polje objekata, a ne jedan 
 import fs from 'fs/promises';
 
 app.put('/student', async (req, res) => {
-  const student = req.body;
+    const student = req.body;
 
-  if (Object.keys(student).length === 0) {
-    return res.status(400).send('Niste poslali podatke.');
-  }
+    if (Object.keys(student).length === 0) {
+        return res.status(400).send('Niste poslali podatke.');
+    }
 
-  try {
-    // pročitaj datoteku
-    const data = await fs.readFile('data/data.json', 'utf8');
-    // deserijaliziraj JSON podatke
-    const students = JSON.parse(data);
-    // dodaj novog studenta
-    students.push(student);
-    // serijaliziraj i pohrani
-    await fs.writeFile('data/data.json', JSON.stringify(students));
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+    try {
+        // pročitaj datoteku
+        const data = await fs.readFile('data/data.json', 'utf8');
+        // deserijaliziraj JSON podatke
+        const students = JSON.parse(data);
+        // dodaj novog studenta
+        students.push(student);
+        // serijaliziraj i pohrani
+        await fs.writeFile('data/data.json', JSON.stringify(students));
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -1078,10 +1079,10 @@ Tijelo `PUT` zahtjeva:
 
 ```json
 {
-  "ime": "Ana",
-  "prezime": "Anić",
-  "godine": 18,
-  "fakultet": "FIPU"
+    "ime": "Ana",
+    "prezime": "Anić",
+    "godine": 18,
+    "fakultet": "FIPU"
 }
 ```
 
@@ -1099,24 +1100,24 @@ Iskoristit ćemo funkcije `readJson()` i `writeJson()` koje su dostupne u `fs-ex
 import fs from 'fs-extra';
 
 app.put('/student', async (req, res) => {
-  const student = req.body;
+    const student = req.body;
 
-  if (Object.keys(student).length === 0) {
-    return res.status(400).send('Niste poslali podatke.');
-  }
+    if (Object.keys(student).length === 0) {
+        return res.status(400).send('Niste poslali podatke.');
+    }
 
-  try {
-    // pročitaj datoteku, deserijaliziraj JSON podatke i pohrani u varijablu
-    const students = await fs.readJson('data/data.json');
-    students.push(student);
-    await fs.writeJson('data/data.json', students); // serijaliziraj i pohrani u datoteku
+    try {
+        // pročitaj datoteku, deserijaliziraj JSON podatke i pohrani u varijablu
+        const students = await fs.readJson('data/data.json');
+        students.push(student);
+        await fs.writeJson('data/data.json', students); // serijaliziraj i pohrani u datoteku
 
-    console.log('Podaci uspješno zapisani u datoteku.');
-    res.status(200).send('Podaci uspješno zapisani u datoteku.');
-  } catch (error) {
-    console.error('Greška prilikom pohrane u datoteku:', error);
-    res.status(500).send('Greška prilikom pohrane u datoteku.');
-  }
+        console.log('Podaci uspješno zapisani u datoteku.');
+        res.status(200).send('Podaci uspješno zapisani u datoteku.');
+    } catch (error) {
+        console.error('Greška prilikom pohrane u datoteku:', error);
+        res.status(500).send('Greška prilikom pohrane u datoteku.');
+    }
 });
 ```
 
@@ -1132,19 +1133,19 @@ Problemi **skalabilnosti** su očiti. Što je potrebno promijeniti strukturu pod
 
 Što ako želimo pretraživati podatke, filtrirati, sortirati, spajati, grupirati? Sve ove operacije su moguće, ali su puno jednostavnije i efikasnije kroz **baze podataka**.
 
-Jedan od većih problema je i **konkurentnost** i **sigurnost**. Što ako više korisnika istovremeno pokuša čitati i pisati u istu datoteku? Kako ćemo osigurati da se podaci ne izgube, ne prepišu (*eng. overvrite*), ne završe u nekom nevaljalom stanju (*eng. corrupted data state*)?
+Jedan od većih problema je i **konkurentnost** i **sigurnost**. Što ako više korisnika istovremeno pokuša čitati i pisati u istu datoteku? Kako ćemo osigurati da se podaci ne izgube, ne prepišu (_eng. overvrite_), ne završe u nekom nevaljalom stanju (_eng. corrupted data state_)?
 
-> Ovo su se pitanja kojima se bave developeri koji aktivno rade na razvoju baza podataka. **DBMS** (*eng. Database Management System*) su sustavi koji su razvijeni upravo iz ovih razloga; kako bi olakšali pohranu, upravljanje, pretraživanje, ažuriranje i brisanje podataka na siguran i učinkovit način, uz osiguranje konzistentnosti i integriteta podataka. O DBMS sustavima i relacijskim bazama podataka detaljno ste učili na kolegijima Baze podataka 1 i Baze podataka 2.
+> Ovo su se pitanja kojima se bave developeri koji aktivno rade na razvoju baza podataka. **DBMS** (_eng. Database Management System_) su sustavi koji su razvijeni upravo iz ovih razloga; kako bi olakšali pohranu, upravljanje, pretraživanje, ažuriranje i brisanje podataka na siguran i učinkovit način, uz osiguranje konzistentnosti i integriteta podataka. O DBMS sustavima i relacijskim bazama podataka detaljno ste učili na kolegijima Baze podataka 1 i Baze podataka 2.
 
 <div class="page-break"></div>
 
-# 3. Agregacija podataka kroz `query` parametre
+# 3. Agregacija podataka kroz parametre upita (Query Parameters)
 
-Ipak, prije nego se krenemo baviti bazama podataka (na sljedećim vježbama), moramo naučiti kako agregirati podatke na poslužiteljskoj strani kroz `query` parametre.
+Ipak, prije nego se krenemo baviti bazom podataka (na sljedećim vježbama), moramo naučiti kako agregirati podatke na poslužiteljskoj strani kroz **parametre upita**, poznatije kao **query parameters**.
 
-[Query](https://en.wikipedia.org/wiki/Query_string) ili *search* parametri su dio URL-a koji služi za prenošenje **dodatnih informacija o resursu** koji se traži ili ponekad o **radnji koju je potrebno izvršiti**. `Query` parametri se dodaju na URL nakon znaka `?` i odvajaju se znakom `&`. Svaki `query` parametar sastoji se od imena i vrijednosti, odvojenih znakom `=`.
+[Query](https://en.wikipedia.org/wiki/Query_string) ili _search_ parametri su dio URL-a koji služi za prenošenje **dodatnih informacija o resursu** koji se traži ili ponekad o **radnji koju je potrebno izvršiti**. `Query` parametri se dodaju na URL nakon znaka `?` i odvajaju se znakom `&`. Svaki `query` parametar sastoji se od imena i vrijednosti, odvojenih znakom `=`.
 
-Sigurno smo svi bar jednom vidjeli URL s `query` parametrima, npr.:
+Sigurno smo svi bar jednom vidjeli URL s `query` parametrom, npr.:
 
 ```
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
@@ -1152,7 +1153,7 @@ https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
 - **query parametar** je ovdje `v`, a vrijednost `dQw4w9WgXcQ` predstavlja jedinstveni identifikator videa na YouTube platformi.
 
-Ipak, zadnjih godina YouTube je počeo koristiti i skraćenu domenu koja videi identificira kroz **route parametar**, npr.
+Ipak, zadnjih godina YouTube je počeo koristiti i skraćenu domenu koja video identificira samo kroz **route parametar**:
 
 ```
 https://youtu.be/dQw4w9WgXcQ
@@ -1178,7 +1179,7 @@ gdje je:
 
 Dakle, ove parametre šaljemo kao dio URL-a, najčešće je to unutar `GET` zahtjeva.
 
-Zašto `GET`? Uobičajeno je koristiti ovu vrstu parametra za slanje `GET` zahtjeva kada želimo dohvatiti određeni **podskup podataka** (*eng. subset*), npr. filtrirati po nekom kriteriju, sortirati, paginirati stranice i sl.
+Zašto `GET`? Uobičajeno je koristiti ovu vrstu parametra za slanje `GET` zahtjeva kada želimo dohvatiti određeni **podskup podataka** (_eng. subset_), npr. filtrirati po nekom kriteriju, sortirati, paginirati stranice i sl.
 
 ## 3.1 Query parametri: Filtriranje podataka
 
@@ -1192,18 +1193,18 @@ const app = express();
 app.use(express.json());
 
 app.get('/students', async (req, res) => {
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
-    res.status(200).send(students);
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
+        res.status(200).send(students);
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
+    }
 });
 
 app.listen(3000, () => {
-  console.log('Poslužitelj je pokrenut na http://localhost:3000');
+    console.log('Poslužitelj je pokrenut na http://localhost:3000');
 });
 ```
 
@@ -1212,16 +1213,16 @@ U datoteku `students.json` pohranit ćemo ručno nekoliko studenata:
 ```json
 // data/students.json
 [
-  { "ime": "Pero", "prezime": "Perić", "godine": 20, "fakultet": "FIPU" },
-  { "ime": "Ana", "prezime": "Anić", "godine": 18, "fakultet": "FIPU" },
-  { "ime": "Ivo", "prezime": "Ivić", "godine": 22, "fakultet": "FIPU" },
-  { "ime": "Mara", "prezime": "Marić", "godine": 21, "fakultet": "FET" },
-  { "ime": "Jure", "prezime": "Jurić", "godine": 19, "fakultet": "FET" },
-  { "ime": "Iva", "prezime": "Ivić", "godine": 23, "fakultet": "FET" }
+    { "ime": "Pero", "prezime": "Perić", "godine": 20, "fakultet": "FIPU" },
+    { "ime": "Ana", "prezime": "Anić", "godine": 18, "fakultet": "FIPU" },
+    { "ime": "Ivo", "prezime": "Ivić", "godine": 22, "fakultet": "FIPU" },
+    { "ime": "Mara", "prezime": "Marić", "godine": 21, "fakultet": "FET" },
+    { "ime": "Jure", "prezime": "Jurić", "godine": 19, "fakultet": "FET" },
+    { "ime": "Iva", "prezime": "Ivić", "godine": 23, "fakultet": "FET" }
 ]
 ```
 
-Ako pošaljemo `GET` zahtjev na `http://localhost:3000/students`, dobit ćemo sve studente u JSON odgovoru. Međutim, što ako želimo dohvatiti samo studente koji studiraju na `FIPU`? Isto možemo postići kroz `query` parametre.
+Ako pošaljemo `GET` zahtjev na `http://localhost:3000/students`, dobit ćemo sve studente u JSON odgovoru. Međutim, što ako želimo dohvatiti samo studente koji studiraju na `FIPU`? Ne **želimo raditi novi endpoint**, već možemo nadograditi postojeći koristeći `query` parametre.
 
 Ažurirat ćemo postojeću rutu `/students` kako bismo omogućili filtriranje studenata prema fakultetu:
 
@@ -1231,21 +1232,21 @@ Ključ nam ovdje može biti `fakultet`, a vrijednost `FIPU`. Ukoliko želimo doh
 http://localhost:3000/students?fakultet=FIPU
 ```
 
-Međutim, samu rutu **nećemo izmjenjivati**, već ćemo dohvaćati `query` parametre iz `req.query` objekta.
+Glavnina URL-a ostaje ista, samo dodajemo `query` parametar `fakultet` s vrijednošću `FIPU`.
 
-> **Uočite**, `req.query` je objekt koji sadrži sve `query` **parametre** poslane u URL-u. Nemojte ovo miješati s `req.params` objektom koji predstavlja drugu vrstu parametara - **parametre rute**.
+> **Uočite**, `req.query` je objekt koji sadrži sve **query parametre** poslane u URL-u. Nemojte ovo miješati s `req.params` objektom koji predstavlja drugu vrstu parametara - **parametre rute**.
 
 ```js
 app.get('/students', async (req, res) => {
-  let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
-    res.status(200).send(students);
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
+    let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
+        res.status(200).send(students);
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
+    }
 });
 ```
 
@@ -1253,21 +1254,21 @@ Vidimo da URL ostaje isti! Sada je potrebno samo odraditi filtriranje koristeći
 
 ```js
 app.get('/students', async (req, res) => {
-  let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
+    let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
 
-    if (fakultet_query) {
-      const filtered_students = students.filter(student => student.fakultet === fakultet_query);
-      res.status(200).send(filtered_students);
-    } else {
-      res.status(200).send(students);
+        if (fakultet_query) {
+            const filtered_students = students.filter(student => student.fakultet === fakultet_query);
+            res.status(200).send(filtered_students);
+        } else {
+            res.status(200).send(students);
+        }
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
     }
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
 });
 ```
 
@@ -1297,27 +1298,25 @@ U kôdu moramo samo dohvatiti dodatni parametar i nadograditi filter:
 
 ```js
 app.get('/students', async (req, res) => {
-  let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
-  let godine_query = req.query.godine; // dohvatimo query parametar 'godine'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
+    let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
+    let godine_query = req.query.godine; // dohvatimo query parametar 'godine'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
 
-    if (fakultet_query && godine_query) {
-      const filtered_students = students.filter(
-        student => student.fakultet === fakultet_query 
-        && student.godine === parseInt(godine_query));
-      res.status(200).send(filtered_students);
-    } else if (fakultet_query) {
-      const filtered_students = students.filter(student => student.fakultet === fakultet_query);
-      res.status(200).send(filtered_students);
-    } else {
-      res.status(200).send(students);
+        if (fakultet_query && godine_query) {
+            const filtered_students = students.filter(student => student.fakultet === fakultet_query && student.godine === parseInt(godine_query));
+            res.status(200).send(filtered_students);
+        } else if (fakultet_query) {
+            const filtered_students = students.filter(student => student.fakultet === fakultet_query);
+            res.status(200).send(filtered_students);
+        } else {
+            res.status(200).send(students);
+        }
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
     }
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
 });
 ```
 
@@ -1346,32 +1345,31 @@ Ako želimo rutu za dohvaćanje svih studenata, definiramo je kao prvu rutu, a z
 
 ```js
 app.get('/students', async (req, res) => {
-  let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
-  let godine_query = req.query.godine; // dohvatimo query parametar 'godine'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
+    let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
+    let godine_query = req.query.godine; // dohvatimo query parametar 'godine'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
 
-    // ako su prisutni oba query parametra
-    if (fakultet_query && godine_query) {
-      const filtered_students = students.filter(
-        student => student.fakultet === fakultet_query 
-        && student.godine === parseInt(godine_query));
-      res.status(200).send(filtered_students);
-    // ako je prisutan samo fakultet query parametar
-    } else if (fakultet_query) {
-      const filtered_students = students.filter(student => student.fakultet === fakultet_query);
-      res.status(200).send(filtered_students);
-    // ako nema query parametara, vrati sve studente
-    } else {
-      res.status(200).send(students);
+        // ako su prisutni oba query parametra
+        if (fakultet_query && godine_query) {
+            const filtered_students = students.filter(student => student.fakultet === fakultet_query && student.godine === parseInt(godine_query));
+            res.status(200).send(filtered_students);
+            // ako je prisutan samo fakultet query parametar
+        } else if (fakultet_query) {
+            const filtered_students = students.filter(student => student.fakultet === fakultet_query);
+            res.status(200).send(filtered_students);
+            // ako nema query parametara, vrati sve studente
+        } else {
+            res.status(200).send(students);
+        }
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
     }
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
 });
 ```
+
 <div class="page-break"></div>
 
 ## 3.2 Query parametri: Sortiranje podataka
@@ -1390,24 +1388,24 @@ Radi jednostavnosti, izostavit ćemo logiku za filtriranje:
 
 ```js
 app.get('/students', async (req, res) => {
-  let sortiraj_po_godinama = req.query.sortiraj_po_godinama; // dohvatimo query parametar 'sortiraj_po_godinama'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
+    let sortiraj_po_godinama = req.query.sortiraj_po_godinama; // dohvatimo query parametar 'sortiraj_po_godinama'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
 
-    if (sortiraj_po_godinama) {
-      if (sortiraj_po_godinama === 'uzlazno') {
-        students.sort((a, b) => a.godine - b.godine);
-      } else if (sortiraj_po_godinama === 'silazno') {
-        students.sort((a, b) => b.godine - a.godine);
-      }
+        if (sortiraj_po_godinama) {
+            if (sortiraj_po_godinama === 'uzlazno') {
+                students.sort((a, b) => a.godine - b.godine);
+            } else if (sortiraj_po_godinama === 'silazno') {
+                students.sort((a, b) => b.godine - a.godine);
+            }
+        }
+
+        res.status(200).send(students);
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
     }
-
-    res.status(200).send(students);
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
 });
 ```
 
@@ -1438,25 +1436,22 @@ U kôdu, dohvatimo `query` parametar i parametre rute:
 ```js
 // loš primjer: ažuriram boljim.
 app.get('/students/:ime/:prezime', async (req, res) => {
-  let ime = req.params.ime; //parametar rute ime
-  let prezime = req.params.prezime; // parametar rute prezime
-  let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
-  try {
-    const data = await fs.readFile('data/students.json', 'utf8');
-    const students = JSON.parse(data);
-    const student = students.find(
-      student => student.ime === ime 
-      && student.prezime === prezime 
-      && student.fakultet === fakultet_query);
-    if (student) {
-      res.status(200).send(student);
-    } else {
-      res.status(404).send('Student nije pronađen.');
+    let ime = req.params.ime; //parametar rute ime
+    let prezime = req.params.prezime; // parametar rute prezime
+    let fakultet_query = req.query.fakultet; // dohvatimo query parametar 'fakultet'
+    try {
+        const data = await fs.readFile('data/students.json', 'utf8');
+        const students = JSON.parse(data);
+        const student = students.find(student => student.ime === ime && student.prezime === prezime && student.fakultet === fakultet_query);
+        if (student) {
+            res.status(200).send(student);
+        } else {
+            res.status(404).send('Student nije pronađen.');
+        }
+    } catch (error) {
+        console.error('Greška prilikom čitanja datoteke:', error);
+        res.status(500).send('Greška prilikom čitanja datoteke.');
     }
-  } catch (error) {
-    console.error('Greška prilikom čitanja datoteke:', error);
-    res.status(500).send('Greška prilikom čitanja datoteke.');
-  }
 });
 ```
 
