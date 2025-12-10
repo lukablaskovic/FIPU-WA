@@ -88,7 +88,7 @@ Krenimo s primjerom **čitanja tekstualnih podataka iz datoteka na poslužiteljs
 
 Koristeći `fs` modul, možemo čitati različite formate tekstualnih datoteka, uključujući običan tekst, JSON, CSV, XML, HTML i dr.
 
-<img src="./screenshots/fs-module.png" style="width:50%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA4%20-%20Upravljanje%20datotekama,%20Asinkroni%20Pristupi%20i%20Agregacija%20podataka/screenshots/fs-module.png?raw=true" style="width:50%; box-shadow: none !important; "></img>
 
 > Slika 2: `fs` modul omogućuje rad s datotekama na poslužiteljskoj strani.
 
