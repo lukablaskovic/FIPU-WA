@@ -1540,7 +1540,7 @@ Za kraj, moramo registrirati `OhVueIcons` _plugin_ unutar glavne `main.js` datot
 ```javascript
 // app/pizza-vue/src/main.js
 
-import OhVueIcons from 'oh-vue-icons';
+import OhVueIcon from 'oh-vue-icons';
 
 app.component('v-icon', OhVueIcon); // mapiraj OhVueIcon komponentu na "v-icon" HTML tag
 ```
@@ -1994,14 +1994,14 @@ Prvo moramo hardkodiranu jedinicu `1` unutar HTML strukture zamijeniti s reaktiv
 ```html
 <!-- gumb za smanjenje količine -->
 <button
-    @click="kolicina ? kolicina-- : kolicina = 1"
+    @click="kolicina > 1 ? kolicina-- : kolicina = 1"
     class="w-8 h-8 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition-all cursor-pointer"
 >
     -
 </button>
 
 <!-- gumb za povećanje količine -->
-
+<!-- ternarni izraz ovdje nije obavezan, ali može ostati -->
 <button
     @click="kolicina ? kolicina++ : (kolicina = 1)"
     class="w-8 h-8 flex items-center justify-center rounded-full bg-orange-500 text-white font-bold hover:bg-orange-600 transition-all cursor-pointer"
@@ -2010,7 +2010,7 @@ Prvo moramo hardkodiranu jedinicu `1` unutar HTML strukture zamijeniti s reaktiv
 </button>
 ```
 
-Izraz: `kolicina ? kolicina++ : (kolicina = 1)` osigurava da količina nikada ne padne ispod `1` te je ekvivalentan sljedećem:
+Izraz: `kolicina > 1 ? kolicina++ : (kolicina = 1)` osigurava da količina nikada ne padne ispod `1` te je ekvivalentan sljedećem:
 
 > Hint: JavaScript [Ternarni operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator) (`?`) se često koristi u Vue.js aplikacijama kada želimo unutar direktiva ili drugih template izraza napisati kratki logički uvjet.
 
@@ -2052,7 +2052,7 @@ const ukupna_cijena_stavke = computed(() => {
 <div class="w-full sm:w-auto text-center font-semibold text-lg text-orange-400 tracking-wide">Ukupno: {{ ukupna_cijena_stavke || '0.00' }}€</div>
 ```
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-calculating-price.png?raw=true" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja/screenshots/orderfooter-calculating-price.png" style="width:80%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 22: Prikaz automatski izračunate cijene unutar `OrderFooter.vue` komponente (prikaz u pregledniku) s interaktivnim odabirom veličine i količine
 
