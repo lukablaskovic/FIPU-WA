@@ -1,5 +1,5 @@
 import express from 'express';
-
+import { FindCursor } from 'mongodb';
 import { connectToDatabase } from './db.js';
 
 const app = express();
@@ -8,45 +8,48 @@ app.use(express.json());
 const db = await connectToDatabase();
 
 app.get('/', (req, res) => {
-  res.send('Pizza app');
+    res.send('Pizza app');
 });
 
 app.get('/pizze', async (req, res) => {
-  let pizze_collection = db.collection('pizze');
-  let pizze_rezultati = await pizze_collection.find().toArray();
-  console.log(pizze_rezultati);
+    let pizze_collection = db.collection('pizze');
+    let pizze_rezultati = await pizze_collection.find();
 
-  res.status(200).json(pizze_rezultati);
+    console.log(pizze_collection.find() instanceof FindCursor);
+
+    //console.log(pizze_rezultati);
+
+    res.status(200).json(pizze_rezultati);
 });
 
 // pizze/naziv
 app.get('/pizze/:naziv', async (req, res) => {
-  let pizze_collection = db.collection('pizze');
-  let naziv_param = req.params.naziv;
-  let pizza = await pizze_collection.find({ naziv: naziv_param }).toArray();
-  console.log(pizza);
+    let pizze_collection = db.collection('pizze');
+    let naziv_param = req.params.naziv;
+    let pizza = await pizze_collection.find({ naziv: naziv_param }).toArray();
+    console.log(pizza);
 
-  res.status(200).json(pizza);
+    res.status(200).json(pizza);
 });
 
 // pizze
 app.post('/pizze', async (req, res) => {
-  let podaci = req.body;
+    let podaci = req.body;
 
-  let pizze_collection = db.collection('pizze');
-  let result = await pizze_collection.insertOne(podaci);
+    let pizze_collection = db.collection('pizze');
+    let result = await pizze_collection.insertOne(podaci);
 
-  console.log(result);
+    console.log(result);
 
-  res.status(200).json(result);
+    res.status(200).json(result);
 });
 
 const PORT = 3000;
 app.listen(PORT, error => {
-  if (error) {
-    console.log('Greška prilikom pokretanja servera', error);
-  }
-  console.log(`Pizza poslužitelj dela na http://localhost:${PORT}`);
+    if (error) {
+        console.log('Greška prilikom pokretanja servera', error);
+    }
+    console.log(`Pizza poslužitelj dela na http://localhost:${PORT}`);
 });
 
 // npm install express
