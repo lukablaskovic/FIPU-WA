@@ -31,6 +31,8 @@ Kolegij slušaju:
 1. [Uvod u HTTP, Node i Express](https://youtu.be/lds6_b8shHQ) ([WA1](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA1%20-%20Uvod%20u%20HTTP%2C%20Node%20i%20Express))
 2. [Usmjeravanje na Express poslužitelju 1/2](https://youtu.be/o33YumQ_H2k) ([WA2](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju))
 3. [Usmjeravanje na Express poslužitelju 2/2](https://youtu.be/3bBWkjoMmyA) ([WA2](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju))
+4. [Razmjena podataka između klijenta i poslužitelja 1/2](https://youtu.be/bmlw7U5c5EI) ([WA3](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja))
+5. [Razmjena podataka između klijenta i poslužitelja 2/2](https://youtu.be/6Bv21fU61DE) ([WA3](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja))
 
 ## Kolokviji
 
