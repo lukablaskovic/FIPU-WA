@@ -20,7 +20,7 @@ U nastavku ćemo naučiti kako izraditi MongoDB Atlas cluster u Cloudu, kako se 
 
 <br>
 
-**🆙 Posljednje ažurirano: 14.12.2025.**
+**🆙 Posljednje ažurirano: 15.12.2025.**
 
 ## Sadržaj
 
@@ -519,7 +519,7 @@ U MongoDB Atlasu, kliknite na `Browse Collections` za definirani `cluster` i oda
 Kolekciju dohvaćamo koristeći `db.collection()` metodu, gdje je `db` referenca na bazu podataka koju smo dobili kao rezultat funkcije `connectToDatabase()`.
 
 ```js
-let allUsers = db.collection('users');
+let allUsers = db.collection('users'); // ne vraća podatke, već referencu na kolekciju ako ona postoji
 ```
 
 #### Mongo metoda: `collection().find()`
@@ -542,7 +542,7 @@ gdje su opcionalni parametri:
 Dohvatit ćemo sve korisnike iz kolekcije `users`:
 
 ```js
-let allUsers = await users.find(); // dohvaća sve dokumente iz kolekcije
+let allUsers = await db.collection('users').find(); // dohvaća sve dokumente iz kolekcije
 
 //import { FindCursor } from 'mongodb';
 console.log(allUsers instanceof FindCursor); // true - allUsers je FindCursor objekt
