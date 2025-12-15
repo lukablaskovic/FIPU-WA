@@ -231,7 +231,7 @@ Povezivanje koristeći MongoDB _native driver_ za Node.js realizira se kroz tzv.
 
 Odaberite svoj _cluster_ u MongoDB Atlasu i kliknite na `Connect` gumb. Odaberite `Drivers`.
 
-<img src="./screenshots/atlas_choose_drivers.png" style="width:50%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;">
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/WA5%20-%20MongoDB%20baza%20podataka/screenshots/atlas_choose_drivers.png" style="width:50%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;">
 
 > Slika 9: MongoDB Atlas - Odabir _drivera_ za povezivanje na bazu podataka.
 
