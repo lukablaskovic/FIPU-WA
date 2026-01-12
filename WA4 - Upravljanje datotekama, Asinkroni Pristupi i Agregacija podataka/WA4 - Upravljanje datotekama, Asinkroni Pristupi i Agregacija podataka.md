@@ -17,27 +17,27 @@ Ispravna upotreba i upravljanje podacima ključni su aspekti razvoja web aplikac
 
 <br>
 
-**🆙 Posljednje ažurirano: 10.12.2025.**
+**🆙 Posljednje ažurirano: 10.1.2026.**
 
 ## Sadržaj
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(4) Upravljanje datotekama, Asinkroni Pristupi i Agregacija podataka](#4-upravljanje-datotekama-asinkroni-pristupi-i-agregacija-podataka)
-    - [Sadržaj](#sadržaj)
+  - [Sadržaj](#sadržaj)
 - [1. Gdje pohranjujemo podatke u web aplikacijama?](#1-gdje-pohranjujemo-podatke-u-web-aplikacijama)
 - [2. Podaci na poslužiteljskoj strani](#2-podaci-na-poslužiteljskoj-strani)
-    - [2.1 Čitanje tekstualnih datoteka kroz `fs` modul](#21-čitanje-tekstualnih-datoteka-kroz-fs-modul)
-        - [2.1.1 Asinkroni pristup čitanju datoteke](#211-asinkroni-pristup-čitanju-datoteke)
-        - [2.1.2 Apsolutna i Relativna putanja do datoteke](#212-apsolutna-i-relativna-putanja-do-datoteke)
-        - [2.1.3 Modul `path` za upravljanje putanjama](#213-modul-path-za-upravljanje-putanjama)
-        - [2.1.4 _Callback_ vs _Promise_ pristup asinkronom programiranju](#214-callback-vs-promise-pristup-asinkronom-programiranju)
-    - [2.2 Pohrana u datoteke kroz `fs` modul](#22-pohrana-u-datoteke-kroz-fs-modul)
-        - [2.2.1 Pohrana `String` sadržaja u datoteku](#221-pohrana-string-sadržaja-u-datoteku)
-        - [2.2.2 Čitanje i pohrana `JSON` podataka u datoteku](#222-čitanje-i-pohrana-json-podataka-u-datoteku)
+  - [2.1 Čitanje tekstualnih datoteka kroz `fs` modul](#21-čitanje-tekstualnih-datoteka-kroz-fs-modul)
+      - [2.1.1 Asinkroni pristup čitanju datoteke](#211-asinkroni-pristup-čitanju-datoteke)
+      - [2.1.2 Apsolutna i Relativna putanja do datoteke](#212-apsolutna-i-relativna-putanja-do-datoteke)
+      - [2.1.3 Modul `path` za upravljanje putanjama](#213-modul-path-za-upravljanje-putanjama)
+      - [2.1.4 _Callback_ vs _Promise_ pristup asinkronom programiranju](#214-callback-vs-promise-pristup-asinkronom-programiranju)
+  - [2.2 Pohrana u datoteke kroz `fs` modul](#22-pohrana-u-datoteke-kroz-fs-modul)
+    - [2.2.1 Pohrana `String` sadržaja u datoteku](#221-pohrana-string-sadržaja-u-datoteku)
+    - [2.2.2 Čitanje i pohrana `JSON` podataka u datoteku](#222-čitanje-i-pohrana-json-podataka-u-datoteku)
 - [3. Agregacija podataka kroz parametre upita (Query Parameters)](#3-agregacija-podataka-kroz-parametre-upita-query-parameters)
-    - [3.1 Query parametri: Filtriranje podataka](#31-query-parametri-filtriranje-podataka)
-    - [3.2 Query parametri: Sortiranje podataka](#32-query-parametri-sortiranje-podataka)
-    - [3.3 Kombiniranje parametra rute i query parametara](#33-kombiniranje-parametra-rute-i-query-parametara)
+  - [3.1 Query parametri: Filtriranje podataka](#31-query-parametri-filtriranje-podataka)
+  - [3.2 Query parametri: Sortiranje podataka](#32-query-parametri-sortiranje-podataka)
+  - [3.3 Kombiniranje parametra rute i query parametara](#33-kombiniranje-parametra-rute-i-query-parametara)
 - [Samostalni zadatak za Vježbu 4](#samostalni-zadatak-za-vježbu-4)
 
 <div style="page-break-after: always; break-after: page;"></div>
@@ -249,7 +249,7 @@ Osim toga, vidimo da smo u kôdu koristili dvostruke kose crte (`\\`) kao **sepa
 
 > **Relativna putanja** (_eng. relative path_) je putanja koja **počinje od trenutnog radnog direktorija**. Relativna putanja **ne počinje s korijenskim direktorijem** i sadrži samo direktorije i datoteke koji se nalaze **između trenutnog radnog direktorija i ciljne datoteke**.
 
-Trenutni radni direktorij možemo dobiti pomoću globalne varijable `__dirname` u CommonJS modulu ili putem `import.meta.url` u ES modulima (ipak, ovo je bolje raditi s `path` modulom). Ove varijable sadrži putanju do trenutnog direktorija u kojem se nalazi trenutni modul, npr. `index.js` u našem slučaju.
+Trenutni radni direktorij možemo dobiti pomoću globalne varijable `__dirname` u CommonJS modulu ili varijacijama koristeći `import.meta.url` u ES modulima (ipak, ovo je bolje raditi s `path` modulom). Ove varijable sadrži putanju do trenutnog direktorija u kojem se nalazi trenutni modul, npr. `index.js` u našem slučaju.
 
 Primjer relativne putanje do datoteke `story.txt` ako se nalazimo u direktoriju: `/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka/app`:
 
@@ -365,7 +365,7 @@ Sada radi, međutim ako terminalom opet uđemo u direktorij `app/`, kôd će ope
 
 #### 2.1.3 Modul `path` za upravljanje putanjama
 
-Kako bismo minimizirali probleme s relativnim putanjama, možemo koristiti ugrađeni Node.js modul [`path`](https://nodejs.org/api/path.html) koji nam omogućuje jednostavno upravljanje putanjama do datoteka i direktorija na **_platform-independent_**.
+Kako bismo minimizirali probleme s relativnim putanjama, možemo koristiti ugrađeni Node.js modul [`path`](https://nodejs.org/api/path.html) koji nam omogućuje jednostavno upravljanje putanjama do datoteka i direktorija na **_platform-independent_** način. Drugim riječima, `path` modul omogućuje generiranje ispravnih putanja bez obzira na operacijski sustav na kojem se aplikacija izvršava (Windows, Linux, MacOS).
 
 `path` je također ugrađeni modul u Node.js, stoga ga nije potrebno ručno instalirati. Uključujemo ga na sljedeći način:
 
@@ -393,13 +393,15 @@ _Primjer:_
 const storyPath = path.join(korijenski_direktorij, 'data', 'story.txt');
 ```
 
-Rekli smo da `__dirname` varijabla sadrži apsolutnu putanju do **trenutnog** direktorija (ne korijenskog!). Ipak, u ES modulima nije dostupna, stoga možemo koristiti ekvivalent `import.meta.url` za dobivanje apsolutne putanje do trenutnog modula.
+Rekli smo da `__dirname` varijabla sadrži apsolutnu putanju do **trenutnog** direktorija (ne korijenskog!). Ipak, u ES modulima nije dostupna, stoga možemo koristiti ekvivalent `import.meta.url` za dobivanje apsolutne putanje do trenutnog modula (radne datoteke).
+
+> Napomena: U CommonJS modulima, `__dirname` varijabla je dostupna i možemo je koristiti direktno za dobivanje apsolutne putanje do trenutnog direktorija, dok je `__filename` varijabla dostupna za dobivanje apsolutne putanje do trenutne datoteke.
 
 **Sintaksa:**
 
 ```javascript
 __dirname # nije dostupan u ES modulima
-import.meta.url # dostupan u ES modulima
+import.meta.url # dostupan u ES modulima, ali vraća putanju do datoteke s 'file:' prefiksom - potrebno dodatno obraditi
 ```
 
 Dakle, sljedeće je greška:
@@ -474,7 +476,27 @@ const storyPath = path.join(parentDir, 'app', 'data', 'story.txt'); // ali onda 
 
 Ako se prebacimo u direktorij `/Users/lukablaskovic/Github/FIPU-WA/WA4 - Upravljanje podacima i agregacija podataka`, i pokušamo pokrenuti poslužitelj naredbom `node app/index.js`, **ponovno dobivamo grešku** budući da naredba `path.resolve('..')` računa putanju iznad trenutnog radnog direktorija, a ne iznad direktorija gdje se nalazi `index.js` datoteka.
 
-**Zaključno:** treba pripaziti u radu s relativnim i apsolutnim putanjama do datoteka, te koristiti `path` modul kako bismo minimizirali probleme s različitim operacijskim sustavima. **Relativna putanja** relativna je u odnosu na **trenutni radni direktorij** iz kojeg pokrećemo aplikaciju pa trebamo biti oprezni gdje se nalazimo u datotečnom sustavu prilikom pokretanja aplikacije, dok je **apsolutna putanja** uvijek ista bez obzira na trenutni radni direktorij - ali može stvoriti probleme prilikom pokretanja _developerskih_ okruženja na različitim računalima.
+Ipak, možemo riješiti problem tako da **ručno definiramo korijenski direktorij projekta** koristeći `path.resolve()` i `..` pokazivač, a zatim generiramo apsolutnu putanju do datoteke `story.txt` na sljedeći način:
+
+```javascript
+const rootDir = path.resolve('..'); // apsolutna putanja do korijenskog direktorija projekta
+const storyPath = path.join(rootDir, 'data', 'story.txt'); // apsolutna putanja do datoteke 'story.txt'
+```
+
+Ipak - ovo će raditi samo ako pokrećemo poslužitelj iz `app` direktorija budući da se `path.resolve('..')` tada rezolvira u direktorij iznad `app`, th. `WA4 - Upravljanje podacima i agregacija podataka`. Ako bismo pokretali iz WA4 direktorija, morali bismo opet mijenjati putanju.
+
+**Ne postoji univerzalno rješenje** za definiranje korijenskog direktorija projekta u Node.js aplikacijama, stoga je važno biti svjestan trenutnog radnog direktorija iz kojeg pokrećemo aplikaciju i prilagoditi putanje prema tome.
+
+Ipak, praktično je rješenje koristiti `import.meta.url` i `path` modul za generiranje apsolutnih putanja do datoteka u odnosu na **trenutni modul**, te onda "graditi" putanju na temelju toga.
+
+```javascript
+let trenutni_modul = import.meta.url; // apsolutna putanja do trenutnog modula s 'file:' prefiksom - JavaScript datoteka koja se izvršava
+let trenutni_direktorij = path.dirname(trenutni_modul); // direktorij gdje se nalazi trenutni JavaScript modul
+let trenutni_direktorij_path = fileURLToPath(trenutni_direktorij); // čisti Path string bez 'file:' prefiksa
+let storyPath = path.join(trenutni_direktorij_path, 'data', 'story.txt'); // gradimo apsolutnu putanju do datoteke 'story.txt' koristeći "path.join" funkciju
+```
+
+Na ovaj način možemo biti sigurni da će putanja do datoteke `story.txt` uvijek biti ispravna, bez obzira na trenutni radni direktorij iz kojeg pokrećemo aplikaciju.
 
 <div class="page-break"></div>
 
@@ -771,7 +793,7 @@ app.get('/story', async (req, res) => {
 
 Rekli smo da pohrana u datoteke, kao i čitanje, može biti vremenski zahtjevno, stoga je preporučljivo koristiti asinkrone metode.
 
-Za asinkronu pohranu u datoteku, koristimo metodu fs.writeFile():
+Za asinkronu pohranu u datoteku, koristimo metodu `fs.writeFile()`:
 
 **Sintaksa:**
 
@@ -788,10 +810,9 @@ gdje su:
     - `flag` - opcionalni znak kojim se označava način pristupa datoteci (npr. `'w'` za pohranu (_default_))
 - `callback` - _callback_ funkcija koja se poziva nakon što se datoteka pročita (**obavezno**)
 
-`callback` funkcija prima dva argumenta:
+`callback` funkcija prima jedan argument:
 
 1. `err` - greška (ako postoji)
-2. `data` - sadržaj datoteke (ako je pročitan)
 
 Jednako kao i kod čitanja, moguće je koristiti _Callback_ i _Promise pattern_ za pohranu u datoteke. Međutim ponovo, _Promise pattern_ i `async/await` sintaksa su moderniji pristupi.
 
@@ -800,7 +821,7 @@ Primjer pohrane u datoteku kroz _callback_ pattern:
 ```javascript
 app.get('/write', (req, res) => {
     const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
-    fs.writeFile('data/write.txt', data, 'utf8', err => {
+    fs.writeFile('./data/write.txt', data, 'utf8', err => {
         if (err) {
             console.error('Greška prilikom pohrane u datoteku:', err);
             res.status(500).send('Greška prilikom pohrane u datoteku.');
@@ -820,7 +841,7 @@ Isto možemo postići i kroz _Promise pattern_ odnosno **`fs/promises`** ekstenz
 app.get('/write', async (req, res) => {
     const data = 'Ovo je tekst koji želimo zapisati u datoteku.';
     try {
-        await fs.writeFile('data/write.txt', data, 'utf8');
+        await fs.writeFile('./data/write.txt', data, 'utf8');
         console.log('Podaci uspješno zapisani u datoteku.');
         res.status(200).send('Podaci uspješno zapisani u datoteku.');
     } catch (error) {
@@ -1495,7 +1516,7 @@ app.get('/restorani/:restoranId/meni', (req, res) => {
 
 _Primjer HTTP poziva za endpoint iznad:_
 
-- `/restorani/12`: dohvatit će cijeli meni restorana s ID-jem `12`
+- `/restorani/12/meni`: dohvatit će cijeli meni restorana s ID-jem `12`
 - `/restorani/12/meni?vrsta_jela=desert`: dohvatit će samo deserte iz menija restorana s ID-jem `12`
 - `/restorani/12/meni?vrsta_jela=glavno`: dohvatit će samo glavna jela iz menija restorana s ID-jem `12`
 
