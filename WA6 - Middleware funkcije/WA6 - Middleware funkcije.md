@@ -374,8 +374,8 @@ app.get('/korisnici/:id', [pretragaKorisnika], async (req, res) => {
 
 > Čitaj:
 >
-> - "Prije obrade zahtjeva, izvrši _middleware_ `pretragaKorisnika`.
-> - Ako _middleware_ prođe (tj. vrati `next()`), nastavi s obradom zahtjeva odnosno izvrši _callback_ funkciju rute."
+> - Prije obrade zahtjeva, izvrši _middleware_ `pretragaKorisnika`.
+> - Ako _middleware_ prođe (tj. vrati `next()`), nastavi s obradom zahtjeva odnosno izvrši _callback_ funkciju rute.
 
 Dakle, samo vraćamo korisnika koji se sad nalazi u `req.korisnik`:
 
