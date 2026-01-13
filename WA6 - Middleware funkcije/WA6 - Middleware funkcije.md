@@ -863,7 +863,7 @@ Također, veliki broj validacija podataka koji radimo su uobičajene i često ko
 
 > Napomena: Osim `express-validator`, postoje i druge popularne biblioteke za validaciju podataka u Node.js aplikacijama, poput `Joi`, `Yup`, `Validator.js`, `Vine.js`, `Zod` itd. Za projekte iz kolegija možete odabrati bilo koju od navedenih biblioteka, a mi ćemo u nastavku ove skripte proći kroz `express-validator` kao primjer.
 
-<img src="./screenshots/express-validator.png" alt="express-validator logo" style="width:50%; box-shadow: none !important; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;">
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA6%20-%20Middleware%20funkcije/screenshots/express-validator.png?raw=true" alt="express-validator logo" style="width:50%; box-shadow: none !important; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;">
 
 > Slika 2: [Express-validator](https://www.npmjs.com/package/express-validator) je popularna biblioteka za validaciju podataka u Express.js aplikacijama.
 
