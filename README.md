@@ -33,6 +33,7 @@ Kolegij slušaju:
 3. [Usmjeravanje na Express poslužitelju 2/2](https://youtu.be/3bBWkjoMmyA) ([WA2](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA2%20-%20Usmjeravanje%20na%20Express%20poslu%C5%BEitelju))
 4. [Razmjena podataka između klijenta i poslužitelja 1/2](https://youtu.be/bmlw7U5c5EI) ([WA3](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja))
 5. [Razmjena podataka između klijenta i poslužitelja 2/2](https://youtu.be/6Bv21fU61DE) ([WA3](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA3%20-%20Razmjena%20podataka%20izme%C4%91u%20klijenta%20i%20poslu%C5%BEitelja))
+6. [Upravljanje datotekama, Asinkroni pristupi i Agregacija podataka](https://youtu.be/uJI0LrhDfsk) ([WA4](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA4%20-%20Upravljanje%20datotekama%2C%20Asinkroni%20Pristupi%20i%20Agregacija%20podataka))
 
 ## Kolokviji
 
