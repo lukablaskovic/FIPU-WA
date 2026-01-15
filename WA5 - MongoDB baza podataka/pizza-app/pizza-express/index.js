@@ -16,7 +16,6 @@ app.use(express.json());
 app.use('/pizze', pizzeRouter);
 app.use('/narudzbe', narudzbeRouter);
 
-app.use;
 app.get('/', (req, res) => {
     res.send('Dobrodošli u Pizza Express poslužitelj!');
 });

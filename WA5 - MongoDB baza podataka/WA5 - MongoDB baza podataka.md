@@ -20,58 +20,58 @@ U nastavku ćemo naučiti kako izraditi MongoDB Atlas cluster u Cloudu, kako se 
 
 <br>
 
-**🆙 Posljednje ažurirano: 15.12.2025.**
+**🆙 Posljednje ažurirano: 15.1.2026.**
 
 ## Sadržaj
 
 - [Web aplikacije (WA)](#web-aplikacije-wa)
 - [(5) MongoDB baza podataka](#5-mongodb-baza-podataka)
-  - [Sadržaj](#sadržaj)
+    - [Sadržaj](#sadržaj)
 - [1. MongoDB](#1-mongodb)
-  - [1.1 MongoDB Atlas](#11-mongodb-atlas)
+    - [1.1 MongoDB Atlas](#11-mongodb-atlas)
 - [2. Povezivanje na cluster u MongoDB Atlasu](#2-povezivanje-na-cluster-u-mongodb-atlasu)
-  - [2.1 Priprema Express poslužitelja](#21-priprema-express-poslužitelja)
-  - [2.2 MongoDB Connection string](#22-mongodb-connection-string)
-  - [2.3 `db.js`](#23-dbjs)
-  - [2.4 Varijable okoline - `dotenv` modul](#24-varijable-okoline---dotenv-modul)
+    - [2.1 Priprema Express poslužitelja](#21-priprema-express-poslužitelja)
+    - [2.2 MongoDB Connection string](#22-mongodb-connection-string)
+    - [2.3 `db.js`](#23-dbjs)
+    - [2.4 Varijable okoline - `dotenv` modul](#24-varijable-okoline---dotenv-modul)
 - [3. CRUD operacije na MongoDB bazi podataka](#3-crud-operacije-na-mongodb-bazi-podataka)
-  - [3.1 GET operacija](#31-get-operacija)
-      - [Mongo metoda: `collection().find()`](#mongo-metoda-collectionfind)
-    - [3.1.1 GET `/pizze`](#311-get-pizze)
-    - [3.1.2 GET `/pizze/:naziv`](#312-get-pizzenaziv)
-      - [MongoDB indeksi (eng. Indexes)](#mongodb-indeksi-eng-indexes)
-      - [Mongo metoda: `collection().findOne()`](#mongo-metoda-collectionfindone)
-  - [3.2 POST operacija](#32-post-operacija)
-    - [3.2.1 POST `/pizze`](#321-post-pizze)
-      - [Mongo metoda: `collection().insertOne()`](#mongo-metoda-collectioninsertone)
-    - [3.2.2 POST `/narudzbe`](#322-post-narudzbe)
-      - [Ponavljanje: Validacija zahtjeva na poslužitelju](#ponavljanje-validacija-zahtjeva-na-poslužitelju)
-  - [3.3 PUT i PATCH operacije](#33-put-i-patch-operacije)
-    - [3.3.1 PATCH `/pizze/:naziv`](#331-patch-pizzenaziv)
-      - [Mongo metoda: `collection().updateOne()`](#mongo-metoda-collectionupdateone)
-      - [MongoDB Update operatori](#mongodb-update-operatori)
-    - [3.3.2 PATCH `/narudzbe/:id`](#332-patch-narudzbeid)
-    - [3.3.3 PUT `/pizze`](#333-put-pizze)
-      - [Mongo metoda: `collection().insertMany()`](#mongo-metoda-collectioninsertmany)
-  - [3.4 DELETE operacija](#34-delete-operacija)
-    - [3.4.1 DELETE `/pizze/:naziv`](#341-delete-pizzenaziv)
-      - [Mongo metoda: `collection().deleteOne()`](#mongo-metoda-collectiondeleteone)
-      - [Mongo metoda: `collection().deleteMany()`](#mongo-metoda-collectiondeletemany)
+    - [3.1 GET operacija](#31-get-operacija)
+        - [Mongo metoda: `collection().find()`](#mongo-metoda-collectionfind)
+        - [3.1.1 GET `/pizze`](#311-get-pizze)
+        - [3.1.2 GET `/pizze/:naziv`](#312-get-pizzenaziv)
+            - [MongoDB indeksi (eng. Indexes)](#mongodb-indeksi-eng-indexes)
+            - [Mongo metoda: `collection().findOne()`](#mongo-metoda-collectionfindone)
+    - [3.2 POST operacija](#32-post-operacija)
+        - [3.2.1 POST `/pizze`](#321-post-pizze)
+            - [Mongo metoda: `collection().insertOne()`](#mongo-metoda-collectioninsertone)
+        - [3.2.2 POST `/narudzbe`](#322-post-narudzbe)
+            - [Ponavljanje: Validacija zahtjeva na poslužitelju](#ponavljanje-validacija-zahtjeva-na-poslužitelju)
+    - [3.3 PUT i PATCH operacije](#33-put-i-patch-operacije)
+        - [3.3.1 PATCH `/pizze/:naziv`](#331-patch-pizzenaziv)
+            - [Mongo metoda: `collection().updateOne()`](#mongo-metoda-collectionupdateone)
+            - [MongoDB Update operatori](#mongodb-update-operatori)
+        - [3.3.2 PATCH `/narudzbe/:id`](#332-patch-narudzbeid)
+        - [3.3.3 PUT `/pizze`](#333-put-pizze)
+            - [Mongo metoda: `collection().insertMany()`](#mongo-metoda-collectioninsertmany)
+    - [3.4 DELETE operacija](#34-delete-operacija)
+        - [3.4.1 DELETE `/pizze/:naziv`](#341-delete-pizzenaziv)
+            - [Mongo metoda: `collection().deleteOne()`](#mongo-metoda-collectiondeleteone)
+            - [Mongo metoda: `collection().deleteMany()`](#mongo-metoda-collectiondeletemany)
 - [4. Agregacija podataka](#4-agregacija-podataka)
-  - [4.1 Filtriranje podataka](#41-filtriranje-podataka)
-    - [4.1.1 GET `/pizze?query`](#411-get-pizzequery)
-  - [4.2 Ažuriranje svih podataka gdje je uvjet zadovoljen](#42-ažuriranje-svih-podataka-gdje-je-uvjet-zadovoljen)
-      - [Mongo metoda: `collection().updateMany()`](#mongo-metoda-collectionupdatemany)
-  - [4.3 Sortiranje podataka](#43-sortiranje-podataka)
-    - [4.3.1 GET `/pizze?sort`](#431-get-pizzesort)
-  - [4.4 Složena agregacija podataka metodom `aggregate()`](#44-složena-agregacija-podataka-metodom-aggregate)
+    - [4.1 Filtriranje podataka](#41-filtriranje-podataka)
+        - [4.1.1 GET `/pizze?query`](#411-get-pizzequery)
+    - [4.2 Ažuriranje svih podataka gdje je uvjet zadovoljen](#42-ažuriranje-svih-podataka-gdje-je-uvjet-zadovoljen)
+        - [Mongo metoda: `collection().updateMany()`](#mongo-metoda-collectionupdatemany)
+    - [4.3 Sortiranje podataka](#43-sortiranje-podataka)
+        - [4.3.1 GET `/pizze?sort`](#431-get-pizzesort)
+    - [4.4 Složena agregacija podataka metodom `aggregate()`](#44-složena-agregacija-podataka-metodom-aggregate)
 - [5. MongoDB - TL;DR](#5-mongodb---tldr)
-  - [5.1 Spajanje na bazu podataka](#51-spajanje-na-bazu-podataka)
-  - [5.2 CRUD operacije](#52-crud-operacije)
-  - [5.3 MongoDB operatori](#53-mongodb-operatori)
-    - [5.3.1 Operatori ažuriranja (eng. Update operators)](#531-operatori-ažuriranja-eng-update-operators)
-    - [5.3.2 Operatori usporedbe (eng. Comparison operators)](#532-operatori-usporedbe-eng-comparison-operators)
-    - [5.3.3 Logički operatori (eng. Logical operators)](#533-logički-operatori-eng-logical-operators)
+    - [5.1 Spajanje na bazu podataka](#51-spajanje-na-bazu-podataka)
+    - [5.2 CRUD operacije](#52-crud-operacije)
+    - [5.3 MongoDB operatori](#53-mongodb-operatori)
+        - [5.3.1 Operatori ažuriranja (eng. Update operators)](#531-operatori-ažuriranja-eng-update-operators)
+        - [5.3.2 Operatori usporedbe (eng. Comparison operators)](#532-operatori-usporedbe-eng-comparison-operators)
+        - [5.3.3 Logički operatori (eng. Logical operators)](#533-logički-operatori-eng-logical-operators)
 - [Samostalni zadatak za Vježbu 5](#samostalni-zadatak-za-vježbu-5)
 
 <div style="page-break-after: always; break-after: page;"></div>
@@ -301,7 +301,7 @@ const password = '<password>'; // vaša Mongo lozinka
 const cluster = '<cluster>'; // naziv vašeg clustera
 
 // Pripazite! nakon lozinke, MongoDB će konkatenirati naziv vašeg clustera i random string (.cluster.mpyeq.mongodb.net)
-const mongoURI = `mongodb+srv://${username}:${password}@fipu-wa-cluster.y1pkn9a.mongodb.net/?appName=${cluster}`;
+const mongoURI = `mongodb+srv://${username}:${password}@${cluster.toLowerCase()}.mongodb.net/?appName=${cluster}`;
 ```
 
 Zatim definiramo asinkronu funkciju `connectToDatabase()` koja će se koristiti za povezivanje na bazu podataka:
@@ -531,7 +531,7 @@ Možemo dohvatiti sve dokumente iz kolekcije koristeći `collection().find()` me
 **Sintaksa:**
 
 ```js
-db.collection.find(filter, options); // vraća FindCursor objekt
+db.collection('naziv_kolekcije').find(filter, options);
 ```
 
 gdje su opcionalni parametri:
@@ -542,7 +542,7 @@ gdje su opcionalni parametri:
 Dohvatit ćemo sve korisnike iz kolekcije `users`:
 
 ```js
-let allUsers = await db.collection('users').find(); // dohvaća sve dokumente iz kolekcije
+let allUsers = db.collection('users').find(); // dohvaća sve dokumente iz kolekcije - vraća FindCursor objekt
 
 //import { FindCursor } from 'mongodb';
 console.log(allUsers instanceof FindCursor); // true - allUsers je FindCursor objekt
@@ -551,10 +551,10 @@ console.log(allUsers instanceof FindCursor); // true - allUsers je FindCursor ob
 `find()` metoda vraća `FindCursor` objekt - **pokazivač na rezultate upita**. Da bismo dohvatili same rezultate, koristimo `Iterator.toArray()` metodu.
 
 ```js
-let allUsers = await users.find().toArray(); // dohvaća sve dokumente iz kolekcije kao Array
+let usersDocuments = await allUsers.toArray(); // pretvaramo FindCursor u JavaScript Array
 ```
 
-Ovaj kod možemo ubaciti u GET rutu `/users`:
+Ili možemo prvo pohraniti kolekciju u varijablu (sinkrono), a zatim dohvatiti sve dokumente (asinkrono):
 
 ```js
 app.get('/users', async (req, res) => {
@@ -565,6 +565,12 @@ app.get('/users', async (req, res) => {
 ```
 
 > Pošaljite HTTP zahtjev na `http://localhost:3000/users` i provjerite jesu li podaci uspješno dohvaćeni iz baze podataka.
+
+Moguće je napisati i u jednoj liniji koda:
+
+```js
+let actualDocuments = await db.collection('users').find().toArray();
+```
 
 ### 3.1.1 GET `/pizze`
 
@@ -708,7 +714,7 @@ Pizzu po nazivu želimo dohvatiti unutar GET rute `/pizze/:naziv`
 Koristeći metodu `collection().find()` možemo definirati filter pretrage:
 
 ```js
-collection().find({ naziv: 'naziv_pizze' });
+collection('naziv_kolekcije').find({ naziv: 'naziv_pizze' });
 ```
 
 #### Mongo metoda: `collection().findOne()`
@@ -720,11 +726,11 @@ Metoda u principu radi poput `Array.find()` metode, ali ne pišemo _callback_ fu
 **Sintaksa:**
 
 ```js
-collection().findOne(filter); // vraća samo 1 dokument
+collection('naziv_kolekcije').findOne(filter); // vraća samo 1 dokument
 ```
 
 ```js
-collection().findOne({ naziv: 'naziv_pizze' }); // vrati prvi dokument koji ima naziv 'naziv_pizze'
+collection('naziv_kolekcije').findOne({ naziv: 'naziv_pizze' }); // vrati prvi dokument koji ima naziv 'naziv_pizze'
 ```
 
 > Ako koristimo metodu `findOne()`, uvijek dobivamo samo jedan dokument pa ne moramo koristiti `toArray()` metodu. Ova metoda ne vraća `FindCursor` objekt, već direktno dokument ako postoji ili `null` ako ne postoji.
@@ -1254,7 +1260,7 @@ if (!novaNarudzba.narucene_pizze.every(stavka => dostupne_pizze.some(pizza => pi
 
 ## 3.3 PUT i PATCH operacije
 
-Do sad ste naučili da se PUT i PATCH metode koriste za ažuriranje podataka. Razlika između njih je u tome što **PUT metoda zamjenjuje cijeli dokument novim**, dok \*\*PATCH metoda ažurira samo određene dijelove dokumenta (tj. ključeve JSON objekta).
+Do sad ste naučili da se PUT i PATCH metode koriste za ažuriranje podataka. Razlika između njih je u tome što **PUT metoda zamjenjuje cijeli dokument novim**, dok **PATCH metoda ažurira samo određene dijelove dokumenta** (tj. ključeve JSON objekta).
 
 U kontekstu naše pizzerije, implementirat ćemo `PATCH` metodu za ažuriranje statusa narudžbe i cijene pizze. `PUT` metodu koristit ćemo za zamjenu cijelog menija novim.
 
@@ -1319,7 +1325,7 @@ _Primjeri korištenja update operatora i `collection().updateOne()` metode:_
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Capricciosa' }, { $set: { cijena: 15 } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Capricciosa' }, { $set: { cijena: 15 } });
 ```
 
 2. Želimo zamijeniti naziv pizze `Capricciosa` s novim nazivom `Capricciosa Supreme`:
@@ -1333,7 +1339,7 @@ collection().updateOne({ naziv: 'Capricciosa' }, { $set: { cijena: 15 } });
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Capricciosa' }, { $set: { naziv: 'Capricciosa Supreme' } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Capricciosa' }, { $set: { naziv: 'Capricciosa Supreme' } });
 ```
 
 3. Želimo povećati cijenu pizze `Capricciosa` za `2` eura:
@@ -1347,7 +1353,7 @@ collection().updateOne({ naziv: 'Capricciosa' }, { $set: { naziv: 'Capricciosa S
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Capricciosa' }, { $inc: { cijena: 2 } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Capricciosa' }, { $inc: { cijena: 2 } });
 ```
 
 4. Želimo obrisati cijenu pizze `Capricciosa`:
@@ -1361,7 +1367,7 @@ collection().updateOne({ naziv: 'Capricciosa' }, { $inc: { cijena: 2 } });
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Capricciosa' }, { $unset: { cijena: '' } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Capricciosa' }, { $unset: { cijena: '' } });
 ```
 
 5. Želimo postaviti cijenu pizze `Capricciosa` na `10` eura, ali samo ako je trenutna cijena manja od `10` eura:
@@ -1375,7 +1381,7 @@ collection().updateOne({ naziv: 'Capricciosa' }, { $unset: { cijena: '' } });
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Capricciosa' }, { $min: { cijena: 10 } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Capricciosa' }, { $min: { cijena: 10 } });
 ```
 
 6. Želimo postaviti cijenu pizze `Margherita` na `20` eura, ali samo ako je trenutna cijena veća od `20` eura:
@@ -1389,7 +1395,7 @@ collection().updateOne({ naziv: 'Capricciosa' }, { $min: { cijena: 10 } });
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Margherita' }, { $max: { cijena: 20 } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Margherita' }, { $max: { cijena: 20 } });
 ```
 
 7. Želimo preimenovati ključ `cijena` u `cijena_eur` za pizzu `Quattro Stagioni`:
@@ -1403,7 +1409,7 @@ collection().updateOne({ naziv: 'Margherita' }, { $max: { cijena: 20 } });
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Quattro Stagioni' }, { $rename: { cijena: 'cijena_eur' } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Quattro Stagioni' }, { $rename: { cijena: 'cijena_eur' } });
 ```
 
 8. Želimo postaviti ključ `datum_dodavanja` na trenutni datum za pizzu `Vegetariana`:
@@ -1419,7 +1425,7 @@ collection().updateOne({ naziv: 'Quattro Stagioni' }, { $rename: { cijena: 'cije
 }
 
 // updateOne() metoda
-collection().updateOne({ naziv: 'Vegetariana' }, { $currentDate: { datum_dodavanja: { $type: 'date' } } });
+collection('naziv_kolekcije').updateOne({ naziv: 'Vegetariana' }, { $currentDate: { datum_dodavanja: { $type: 'date' } } });
 ```
 
 ---
@@ -1832,7 +1838,7 @@ _Primjeri korištenja *comparison* operatora i `find()` metode:_
 }
 
 // find() metoda
-collection().find({ cijena: { $gte: 10 } });
+collection('naziv_kolekcije').find({ cijena: { $gte: 10 } });
 ```
 
 2. Želimo pronaći sve pizze čija je cijena manja ili jednaka `15`:
@@ -1846,7 +1852,7 @@ collection().find({ cijena: { $gte: 10 } });
 }
 
 // find() metoda
-collection().find({ cijena: { $lte: 15 } });
+collection('naziv_kolekcije').find({ cijena: { $lte: 15 } });
 ```
 
 3. Želimo pronaći sve pizze čija je cijena veća od `10` i manja od `15`:
@@ -1861,7 +1867,7 @@ collection().find({ cijena: { $lte: 15 } });
 }
 
 // find() metoda
-collection().find({ cijena: { $gt: 10, $lt: 15 } });
+collection('naziv_kolekcije').find({ cijena: { $gt: 10, $lt: 15 } });
 ```
 
 4. Želimo pronaći sve pizze čija je cijena različita od `5`:
