@@ -133,7 +133,7 @@ _Buildanjem_ aplikacije i objavom na udaljeni poslužitelj, HTTP zahtjevi će se
 
 Web preglednici imaju ugrađene sigurnosne mehanizme koji sprječavaju slanje osjetljivih podataka preko nezaštićenih HTTP veza. Ponekad ćete dobiti upozorenje prilikom prilikom posjećivanja takvih stranica, a ponekad će vam u URL traci stajati "Not Secure" (Nije sigurno). **Čitaj:** Podaci koje unosim na takvu web stranicu/aplikaciju neće biti enkriptirani za vrijeme prijenosa preko mreže do poslužitelja, odnosno koristi se klasični HTTP protokol bez sigurnosnog sloja (TLS/SSL).
 
-<img src="./screenshots/non-https-server.png" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA7%20-%20Autentifikacija%20i%20autorizacija%20zahtjeva/screenshots/non-https-server.png?raw=true" style="width:60%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top:10px;"></img>
 
 > Slika 2. Primjer upozorenja u web pregledniku prilikom otvaranja non-HTTPS web stranice.
 
@@ -585,7 +585,7 @@ U kontekstu web aplikacija, autorizaciju ćemo provoditi kroz **JWT** (_eng. JSO
 
 [JSON Web Token (JWT)](https://en.wikipedia.org/wiki/JSON_Web_Token) je kompaktan, siguran i samodostatan način razmjene informacija između dviju strana u obliku JSON objekata. Koristi se prvenstveno za autorizaciju u modernim aplikacijama.
 
-<img src="./screenshots/jwt-logo.png" style="width:20%; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA7%20-%20Autentifikacija%20i%20autorizacija%20zahtjeva/screenshots/jwt-logo.png?raw=true" style="width:20%; "></img>
 
 > Slika 10. JWT Logo - JWT je službeno definiran kao standard 2015. godine kada je objavljen u [RCF 7519](https://tools.ietf.org/html/rfc7519) dokumentu, međutim u razvoju je od ranih 2010-ih godina.
 
