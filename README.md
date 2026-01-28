@@ -36,6 +36,7 @@ Kolegij slušaju:
 6. [Upravljanje datotekama, Asinkroni pristupi i Agregacija podataka](https://youtu.be/uJI0LrhDfsk) ([WA4](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA4%20-%20Upravljanje%20datotekama%2C%20Asinkroni%20Pristupi%20i%20Agregacija%20podataka))
 7. [MongoDB baza podataka](https://youtu.be/LIJVWlyquKs) ([WA5](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA5%20-%20MongoDB%20baza%20podataka))
 8. [Middleware funkcije](https://youtu.be/asRCwzH1fw4) ([WA6](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA6%20-%20Middleware%20funkcije))
+9. [Autentifikacija i autorizacija zahtjeva](https://youtu.be/Dz1Lfx5fUfk)([WA7](https://github.com/lukablaskovic/FIPU-WA/tree/main/WA7%20-%20Autentifikacija%20i%20autorizacija%20zahtjeva))
 
 ## Kolokviji
 
