@@ -1,118 +1,87 @@
+import argparse
+import json
 import os
-import pickle
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
+import unicodedata
+from pathlib import Path
 
-from GoogleDriveAPI import GoogleDriveAPI
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parent
+FOLDER_ID = '1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR'
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
-# https://github.com/googleapis/google-auth-library-python-oauthlib
-# https://github.com/googleapis/google-api-python-client
 
-from logger import logger
+def course_files(root=ROOT):
+    """Only the main WA1–WA7 Markdown/PDF pairs, never example repositories."""
+    files = []
+    for number in range(1, 8):
+        folders = list(root.glob(f'WA{number} - *'))
+        if len(folders) != 1:
+            raise ValueError(f'Expected one WA{number} course folder.')
+        folder = folders[0]
+        for suffix in ('.md', '.pdf'):
+            matches = [p for p in folder.iterdir()
+                       if p.suffix.lower() == suffix
+                       and unicodedata.normalize('NFC', p.stem) == unicodedata.normalize('NFC', folder.name)
+                       and p.is_file() and not p.is_symlink()]
+            if len(matches) != 1 or folder.is_symlink():
+                raise ValueError(f'Expected one main {suffix} file in {folder.name}.')
+            files.extend(matches)
+    return files
 
-GOOGLE_DRIVE_API_SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive']
-
-FOLDER_ID = "1y8PUAFmYoW-cBrvgdd8hCnhni39PNkXV"
 
 def authenticate_google_drive():
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens
-    PICKLE_FILE_NAME = "token.pickle"
-    if os.path.exists(PICKLE_FILE_NAME):
-        with open(PICKLE_FILE_NAME, 'rb') as token:
-            creds = pickle.load(token)
+    secret = os.environ.get('GOOGLE_DRIVE_TOKEN_JSON')
+    if os.environ.get('GITHUB_ACTIONS') == 'true' and not secret:
+        raise ValueError('The GOOGLE_DRIVE_TOKEN_JSON Actions secret is required.')
+
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+
+    if secret:
+        creds = Credentials.from_authorized_user_info(json.loads(secret), SCOPES)
+        creds.refresh(Request())
+        return build('drive', 'v3', credentials=creds)
+    token = SCRIPT_DIR / 'token.json'
+    creds = Credentials.from_authorized_user_file(str(token), SCOPES) if token.exists() else None
     if not creds or not creds.valid:
-        logger.warning("Credentials not found or invalid. Prompting user to authenticate...")
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', GOOGLE_DRIVE_API_SCOPES)
-            creds = flow.run_local_server(port=0)
-        
-        with open('token.pickle', 'wb') as token:
-            logger.info(f"Saving credentials as {PICKLE_FILE_NAME}...")
-            pickle.dump(creds, token)
-    
-    logger.info(f"Successfully loaded credentials from {PICKLE_FILE_NAME}!")
+                str(SCRIPT_DIR / 'credentials.json'), SCOPES)
+            creds = flow.run_local_server(port=0, open_browser=False)
+        with os.fdopen(os.open(token, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600), 'w') as output:
+            output.write(creds.to_json())
     return build('drive', 'v3', credentials=creds)
 
-def check_local_availability(SCRIPTS_LOCAL_FULL_PATHS) -> bool:
-    logger.info("Checking local availability of scripts...")
-    if not SCRIPTS_LOCAL_FULL_PATHS:
-        logger.error("SCRIPTS_LOCAL_FULL_PATHS is empty.")
-        return False
-    for file in SCRIPTS_LOCAL_FULL_PATHS.values(): # Check if all scripts are locally available
-        local_file_exists(file)
-    logger.info("All scripts are locally available!")
-    return True
 
-def local_file_exists(file_path) -> bool:
-    if os.path.exists(file_path):
-        logger.debug(f"Local file {file_path} exists.")
-        return True
-    else:
-        logger.error(f"Local file {file_path} does not exist.")
-        return False
+def main():
+    parser = argparse.ArgumentParser(description='Upload only the 14 main WA Markdown/PDF files.')
+    parser.add_argument('--folder-id', default=FOLDER_ID, help='Destination Google Drive folder ID (default: Web aplikacije)')
+    parser.add_argument('--list-local', action='store_true', help='List selected files without connecting')
+    parser.add_argument('--dry-run', action='store_true', help='Read Drive and show changes without uploading')
+    args = parser.parse_args()
+    files = course_files()
+    if args.list_local:
+        print('\n'.join(str(p.relative_to(ROOT)) for p in files))
+        return
+    if not args.folder_id:
+        parser.error('--folder-id is required')
 
-def setup_script_paths() -> tuple:
-    logger.info("Setting up script paths...")
-    script_dir = os.path.dirname(os.path.abspath(__file__)) # /Users/lukablaskovic/Github/FIPU-WA/script-patcher
+    from GoogleDriveAPI import GoogleDriveAPI
+    drive = GoogleDriveAPI(args.folder_id, authenticate_google_drive)
+    folder = drive.Drive_service.files().get(
+        fileId=args.folder_id, fields='name,mimeType,capabilities(canAddChildren)').execute()
+    if folder['mimeType'] != 'application/vnd.google-apps.folder' or not folder['capabilities'].get('canAddChildren'):
+        raise ValueError('The destination must be a writable Drive folder.')
+    print(f"Destination: {folder['name']} ({args.folder_id})", flush=True)
+    drive.sync_files(files, dry_run=args.dry_run)
 
-    root_dir = os.path.abspath(os.path.join(script_dir, os.pardir)) # /Users/lukablaskovic/Github/FIPU-WA
 
-    SCRIPTS_FILE_NAMES = {
-    "WA1": "WA1 - Uvod u HTTP, Node i Express",
-    "WA2": "WA2 - Usmjeravanje na Express poslužitelju",
-    "WA3": "WA3 - Komunikacija s klijentskom stranom",
-    "WA4": "WA4 - Upravljanje podacima na poslužiteljskoj strani",
-    "WA5": "WA5 - MongoDB baza podataka",
-    }
-    
-    
-    SCRIPTS_FILE_NAMES_w_PDF = {key: f"{value}.pdf" for key, value in SCRIPTS_FILE_NAMES.items()}
-    
-    SCRIPTS_LOCAL_FULL_PATHS = {
-    "WA1": os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA1"], SCRIPTS_FILE_NAMES_w_PDF["WA1"]),
-    "WA2" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA2"], SCRIPTS_FILE_NAMES_w_PDF["WA2"]),
-    "WA3": os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA3"], SCRIPTS_FILE_NAMES_w_PDF["WA3"]),
-    "WA4" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA4"], SCRIPTS_FILE_NAMES_w_PDF["WA4"]),
-    "WA5" : os.path.join(root_dir, SCRIPTS_FILE_NAMES["WA5"], SCRIPTS_FILE_NAMES_w_PDF["WA5"]),
-    }
-    # Full path example: /Users/lukablaskovic/Github/FIPU-WA/WA1 - Uvod u HTTP, Node i Express/WA1 - Uvod u HTTP, Node i Express.pdf
-    logger.info("Script paths set up successfully!")
-    return SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF
-
-def main():    
-    SCRIPTS_LOCAL_FULL_PATHS, SCRIPTS_FILE_NAMES_w_PDF = setup_script_paths()
-    
-    check_local_availability(SCRIPTS_LOCAL_FULL_PATHS)
-    
-    Drive = GoogleDriveAPI(FOLDER_ID, authenticate_google_drive)
-    FILES_ON_DRIVE = Drive.list_files_in_folder()
-    
-    Drive_files_dict = {file['name']: file['id'] for file in FILES_ON_DRIVE}
-    
-    if not FILES_ON_DRIVE:
-        logger.warning("No files found on Drive.")
-        raise FileNotFoundError("No files found on Drive.")
-
-    for script_name, local_path in SCRIPTS_LOCAL_FULL_PATHS.items():
-        script_pdf_name = SCRIPTS_FILE_NAMES_w_PDF[script_name]
-        logger.info(f"Processing file: {script_pdf_name}")
-        
-        if script_pdf_name in Drive_files_dict:
-            # File exists on Drive, update it
-            file_id = Drive_files_dict[script_pdf_name]
-            logger.info(f"File {script_pdf_name} found on Drive. Updating it.")
-            Drive.upload_new_file(local_path, existing_file_id=file_id)
-        else:
-            # File does not exist on Drive, upload it
-            logger.info(f"File {script_pdf_name} not found on Drive. Uploading it as new.")
-            Drive.upload_new_file(local_path)
-    
-if __name__ == "__main__":
-    logger.info("Starting script-patcher")
-    logger.info(f"FOLDER_ID is set to: {FOLDER_ID}")
-    main()
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass

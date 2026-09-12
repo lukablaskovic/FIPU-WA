@@ -50,3 +50,27 @@ Kolegij slušaju:
 Nakon kloniranja repozitorija jednom pokrenite `git config core.hooksPath .githooks` (potreban je Python 3).
 Pri svakom lokalnom commitu hook postavlja `🆙 Posljednje ažurirano` na današnji lokalni datum u promijenjenim Markdown datotekama koje već imaju tu oznaku. Promjene koje nisu staged ostaju izvan commita.
 Provjera: `python3 .githooks/test_dates.py`.
+
+## Google Drive — Markdown i PDF skripte
+
+GitHub Actions automatski prenosi glavne `.md` i `.pdf` skripte WA1–WA7 (14 datoteka) nakon pusha na `main` koji mijenja Markdown/PDF u glavnim WA mapama, `script-patcher` ili workflow. Lokalni commit bez pusha ne pokreće prijenos. Ručno pokretanje: **Actions → Sync course materials to Google Drive → Run workflow** na grani `main`. Mac ne mora biti uključen.
+
+Odredište: [Web aplikacije (WA)](https://drive.google.com/drive/folders/1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR). Ugniježđeni primjeri aplikacija, rješenja, kolokviji i ostale datoteke nisu uključeni. Markdown i PDF prenose se zasebno; workflow ne generira PDF.
+
+Workflow preskače nepromijenjen sadržaj i provjerava kontrolni zbroj svakog prijenosa. Postojeće datoteke ažurira uz zadržavanje poveznica, nove dodaje, a datoteke na Driveu ne briše. Prijenosi se izvršavaju jedan po jedan i koriste trenutačni `main`. Greške su vidljive u zapisniku GitHub Actions; nakon otklanjanja ponovno pokrenite workflow.
+
+Workflow zahtijeva repository secret **`GOOGLE_DRIVE_TOKEN_JSON`** za Google autorizaciju. Sadrži OAuth client ID, client secret i refresh token; nije dio repozitorija. Ako Google opozove pristup, obnovite lokalnu prijavu i zamijenite secret. OAuth dozvola obuhvaća cijeli Drive; izbor 14 datoteka ograničenje je programa. Prijašnja automatska sinkronizacija pri macOS prijavi je isključena.
+
+Za lokalnu provjeru ili jednokratni prijenos:
+
+```bash
+python3 -m venv script-patcher/.venv
+script-patcher/.venv/bin/pip install -r script-patcher/requirements.txt
+python3 script-patcher/test_sync.py
+python3 script-patcher/index.py --list-local
+script-patcher/.venv/bin/python script-patcher/index.py --dry-run
+# Jednokratni prijenos:
+script-patcher/.venv/bin/python script-patcher/index.py
+```
+
+Lokalna prijava koristi OAuth klijent vrste **Desktop app** u `script-patcher/credentials.json` i Git-ignorirani `script-patcher/token.json`. Ako token nedostaje, otvorite ispisanu poveznicu i prijavite se sveučilišnim računom. U GitHub Actions nedostatak secreta prekida posao bez interaktivne prijave. Za drugo odredište dodajte `--folder-id FOLDER_ID`.
