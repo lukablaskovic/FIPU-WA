@@ -53,11 +53,28 @@ Provjera: `python3 .githooks/test_dates.py`.
 
 ## Google Drive — Markdown i PDF skripte
 
-GitHub Actions automatski prenosi glavne `.md` i `.pdf` skripte WA1–WA7 (14 datoteka) nakon pusha na `main` koji mijenja Markdown/PDF u glavnim WA mapama, `script-patcher` ili workflow. Lokalni commit bez pusha ne pokreće prijenos. Ručno pokretanje: **Actions → Sync course materials to Google Drive → Run workflow** na grani `main`. Mac ne mora biti uključen.
+Nakon pusha promjene glavne Markdown skripte na `main`, GitHub Actions redom:
 
-Odredište: [Web aplikacije (WA)](https://drive.google.com/drive/folders/1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR). Ugniježđeni primjeri aplikacija, rješenja, kolokviji i ostale datoteke nisu uključeni. Markdown i PDF prenose se zasebno; workflow ne generira PDF.
+1. Generira svih sedam PDF-ova iz glavnih WA1–WA7 Markdown skripti.
+2. Prenosi Markdown i PDF datoteke na Google Drive te provjerava njihove kontrolne zbrojeve.
+3. Tek nakon uspješnog prijenosa commitom `Update generated course PDFs` sprema PDF-ove u `main`.
 
-Workflow preskače nepromijenjen sadržaj i provjerava kontrolni zbroj svakog prijenosa. Postojeće datoteke ažurira uz zadržavanje poveznica, nove dodaje, a datoteke na Driveu ne briše. Prijenosi se izvršavaju jedan po jedan i koriste trenutačni `main`. Greške su vidljive u zapisniku GitHub Actions; nakon otklanjanja ponovno pokrenite workflow.
+Workflow završava uspješno tek nakon pusha generiranih PDF-ova. Lokalni commit bez pusha ne pokreće posao; Mac ne mora biti uključen. Ručno pokretanje: **Actions → Sync course materials to Google Drive → Run workflow** na grani `main`. Promjene glavnih PDF-ova, slika u `screenshots`, zajedničkih slika, `script-patcher` i workflowa također pokreću posao. Botov commit ne pokreće novi krug. Prije sljedećeg lokalnog rada povucite njegov commit (`git pull --ff-only`).
+
+Odredište: [Web aplikacije (WA)](https://drive.google.com/drive/folders/1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR). Prenosi se samo 14 glavnih `.md`/`.pdf` datoteka. Ugniježđeni primjeri aplikacija, rješenja, kolokviji i slike nisu uključeni u prijenos.
+
+PDF koristi A4 format, Open Sans i GitHub stil (svijetli kod/tablice i plave poveznice). Renderiranje izvode Pandoc i Chromium, pa prijelomi stranica mogu odstupati od ručnog Typora izvoza. Slike ovog repozitorija čitaju se iz trenutačnog checkouta, a vanjske slike dohvaćaju se preko HTTPS-a. Nedostajuća slika prekida generiranje. Sklopljeni `details` primjeri u PDF-u su otvoreni. Fontovi su uključeni uz [OFL licencu](script-patcher/fonts/OFL.txt).
+
+Prijenos preskače nepromijenjen sadržaj. Postojeće datoteke ažurira uz zadržavanje poveznica, nove dodaje, a datoteke na Driveu ne briše. Poslovi se izvršavaju jedan po jedan i koriste trenutačni `main`. Pogreška u generiranju ili prijenosu sprječava commit PDF-ova. Ako se `main` u međuvremenu promijeni, posao se prekida bez prepisivanja novih commitova. Drive i GitHub nisu jedna transakcija: prekinuti prijenos može ostaviti dio datoteka ažuriran, a odbijeni završni push može ostaviti Drive ispred PDF-ova u repozitoriju. Nakon otklanjanja greške ponovno pokrenite workflow.
+
+Za lokalni izvoz (potrebni su Node.js 22+, Python 3 i Pandoc):
+
+```bash
+npm ci --prefix script-patcher
+script-patcher/node_modules/.bin/playwright install chromium --only-shell
+npm test --prefix script-patcher
+npm run pdf --prefix script-patcher
+```
 
 Workflow zahtijeva repository secret **`GOOGLE_DRIVE_TOKEN_JSON`** za Google autorizaciju. Sadrži OAuth client ID, client secret i refresh token; nije dio repozitorija. Ako Google opozove pristup, obnovite lokalnu prijavu i zamijenite secret. OAuth dozvola obuhvaća cijeli Drive; izbor 14 datoteka ograničenje je programa.
 

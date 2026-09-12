@@ -13,6 +13,7 @@ WA5 - MongoDB baza podataka/pizza_app/.env
 script-patcher/credentials.json
 script-patcher/token.json
 script-patcher/.venv/
+script-patcher/node_modules/
 script-patcher/__pycache__/
 /WA6 - Middleware funkcije/app/node_modules
 WA6 - Middleware funkcije/WA6 - Middleware funkcije.md
