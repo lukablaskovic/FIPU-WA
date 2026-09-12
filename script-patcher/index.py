@@ -8,12 +8,15 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
 FOLDER_ID = '1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR'
 SCOPES = ['https://www.googleapis.com/auth/drive']
+SCRIPTS = tuple(f'WA{n}' for n in range(1, 8))
 
 
-def course_files(root=ROOT):
+def course_files(root=ROOT, script=None):
     """Only the main WA1–WA7 Markdown/PDF pairs, never example repositories."""
     files = []
-    for number in range(1, 8):
+    if script is not None and script not in SCRIPTS:
+        raise ValueError('Choose a script from WA1 through WA7.')
+    for number in ([int(script[2:])] if script is not None else range(1, 8)):
         folders = list(root.glob(f'WA{number} - *'))
         if len(folders) != 1:
             raise ValueError(f'Expected one WA{number} course folder.')
@@ -62,8 +65,9 @@ def main():
     parser.add_argument('--folder-id', default=FOLDER_ID, help='Destination Google Drive folder ID (default: Web aplikacije)')
     parser.add_argument('--list-local', action='store_true', help='List selected files without connecting')
     parser.add_argument('--dry-run', action='store_true', help='Read Drive and show changes without uploading')
+    parser.add_argument('--script', choices=SCRIPTS, help='Select one lesson (default: all seven)')
     args = parser.parse_args()
-    files = course_files()
+    files = course_files(script=args.script)
     if args.list_local:
         print('\n'.join(str(p.relative_to(ROOT)) for p in files))
         return

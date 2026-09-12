@@ -1,6 +1,6 @@
 # Materijali iz kolegija: Web aplikacije (WA)
 
-<img src="WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
+<img src="images/WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 <p>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
@@ -16,10 +16,10 @@
 **Ustanova**: [Sveučilište Jurja Dobrile u Puli](https://www.unipu.hr/), [Fakultet informatike u Puli](https://fipu.unipu.hr/)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/FIPU_UNIPU_white.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/FIPU_UNIPU.png">
+  <source media="(prefers-color-scheme: dark)" srcset="images/FIPU_UNIPU_white.png">
+  <source media="(prefers-color-scheme: light)" srcset="images/FIPU_UNIPU.png">
   <img alt="Fakultet informatike u Puli (materijali iz kolegija Web Aplikacije - Luka Blašković)" 
-       src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/FIPU_UNIPU_white.png" width="300">
+       src="images/FIPU_UNIPU_white.png" width="300">
 </picture>
 
 ---

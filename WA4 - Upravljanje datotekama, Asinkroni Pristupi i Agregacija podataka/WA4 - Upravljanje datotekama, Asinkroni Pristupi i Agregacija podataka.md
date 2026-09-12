@@ -1,6 +1,6 @@
 # Web aplikacije ([WA - 199769](https://fipu.unipu.hr/fipu/predmet/webapl))
 
-<img src="../WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
+<img src="../images/WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.

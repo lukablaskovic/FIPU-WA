@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdtempSync, rmSync, lstatSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
 import { chromium } from 'playwright';
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
@@ -34,11 +35,12 @@ export function prepareDocument() {
   }
 }
 
-export async function render() {
+export async function render({ script } = {}) {
   const files = JSON.parse(execFileSync('python3', ['-c',
-    'import json; from index import course_files; print(json.dumps([str(p) for p in course_files()]))'],
+    'import json, sys; from index import course_files; print(json.dumps([str(p) for p in course_files(script=sys.argv[1] if len(sys.argv) > 1 else None)]))',
+    ...(script === undefined ? [] : [script])],
   { cwd: directory, encoding: 'utf8' }));
-  const tracked = new Map(execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' })
+  const assets = new Map(execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { cwd: root, encoding: 'utf8' })
     .split('\0').filter(Boolean).map(name => [name.normalize('NFC'), name]));
   const scratch = mkdtempSync(path.join(tmpdir(), 'wa-pdf-'));
   const css = readFileSync(path.join(directory, 'pdf.css'), 'utf8');
@@ -58,7 +60,7 @@ export async function render() {
       }
       const name = assetPath(url);
       if (name !== null) {
-        const relative = tracked.get(name);
+        const relative = assets.get(name);
         if (!relative || !extensions.has(path.extname(relative).toLowerCase()) ||
             lstatSync(path.join(root, relative)).isSymbolicLink()) return route.abort();
         return route.fulfill({ path: path.join(root, relative) });
@@ -67,7 +69,7 @@ export async function render() {
       return route.abort();
     });
     const page = await context.newPage();
-    // ponytail: rebuild all seven lessons so shared image/style edits cannot leave stale PDFs.
+    // ponytail: CI rebuilds all seven for shared assets; manual runs can select one lesson.
     for (let i = 0; i < files.length; i += 2) {
       const markdown = files[i];
       const pdf = files[i + 1];
@@ -105,4 +107,7 @@ export async function render() {
   }
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await render();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const { values } = parseArgs({ options: { script: { type: 'string' } } });
+  await render(values);
+}

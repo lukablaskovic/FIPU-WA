@@ -33,6 +33,15 @@ def test_sync():
         assert len(paths) == 14
         assert all(p.suffix in {'.md', '.pdf'} for p in paths)
         assert all(p.parent.parent == root for p in paths)
+        for number in range(1, 8):
+            assert course_files(root, script=f'WA{number}') == paths[(number - 1) * 2:number * 2]
+        for invalid in ('', 'WA0', 'WA8', '../WA1', 'WA1*'):
+            try:
+                course_files(root, script=invalid)
+            except ValueError:
+                pass
+            else:
+                raise AssertionError('Invalid lesson selector was accepted')
         remote = [{'id': str(i), 'name': unicodedata.normalize('NFC', p.name),
                    'mimeType': 'application/pdf' if p.suffix == '.pdf' else 'text/markdown',
                    'md5Checksum': hashlib.md5(b'old').hexdigest()}
@@ -52,6 +61,7 @@ def test_sync():
             else:
                 raise AssertionError('Unsafe input was accepted')
         paths[0].unlink()
+        assert course_files(root, script='WA2') == paths[2:4]
         try:
             course_files(root)
         except ValueError:

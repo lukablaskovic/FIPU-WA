@@ -8,7 +8,7 @@ on:
       - 'WA[1-7] - */*.pdf'
       - 'WA[1-7] - */screenshots/**'
       - 'wa-icons/**'
-      - '*.png'
+      - 'images/**'
       - 'script-patcher/**'
       - '.github/workflows/sync-drive.yml'
   workflow_dispatch:
