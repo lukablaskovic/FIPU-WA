@@ -25,6 +25,7 @@
 ---
 
 Kolegij slušaju:
+
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Informatika](https://fipu.unipu.hr/fipu/studijski_programi/preddiplomski_sveucilisni_studij_informatika) u 5. semestru, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
 - studenti 3. godine [Prijediplomskog sveučilišnog studija Računarstvo](https://tfpu.unipu.hr/tfpu/studijski_programi/preddiplomski/racunarstvo) u 5. semestru, na [Tehničkom fakultetu u Puli](https://tfpu.unipu.hr/tfpu)
 
@@ -44,50 +45,3 @@ Kolegij slušaju:
 
 - [Službeni šalabahter za 1. Kolokvij (wa-mid)](https://gist.github.com/lukablaskovic/b6e1741b3601dd67ccef1f457e7c852f)
 - [Službeni šalabahter za 2. Kolokvij (wa-final)](https://gist.github.com/lukablaskovic/6b9cdce10b85dcac78a68fcab8697fb7)
-
-## Automatsko ažuriranje datuma
-
-Nakon kloniranja repozitorija jednom pokrenite `git config core.hooksPath .githooks` (potreban je Python 3).
-Pri svakom lokalnom commitu hook postavlja `🆙 Posljednje ažurirano` na današnji lokalni datum u promijenjenim Markdown datotekama koje već imaju tu oznaku. Promjene koje nisu staged ostaju izvan commita.
-Provjera: `python3 .githooks/test_dates.py`.
-
-## Google Drive — Markdown i PDF skripte
-
-Nakon pusha promjene glavne Markdown skripte na `main`, GitHub Actions redom:
-
-1. Generira svih sedam PDF-ova iz glavnih WA1–WA7 Markdown skripti.
-2. Prenosi Markdown i PDF datoteke na Google Drive te provjerava njihove kontrolne zbrojeve.
-3. Tek nakon uspješnog prijenosa commitom `Update generated course PDFs` sprema PDF-ove u `main`.
-
-Workflow završava uspješno tek nakon pusha generiranih PDF-ova. Lokalni commit bez pusha ne pokreće posao; Mac ne mora biti uključen. Ručno pokretanje: **Actions → Sync course materials to Google Drive → Run workflow** na grani `main`. Promjene glavnih PDF-ova, slika u `screenshots`, zajedničkih slika, `script-patcher` i workflowa također pokreću posao. Botov commit ne pokreće novi krug. Prije sljedećeg lokalnog rada povucite njegov commit (`git pull --ff-only`).
-
-Odredište: [Web aplikacije (WA)](https://drive.google.com/drive/folders/1hiWvS3vM1cwlSvyx7H-J9yMW8HfwgnxR). Prenosi se samo 14 glavnih `.md`/`.pdf` datoteka. Ugniježđeni primjeri aplikacija, rješenja, kolokviji i slike nisu uključeni u prijenos.
-
-PDF koristi A4 format, Open Sans i GitHub stil (svijetli kod/tablice i plave poveznice). Renderiranje izvode Pandoc i Chromium, pa prijelomi stranica mogu odstupati od ručnog Typora izvoza. Slike ovog repozitorija čitaju se iz trenutačnog checkouta, a vanjske slike dohvaćaju se preko HTTPS-a. Nedostajuća slika prekida generiranje. Sklopljeni `details` primjeri u PDF-u su otvoreni. Fontovi su uključeni uz [OFL licencu](script-patcher/fonts/OFL.txt).
-
-Prijenos preskače nepromijenjen sadržaj. Postojeće datoteke ažurira uz zadržavanje poveznica, nove dodaje, a datoteke na Driveu ne briše. Poslovi se izvršavaju jedan po jedan i koriste trenutačni `main`. Pogreška u generiranju ili prijenosu sprječava commit PDF-ova. Ako se `main` u međuvremenu promijeni, posao se prekida bez prepisivanja novih commitova. Drive i GitHub nisu jedna transakcija: prekinuti prijenos može ostaviti dio datoteka ažuriran, a odbijeni završni push može ostaviti Drive ispred PDF-ova u repozitoriju. Nakon otklanjanja greške ponovno pokrenite workflow.
-
-Za lokalni izvoz (potrebni su Node.js 22+, Python 3 i Pandoc):
-
-```bash
-npm ci --prefix script-patcher
-script-patcher/node_modules/.bin/playwright install chromium --only-shell
-npm test --prefix script-patcher
-npm run pdf --prefix script-patcher
-```
-
-Workflow zahtijeva repository secret **`GOOGLE_DRIVE_TOKEN_JSON`** za Google autorizaciju. Sadrži OAuth client ID, client secret i refresh token; nije dio repozitorija. Ako Google opozove pristup, obnovite lokalnu prijavu i zamijenite secret. OAuth dozvola obuhvaća cijeli Drive; izbor 14 datoteka ograničenje je programa.
-
-Za lokalnu provjeru ili jednokratni prijenos:
-
-```bash
-python3 -m venv script-patcher/.venv
-script-patcher/.venv/bin/pip install -r script-patcher/requirements.txt
-python3 script-patcher/test_sync.py
-python3 script-patcher/index.py --list-local
-script-patcher/.venv/bin/python script-patcher/index.py --dry-run
-# Jednokratni prijenos:
-script-patcher/.venv/bin/python script-patcher/index.py
-```
-
-Lokalna prijava koristi OAuth klijent vrste **Desktop app** u `script-patcher/credentials.json` i Git-ignorirani `script-patcher/token.json`. Ako token nedostaje, otvorite ispisanu poveznicu i prijavite se sveučilišnim računom. U GitHub Actions nedostatak secreta prekida posao bez interaktivne prijave. Za drugo odredište dodajte `--folder-id FOLDER_ID`.
