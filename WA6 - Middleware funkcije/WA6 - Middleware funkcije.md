@@ -9,7 +9,7 @@
 
 # (6) Middleware funkcije
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA6%20-%20Middleware%20funkcije/WA_6.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/wa-icons/WA_6.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
 <i>Middleware</i> funkcije predstavljaju funkcijske komponente koje djeluju kao posrednici između dolaznog HTTP zahtjeva i odgovora poslužitelja. Njihova je uloga obrada zahtjeva prije nego što on dosegne krajnju logiku aplikacije. Među najčešćim primjenama <i>middleware</i> funkcija ističu se validacija podataka dolaznih zahtjeva te autorizacija pristupa resursima.

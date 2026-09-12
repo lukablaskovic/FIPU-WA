@@ -224,7 +224,9 @@ Ove naredbe će vam ispisati popis datoteka i direktorija u trenutnom direktorij
 
 **2. Način (VS Code)**
 
-Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea. Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili _Command Palette_. Upišite `Git: Clone` i pritisnite `Enter`. Zatim unesite `URL` repozitorija i pritisnite `Enter`.
+Drugi način je kloniranje repozitorija direktno iz Visual Studio Codea.
+
+Otvorite Visual Studio Code i pritisnite `Ctrl + Shift + P` (Windows) ili `Cmd + Shift + P` (macOS) kako biste otvorili _Command Palette_. Upišite naredbu `Git: Clone` i pritisnite `Enter`. Zatim unesite `URL` repozitorija i pritisnite `Enter`.
 
 Ako vam ne radi, uvjerite se da imate instaliran Git i da je dostupan u PATH-u. Dodatno, u VS Codeu morate biti prijavljeni na GitHub račun.
 Možete se uvjeriti da je Git dostupan u PATH-u tako da otvorite terminal i upišete:

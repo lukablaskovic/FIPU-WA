@@ -9,7 +9,7 @@
 
 # (5) MongoDB baza podataka
 
-<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/WA5%20-%20MongoDB%20baza%20podataka/WA_5.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-WA/blob/main/wa-icons/WA_5.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
 U prethodnom poglavlju upoznali smo se s načinima pohrane podataka na poslužitelju u datoteke te objasnili zašto takav pristup postaje nepraktičan kod većih količina podataka i podataka kojima korisnici aplikacije izravno pristupaju. MongoDB je popularna nerelacijska (noSQL) baza podataka koja se temelji na dokumentno orijentiranom modelu pohrane. Za razliku od tradicionalnih relacijskih baza podataka koje koriste tablice i retke, MongoDB organizira podatke u zbirke (kolekcije) i dokumente. Podaci su pritom strukturirani u formatu sličnom JSON-u, što omogućuje fleksniju, pregledniju i intuitivniju organizaciju.
