@@ -1,8 +1,9 @@
-# Web aplikacije (WA)
+# Web aplikacije ([WA - 199769](https://fipu.unipu.hr/fipu/predmet/webapl))
+
+<img src="../WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
-
 **Ustanova**: Sveučilište Jurja Dobrile u Puli, Fakultet informatike u Puli
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
@@ -17,11 +18,11 @@ Ispravna upotreba i upravljanje podacima ključni su aspekti razvoja web aplikac
 
 <br>
 
-**🆙 Posljednje ažurirano: 10.1.2026.**
+**🆙 Posljednje ažurirano: 12.9.2026.**
 
 ## Sadržaj
 
-- [Web aplikacije (WA)](#web-aplikacije-wa)
+- [Web aplikacije (WA - 199769)](#web-aplikacije-wa---199769)
 - [(4) Upravljanje datotekama, Asinkroni Pristupi i Agregacija podataka](#4-upravljanje-datotekama-asinkroni-pristupi-i-agregacija-podataka)
   - [Sadržaj](#sadržaj)
 - [1. Gdje pohranjujemo podatke u web aplikacijama?](#1-gdje-pohranjujemo-podatke-u-web-aplikacijama)

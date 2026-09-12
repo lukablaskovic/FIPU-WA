@@ -1,8 +1,9 @@
-# Web aplikacije (WA)
+# Web aplikacije ([WA - 199769](https://fipu.unipu.hr/fipu/predmet/webapl))
+
+<img src="../WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
-
 **Ustanova**: Sveučilište Jurja Dobrile u Puli, Fakultet informatike u Puli
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
@@ -19,32 +20,32 @@ Autentifikacija i autorizacija su ključni koncepti području sigurnosti informa
 
 <br>
 
-**🆙 Posljednje ažurirano: 19.1.2026.**
+**🆙 Posljednje ažurirano: 12.9.2026.**
 
 ## Sadržaj
 
-- [Web aplikacije (WA)](#web-aplikacije-wa)
+- [Web aplikacije (WA - 199769)](#web-aplikacije-wa---199769)
 - [(7) Autentifikacija i autorizacija zahtjeva](#7-autentifikacija-i-autorizacija-zahtjeva)
-    - [Sadržaj](#sadržaj)
+  - [Sadržaj](#sadržaj)
 - [1. Autentifikacija vs Autorizacija](#1-autentifikacija-vs-autorizacija)
-    - [1.1 Autentifikacija korisnika](#11-autentifikacija-korisnika)
-    - [1.2 Enkripcija vs Hashiranje](#12-enkripcija-vs-hashiranje)
-    - [1.3 `bcrypt` paket](#13-bcrypt-paket)
-    - [1.4 Registracija korisnika](#14-registracija-korisnika)
-    - [1.5 Provjera podudaranja _hash_ vrijednosti (autentifikacija)](#15-provjera-podudaranja-hash-vrijednosti-autentifikacija)
+  - [1.1 Autentifikacija korisnika](#11-autentifikacija-korisnika)
+  - [1.2 Enkripcija vs Hashiranje](#12-enkripcija-vs-hashiranje)
+  - [1.3 `bcrypt` paket](#13-bcrypt-paket)
+  - [1.4 Registracija korisnika](#14-registracija-korisnika)
+  - [1.5 Provjera podudaranja _hash_ vrijednosti (autentifikacija)](#15-provjera-podudaranja-hash-vrijednosti-autentifikacija)
 - [2. Autorizacija kroz JWT token](#2-autorizacija-kroz-jwt-token)
-    - [2.1 Što je ustvari token?](#21-što-je-ustvari-token)
-    - [2.2 Kako iskoristiti JWT token za autorizaciju?](#22-kako-iskoristiti-jwt-token-za-autorizaciju)
-    - [2.3 Provjera valjanosti JWT tokena](#23-provjera-valjanosti-jwt-tokena)
-    - [2.4 Implementacija funkcija za generiranje i provjeru JWT tokena](#24-implementacija-funkcija-za-generiranje-i-provjeru-jwt-tokena)
-        - [1. Korak (Registracija korisnika)](#1-korak-registracija-korisnika)
-        - [2. Korak (Prijava korisnika s klijentske strane)](#2-korak-prijava-korisnika-s-klijentske-strane)
-        - [3. Korak (Prijava korisnika na poslužiteljskoj strani)](#3-korak-prijava-korisnika-na-poslužiteljskoj-strani)
-        - [4. Korak (Generiranje JWT tokena)](#4-korak-generiranje-jwt-tokena)
-        - [5. Korak (Pohrana JWT tokena na klijentskoj strani i slanje na poslužitelj)](#5-korak-pohrana-jwt-tokena-na-klijentskoj-strani-i-slanje-na-poslužitelj)
-        - [6. Korak (Provjera valjanosti JWT tokena na poslužiteljskoj strani)](#6-korak-provjera-valjanosti-jwt-tokena-na-poslužiteljskoj-strani)
-    - [2.5 Autorizacijski middleware](#25-autorizacijski-middleware)
-    - [2.6 Rok trajanja JWT tokena](#26-rok-trajanja-jwt-tokena)
+  - [2.1 Što je ustvari token?](#21-što-je-ustvari-token)
+  - [2.2 Kako iskoristiti JWT token za autorizaciju?](#22-kako-iskoristiti-jwt-token-za-autorizaciju)
+  - [2.3 Provjera valjanosti JWT tokena](#23-provjera-valjanosti-jwt-tokena)
+  - [2.4 Implementacija funkcija za generiranje i provjeru JWT tokena](#24-implementacija-funkcija-za-generiranje-i-provjeru-jwt-tokena)
+      - [1. Korak (Registracija korisnika)](#1-korak-registracija-korisnika)
+      - [2. Korak (Prijava korisnika s klijentske strane)](#2-korak-prijava-korisnika-s-klijentske-strane)
+      - [3. Korak (Prijava korisnika na poslužiteljskoj strani)](#3-korak-prijava-korisnika-na-poslužiteljskoj-strani)
+      - [4. Korak (Generiranje JWT tokena)](#4-korak-generiranje-jwt-tokena)
+      - [5. Korak (Pohrana JWT tokena na klijentskoj strani i slanje na poslužitelj)](#5-korak-pohrana-jwt-tokena-na-klijentskoj-strani-i-slanje-na-poslužitelj)
+      - [6. Korak (Provjera valjanosti JWT tokena na poslužiteljskoj strani)](#6-korak-provjera-valjanosti-jwt-tokena-na-poslužiteljskoj-strani)
+  - [2.5 Autorizacijski middleware](#25-autorizacijski-middleware)
+  - [2.6 Rok trajanja JWT tokena](#26-rok-trajanja-jwt-tokena)
 - [Samostalni zadatak za Vježbu 7](#samostalni-zadatak-za-vježbu-7)
 
 <div style="page-break-after: always; break-after: page;"></div>

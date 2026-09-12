@@ -1,8 +1,9 @@
-# Web aplikacije (WA)
+# Web aplikacije ([WA - 199769](https://fipu.unipu.hr/fipu/predmet/webapl))
+
+<img src="../WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
-
 **Ustanova**: Sveučilište Jurja Dobrile u Puli, Fakultet informatike u Puli
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
@@ -18,7 +19,7 @@
 
 ## Sadržaj
 
-- [Web aplikacije (WA)](#web-aplikacije-wa)
+- [Web aplikacije (WA - 199769)](#web-aplikacije-wa---199769)
 - [(1) Uvod u HTTP, Node i Express](#1-uvod-u-http-node-i-express)
   - [Sadržaj](#sadržaj)
 - [1. Uvod](#1-uvod)

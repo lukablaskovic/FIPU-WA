@@ -1,6 +1,6 @@
 # Materijali iz kolegija: Web aplikacije (WA)
 
-![Web aplikacije (WA)](WA-banner.png)
+<img src="WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 <p>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">  <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
@@ -44,3 +44,9 @@ Kolegij slušaju:
 
 - [Službeni šalabahter za 1. Kolokvij (wa-mid)](https://gist.github.com/lukablaskovic/b6e1741b3601dd67ccef1f457e7c852f)
 - [Službeni šalabahter za 2. Kolokvij (wa-final)](https://gist.github.com/lukablaskovic/6b9cdce10b85dcac78a68fcab8697fb7)
+
+## Automatsko ažuriranje datuma
+
+Nakon kloniranja repozitorija jednom pokrenite `git config core.hooksPath .githooks` (potreban je Python 3).
+Pri svakom lokalnom commitu hook postavlja `🆙 Posljednje ažurirano` na današnji lokalni datum u promijenjenim Markdown datotekama koje već imaju tu oznaku. Promjene koje nisu staged ostaju izvan commita.
+Provjera: `python3 .githooks/test_dates.py`.

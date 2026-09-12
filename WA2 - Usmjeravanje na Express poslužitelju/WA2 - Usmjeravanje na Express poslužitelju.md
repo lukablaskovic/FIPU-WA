@@ -1,8 +1,9 @@
-# Web aplikacije (WA)
+# Web aplikacije ([WA - 199769](https://fipu.unipu.hr/fipu/predmet/webapl))
+
+<img src="../WA-banner.png" alt="Web aplikacije (WA)" style="border-radius: 8px;">
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
-
 **Ustanova**: Sveučilište Jurja Dobrile u Puli, Fakultet informatike u Puli
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
@@ -14,11 +15,11 @@
 <div style="float: clear; margin-right:5px;"> Usmjeravanje (eng. routing) se odnosi na određivanje kako će krajnje rute koje definiramo na našoj poslužiteljskoj strani odgovarati na dolazne zahtjeve klijenata. U prošloj skripti smo već definirali osnovni primjer usmjeravanja za nekoliko GET ruta i posluživali smo statične datoteke i jednostavne JSON objekte. Danas ćete naučiti kako definirati složenije usmjeravanje kroz sve HTTP metode, koja su pravila usmjeravanja i dodatni parametri koje koristimo. Također, implementirat ćemo neke osnovne validacije podataka na našem poslužitelju.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 4.11.2025.**
+**🆙 Posljednje ažurirano: 12.9.2026.**
 
 ## Sadržaj
 
-- [Web aplikacije (WA)](#web-aplikacije-wa)
+- [Web aplikacije (WA - 199769)](#web-aplikacije-wa---199769)
 - [(2) Usmjeravanje na Express poslužitelju](#2-usmjeravanje-na-express-poslužitelju)
   - [Sadržaj](#sadržaj)
 - [1. Ponavljanje](#1-ponavljanje)
@@ -65,13 +66,13 @@ Tako smo definirali rutu za početnu stranicu:
 
 ```javascript
 app.get('/', function (req, res) {
-  res.send('Hello, world!');
+    res.send('Hello, world!');
 });
 
 // odnosno
 
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+    res.send('Hello, world!');
 });
 ```
 
@@ -89,7 +90,7 @@ Osnovna sintaksa za definiranje GET rute je sljedeća:
 
 ```javascript
 app.get(PATH, (req, res) => {
-  // Ovdje pišemo kod koji će se izvršiti kada korisnik posjeti PATH
+    // Ovdje pišemo kod koji će se izvršiti kada korisnik posjeti PATH
 });
 ```
 
@@ -97,7 +98,7 @@ Primjerice, zamislimo da radimo **aplikaciju za naručivanje pizze** 🍕. Recim
 
 ```javascript
 app.get('/pizze', (req, res) => {
-  res.send('Ovdje su sve dostupne pizze!');
+    res.send('Ovdje su sve dostupne pizze!');
 });
 ```
 
@@ -107,15 +108,15 @@ No prvo moramo definirati listu dostupnih pizza:
 
 ```javascript
 const pizze = [
-  { id: 1, naziv: 'Margherita', cijena: 6.5 },
-  { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
-  { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
-  { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
-  { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
+    { id: 1, naziv: 'Margherita', cijena: 6.5 },
+    { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
+    { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
+    { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
+    { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
 ];
 
 app.get('/pizze', (req, res) => {
-  res.json(pizze);
+    res.json(pizze);
 });
 ```
 
@@ -137,7 +138,7 @@ Primjerice, ako možemo definirati rutu `/pizze/:id` koja će dohvatiti pizzu s 
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  res.json(pizze);
+    res.json(pizze);
 });
 ```
 
@@ -161,14 +162,14 @@ Idemo sada definirati logiku koja će dohvatiti samo jednu pizzu na temelju `id`
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
+    const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
 
-  for (pizza of pizze) {
-    if (pizza.id == id_pizza) {
-      // ako smo pronašli podudaranje u id-u
-      res.json(pizza); // vrati objekt pizze kao rezultat
+    for (pizza of pizze) {
+        if (pizza.id == id_pizza) {
+            // ako smo pronašli podudaranje u id-u
+            res.json(pizza); // vrati objekt pizze kao rezultat
+        }
     }
-  }
 });
 ```
 
@@ -182,9 +183,9 @@ Rezultat:
 
 ```json
 {
-  "id": 1,
-  "naziv": "Margherita",
-  "cijena": 6.5
+    "id": 1,
+    "naziv": "Margherita",
+    "cijena": 6.5
 }
 ```
 
@@ -198,31 +199,31 @@ Rezultat:
 
 ```json
 [
-  {
-    "id": 1,
-    "naziv": "Margherita",
-    "cijena": 6.5
-  },
-  {
-    "id": 2,
-    "naziv": "Capricciosa",
-    "cijena": 8
-  },
-  {
-    "id": 3,
-    "naziv": "Quattro formaggi",
-    "cijena": 10
-  },
-  {
-    "id": 4,
-    "naziv": "Šunka sir",
-    "cijena": 7
-  },
-  {
-    "id": 5,
-    "naziv": "Vegetariana",
-    "cijena": 9
-  }
+    {
+        "id": 1,
+        "naziv": "Margherita",
+        "cijena": 6.5
+    },
+    {
+        "id": 2,
+        "naziv": "Capricciosa",
+        "cijena": 8
+    },
+    {
+        "id": 3,
+        "naziv": "Quattro formaggi",
+        "cijena": 10
+    },
+    {
+        "id": 4,
+        "naziv": "Šunka sir",
+        "cijena": 7
+    },
+    {
+        "id": 5,
+        "naziv": "Vegetariana",
+        "cijena": 9
+    }
 ]
 ```
 
@@ -230,11 +231,11 @@ Kod možemo pojednostaviti korištenjem metode `find` koja će nam vratiti prvi 
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
+    const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
 
-  const pizza = pizze.find(pizza => pizza.id == id_pizza); // pronalazimo pizzu s traženim id-em
+    const pizza = pizze.find(pizza => pizza.id == id_pizza); // pronalazimo pizzu s traženim id-em
 
-  res.json(pizza);
+    res.json(pizza);
 });
 ```
 
@@ -249,17 +250,17 @@ app.get('/pizze/:id', (req, res) => {
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
+    const id_pizza = req.params.id; // dohvaćamo id parametar iz URL-a
 
-  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+    const pizza = pizze.find(pizza => pizza.id == id_pizza);
 
-  if (pizza) {
-    // ako je pronađeno podudaranje, vratimo pizza objekt
-    res.json(pizza);
-  } else {
-    // ako je rezultat undefined, vratimo poruku da pizza ne postoji
-    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
-  }
+    if (pizza) {
+        // ako je pronađeno podudaranje, vratimo pizza objekt
+        res.json(pizza);
+    } else {
+        // ako je rezultat undefined, vratimo poruku da pizza ne postoji
+        res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+    }
 });
 ```
 
@@ -273,7 +274,7 @@ Rezultat:
 
 ```json
 {
-  "message": "Pizza s traženim ID-em ne postoji."
+    "message": "Pizza s traženim ID-em ne postoji."
 }
 ```
 
@@ -288,21 +289,21 @@ Možemo koristiti metodu `isNaN` (is Not a Number) kako bismo provjerili je li `
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id;
+    const id_pizza = req.params.id;
 
-  if (isNaN(id_pizza)) {
-    // provjeravamo je li id_pizza "Not a Number"
-    res.json({ message: 'Proslijedili ste parametar id koji nije broj!' });
-    return;
-  }
+    if (isNaN(id_pizza)) {
+        // provjeravamo je li id_pizza "Not a Number"
+        res.json({ message: 'Proslijedili ste parametar id koji nije broj!' });
+        return;
+    }
 
-  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+    const pizza = pizze.find(pizza => pizza.id == id_pizza);
 
-  if (pizza) {
-    res.json(pizza);
-  } else {
-    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
-  }
+    if (pizza) {
+        res.json(pizza);
+    } else {
+        res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+    }
 });
 ```
 
@@ -316,7 +317,7 @@ Osnovna sintaksa za definiranje POST rute je sljedeća:
 
 ```javascript
 app.post(PATH, (req, res) => {
-  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje POST zahtjev na PATH
+    // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje POST zahtjev na PATH
 });
 ```
 
@@ -326,7 +327,7 @@ Idemo napisati kostur POST rute za naručivanje pizze:
 
 ```javascript
 app.post('/naruci', (req, res) => {
-  // Ovdje ćemo napisati logiku za naručivanje pizze
+    // Ovdje ćemo napisati logiku za naručivanje pizze
 });
 ```
 
@@ -336,7 +337,7 @@ Možemo dodati jednostavnu poruku koja će korisniku reći da je narudžba uspje
 
 ```javascript
 app.post('/naruci', (req, res) => {
-  res.send('Vaša narudžba je uspješno zaprimljena!');
+    res.send('Vaša narudžba je uspješno zaprimljena!');
 });
 ```
 
@@ -353,7 +354,7 @@ Hoćemo li to raditi kroz parametre u URL-u?
 ```javascript
 //?
 app.post('/naruci/:id', (req, res) => {
-  res.send(`Zaprimio sam narudžbu za pizzu ${req.params.id}`);
+    res.send(`Zaprimio sam narudžbu za pizzu ${req.params.id}`);
 });
 ```
 
@@ -369,7 +370,7 @@ Kako bismo poslali veličinu pizze koju želimo naručiti?
 ```javascript
 // ?
 app.post('/naruci/:id/:velicina', (req, res) => {
-  res.send(`Zaprimio sam narudžbu za ${req.params.velicina} pizza ${req.params.id}`);
+    res.send(`Zaprimio sam narudžbu za ${req.params.velicina} pizza ${req.params.id}`);
 });
 ```
 
@@ -398,9 +399,9 @@ _Primjer:_
 
 ```javascript
 app.post('/naruci', (req, res) => {
-  const narudzba = req.body;
-  console.log('Primljeni podaci:', narudzba);
-  res.send('Vaša narudžba je uspješno zaprimljena!');
+    const narudzba = req.body;
+    console.log('Primljeni podaci:', narudzba);
+    res.send('Vaša narudžba je uspješno zaprimljena!');
 });
 ```
 
@@ -432,9 +433,9 @@ Sada kada imamo podatke o narudžbi, možemo ih koristiti u našoj aplikaciji. N
 
 ```javascript
 app.post('/naruci', (req, res) => {
-  const narudzba = req.body;
-  console.log('Primljeni podaci:', narudzba);
-  res.send(`Vaša narudžba za ${narudzba.pizza} (${narudzba.velicina}) je uspješno zaprimljena!`);
+    const narudzba = req.body;
+    console.log('Primljeni podaci:', narudzba);
+    res.send(`Vaša narudžba za ${narudzba.pizza} (${narudzba.velicina}) je uspješno zaprimljena!`);
 });
 ```
 
@@ -444,15 +445,15 @@ Možemo izvući ključeve JavaScript objekta kroz metodu `Object.keys` i provjer
 
 ```javascript
 app.post('/naruci', (req, res) => {
-  const narudzba = req.body;
-  const kljucevi = Object.keys(narudzba);
+    const narudzba = req.body;
+    const kljucevi = Object.keys(narudzba);
 
-  if (!(kljucevi.includes('pizza') && kljucevi.includes('velicina'))) {
-    res.send('Niste poslali sve potrebne podatke za narudžbu!');
-    return;
-  }
+    if (!(kljucevi.includes('pizza') && kljucevi.includes('velicina'))) {
+        res.send('Niste poslali sve potrebne podatke za narudžbu!');
+        return;
+    }
 
-  res.send(`Vaša narudžba za ${narudzba.pizza} (${narudzba.velicina}) je uspješno zaprimljena!`);
+    res.send(`Vaša narudžba za ${narudzba.pizza} (${narudzba.velicina}) je uspješno zaprimljena!`);
 });
 ```
 
@@ -508,8 +509,8 @@ Dodajte preostale zahtjeve u svoju kolekciju:
 
 ```json
 {
-  "pizza": "Capricciosa",
-  "velicina": "jumbo"
+    "pizza": "Capricciosa",
+    "velicina": "jumbo"
 }
 ```
 
@@ -540,8 +541,8 @@ Otvorite Thunder Client ekstenziju i odaberite `New Request`. Unesite URL `http:
 
 ```json
 {
-  "pizza": "Capricciosa",
-  "velicina": "jumbo"
+    "pizza": "Capricciosa",
+    "velicina": "jumbo"
 }
 ```
 
@@ -555,16 +556,16 @@ Nadogradite POST rutu `/naruci` tako da očekuje od korisnika **polje objekata**
 
 ```json
 [
-  {
-    "pizza": "Capricciosa",
-    "velicina": "jumbo",
-    "kolicina": 1
-  },
-  {
-    "pizza": "Vegetariana",
-    "velicina": "srednja",
-    "kolicina": 2
-  }
+    {
+        "pizza": "Capricciosa",
+        "velicina": "jumbo",
+        "kolicina": 1
+    },
+    {
+        "pizza": "Vegetariana",
+        "velicina": "srednja",
+        "kolicina": 2
+    }
 ]
 ```
 
@@ -584,23 +585,23 @@ _Primjer:_ JSON objekt koji se šalje:
 
 ```json
 {
-  "narudzba": [
-    {
-      "pizza": "Capricciosa",
-      "velicina": "jumbo",
-      "kolicina": 1
-    },
-    {
-      "pizza": "Vegetariana",
-      "velicina": "srednja",
-      "kolicina": 2
+    "narudzba": [
+        {
+            "pizza": "Capricciosa",
+            "velicina": "jumbo",
+            "kolicina": 1
+        },
+        {
+            "pizza": "Vegetariana",
+            "velicina": "srednja",
+            "kolicina": 2
+        }
+    ],
+    "klijent": {
+        "prezime": "Perić",
+        "adresa": "Alda Negrija 6",
+        "broj_telefona": "0912345678"
     }
-  ],
-  "klijent": {
-    "prezime": "Perić",
-    "adresa": "Alda Negrija 6",
-    "broj_telefona": "0912345678"
-  }
 }
 ```
 
@@ -630,11 +631,11 @@ _Primjer:_ Recimo da želite ažurirati podatke o pizzi s `id`-om 1. Slanjem `PU
 
 ```javascript
 const pizze = [
-  { id: 1, naziv: 'Margherita', cijena: 6.5 },
-  { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
-  { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
-  { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
-  { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
+    { id: 1, naziv: 'Margherita', cijena: 6.5 },
+    { id: 2, naziv: 'Capricciosa', cijena: 8.0 },
+    { id: 3, naziv: 'Quattro formaggi', cijena: 10.0 },
+    { id: 4, naziv: 'Šunka sir', cijena: 7.0 },
+    { id: 5, naziv: 'Vegetariana', cijena: 9.0 }
 ];
 ```
 
@@ -670,7 +671,7 @@ U Expressu možemo jednostavno definirati `PUT` rutu sljedećom sintaksom:
 
 ```javascript
 app.put(PATH, (req, res) => {
-  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PUT zahtjev na PATH
+    // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PUT zahtjev na PATH
 });
 ```
 
@@ -680,18 +681,18 @@ Primjer metode `PUT` za ažuriranje podataka o pizzi:
 
 ```javascript
 app.put('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id;
-  const nova_pizza = req.body;
-  nova_pizza.id = id_pizza; // dodajemo id pizze u objekt, u slučaju da ga klijent nije poslao u tijelu zahtjeva
+    const id_pizza = req.params.id;
+    const nova_pizza = req.body;
+    nova_pizza.id = id_pizza; // dodajemo id pizze u objekt, u slučaju da ga klijent nije poslao u tijelu zahtjeva
 
-  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+    const index = pizze.findIndex(pizza => pizza.id == id_pizza);
 
-  if (index !== -1) {
-    pizze[index] = nova_pizza;
-    res.json(pizze[index]);
-  } else {
-    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
-  }
+    if (index !== -1) {
+        pizze[index] = nova_pizza;
+        res.json(pizze[index]);
+    } else {
+        res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+    }
 });
 ```
 
@@ -711,7 +712,7 @@ U Expressu možemo definirati `PATCH` rutu na sljedeći način:
 
 ```javascript
 app.patch(PATH, (req, res) => {
-  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PATCH zahtjev na PATH
+    // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje PATCH zahtjev na PATH
 });
 ```
 
@@ -719,23 +720,23 @@ Primjer metode `PATCH` za ažuriranje podataka o pizzi:
 
 ```javascript
 app.patch('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id;
-  const nova_pizza = req.body;
+    const id_pizza = req.params.id;
+    const nova_pizza = req.body;
 
-  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+    const index = pizze.findIndex(pizza => pizza.id == id_pizza);
 
-  if (index !== -1) {
-    for (const key in nova_pizza) {
-      pizze[index][key] = nova_pizza[key];
+    if (index !== -1) {
+        for (const key in nova_pizza) {
+            pizze[index][key] = nova_pizza[key];
+        }
+
+        // ili
+        // pizze[index] = { ...pizze[index], ...nova_pizza }; // spread operator
+
+        res.json(pizze[index]);
+    } else {
+        res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
     }
-
-    // ili
-    // pizze[index] = { ...pizze[index], ...nova_pizza }; // spread operator
-
-    res.json(pizze[index]);
-  } else {
-    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
-  }
 });
 ```
 
@@ -756,7 +757,7 @@ U Expressu možemo definirati `DELETE` rutu na sljedeći način:
 
 ```javascript
 app.delete(PATH, (req, res) => {
-  // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje DELETE zahtjev na PATH
+    // Ovdje pišemo kod koji će se izvršiti kada korisnik pošalje DELETE zahtjev na PATH
 });
 ```
 
@@ -764,16 +765,16 @@ _Primjer:_ Metoda `DELETE` za brisanje podataka o pizzi:
 
 ```javascript
 app.delete('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id;
+    const id_pizza = req.params.id;
 
-  const index = pizze.findIndex(pizza => pizza.id == id_pizza);
+    const index = pizze.findIndex(pizza => pizza.id == id_pizza);
 
-  if (index !== -1) {
-    pizze.splice(index, 1);
-    res.json({ message: 'Pizza uspješno obrisana.' });
-  } else {
-    res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
-  }
+    if (index !== -1) {
+        pizze.splice(index, 1);
+        res.json({ message: 'Pizza uspješno obrisana.' });
+    } else {
+        res.json({ message: 'Pizza s traženim ID-em ne postoji.' });
+    }
 });
 ```
 
@@ -805,11 +806,11 @@ Na primjer, za jednostavno dohvaćanje pizze i pizze po ID-u, potrebne su nam dv
 
 ```javascript
 app.get('/pizze', (req, res) => {
-  // implementacija
+    // implementacija
 });
 
 app.get('/pizze/:id', (req, res) => {
-  // implementacija
+    // implementacija
 });
 ```
 
@@ -911,16 +912,16 @@ import express from 'express';
 const router = express.Router();
 
 const pizze = [
-  { id: 1, naziv: 'Margerita', cijena: 7.0 },
-  { id: 2, naziv: 'Capricciosa', cijena: 9.0 },
-  { id: 3, naziv: 'Šunka sir', cijena: 8.0 },
-  { id: 4, naziv: 'Vegetariana', cijena: 12.0 },
-  { id: 5, naziv: 'Quattro formaggi', cijena: 15.0 }
+    { id: 1, naziv: 'Margerita', cijena: 7.0 },
+    { id: 2, naziv: 'Capricciosa', cijena: 9.0 },
+    { id: 3, naziv: 'Šunka sir', cijena: 8.0 },
+    { id: 4, naziv: 'Vegetariana', cijena: 12.0 },
+    { id: 5, naziv: 'Quattro formaggi', cijena: 15.0 }
 ];
 
 router.get('/', (req, res) => {
-  // ruta za dohvat svih pizza, pišemo router.get umjesto app.get
-  res.json(pizze);
+    // ruta za dohvat svih pizza, pišemo router.get umjesto app.get
+    res.json(pizze);
 });
 
 export default router;
@@ -1007,11 +1008,11 @@ app.use('/pizze', pizzeRouter);
 app.use('/narudzbe', narudzbeRouter);
 
 app.listen(PORT, error => {
-  if (error) {
-    console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
-  } else {
-    console.log(`Server dela na http://localhost:${PORT}`);
-  }
+    if (error) {
+        console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
+    } else {
+        console.log(`Server dela na http://localhost:${PORT}`);
+    }
 });
 ```
 
@@ -1041,7 +1042,7 @@ Primjer postavljanja statusnog koda `200` (_OK_) u odgovoru:
 
 ```javascript
 app.get('/pizze', (req, res) => {
-  res.status(200); // postavljanje statusnog koda 200 koji označava uspješan odgovor (OK)
+    res.status(200); // postavljanje statusnog koda 200 koji označava uspješan odgovor (OK)
 });
 ```
 
@@ -1049,7 +1050,7 @@ Na metodu `res.status()` možemo nadovezati metodu `res.send()` ili `res.json()`
 
 ```javascript
 app.get('/pizze', (req, res) => {
-  res.status(200).json(pizze); // poslati sve pizze kao JSON odgovor s statusnim kodom 200
+    res.status(200).json(pizze); // poslati sve pizze kao JSON odgovor s statusnim kodom 200
 });
 ```
 
@@ -1057,14 +1058,14 @@ app.get('/pizze', (req, res) => {
 
 ```javascript
 app.get('/pizze/:id', (req, res) => {
-  const id_pizza = req.params.id;
-  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+    const id_pizza = req.params.id;
+    const pizza = pizze.find(pizza => pizza.id == id_pizza);
 
-  if (pizza) {
-    res.status(200).json(pizza);
-  } else {
-    res.status(404).json({ message: 'Pizza nije pronađena.' });
-  }
+    if (pizza) {
+        res.status(200).json(pizza);
+    } else {
+        res.status(404).json({ message: 'Pizza nije pronađena.' });
+    }
 });
 ```
 
@@ -1072,19 +1073,19 @@ Koji ćemo statusni kod poslati klijentu ako korisnik pošalje zahtjev s neispra
 
 ```javascript
 router.get('/:id', (req, res) => {
-  const id_pizza = req.params.id;
+    const id_pizza = req.params.id;
 
-  if (isNaN(id_pizza)) {
-    return res.status(400).json({ message: 'ID pizze mora biti broj.' }); // poslati statusni kod 400 ako ID pizze nije broj
-  }
+    if (isNaN(id_pizza)) {
+        return res.status(400).json({ message: 'ID pizze mora biti broj.' }); // poslati statusni kod 400 ako ID pizze nije broj
+    }
 
-  const pizza = pizze.find(pizza => pizza.id == id_pizza);
+    const pizza = pizze.find(pizza => pizza.id == id_pizza);
 
-  if (pizza) {
-    return res.status(200).json(pizza); // poslati statusni kod 200 ako je pizza pronađena
-  } else {
-    return res.status(404).json({ message: 'Pizza nije pronađena.' }); // poslati statusni kod 404 ako pizza nije pronađena
-  }
+    if (pizza) {
+        return res.status(200).json(pizza); // poslati statusni kod 200 ako je pizza pronađena
+    } else {
+        return res.status(404).json({ message: 'Pizza nije pronađena.' }); // poslati statusni kod 404 ako pizza nije pronađena
+    }
 });
 ```
 
