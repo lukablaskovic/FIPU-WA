@@ -870,7 +870,7 @@ Također, veliki broj validacija podataka koji radimo su uobičajene i često ko
 Instalirajmo biblioteku:
 
 ```bash
-npm install express-validator
+→ npm install express-validator
 ```
 
 ## 2.1 Učitavanje modula

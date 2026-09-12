@@ -175,7 +175,7 @@ app.get('/pizze/:id', (req, res) => {
 Sada kada pošaljemo zahtjev na `/pizze/1`, dobit ćemo JSON objekt s podacima o pizzi s `id`-om 1, odnosno Margheriti.
 
 ```bash
-curl -X GET http://localhost:3000/pizze/1
+→ curl -X GET http://localhost:3000/pizze/1
 ```
 
 Rezultat:
@@ -191,7 +191,7 @@ Rezultat:
 Naš endpoint `/pizze` funkcionira i dalje i možemo ga pozvati bez parametara:
 
 ```bash
-curl -X GET http://localhost:3000/pizze
+→ curl -X GET http://localhost:3000/pizze
 ```
 
 Rezultat:
@@ -266,7 +266,7 @@ app.get('/pizze/:id', (req, res) => {
 Sada kada pošaljemo zahtjev na `/pizze/6`, dobit ćemo poruku da pizza s traženim ID-em ne postoji.
 
 ```bash
-curl -X GET http://localhost:3000/pizze/6
+→ curl -X GET http://localhost:3000/pizze/6
 ```
 
 Rezultat:
@@ -343,7 +343,7 @@ app.post('/naruci', (req, res) => {
 Zahtjev možemo poslati kroz terminal aplikaciju `curl` koju smo koristili u prethodnim primjerima:
 
 ```bash
-curl -X POST http://localhost:3000/naruci
+→ curl -X POST http://localhost:3000/naruci
 ```
 
 Kako možemo poslati podatke o narudžbi kroz POST HTTP zahtjev? 🤔
@@ -387,7 +387,7 @@ U prvoj skripti smo već naučili da podaci koji se šalju u tijelu zahtjeva mog
 Međutim, u našem web pregledniku nemamo mogućnost slanja POST zahtjeva s tijelom zahtjeva kada direktno pristupamo URL-u neke rute poslužitelja. Možemo poslati kroz naš `curl` alat s opcijom `-d`:
 
 ```bash
-curl -X POST http://localhost:3000/naruci -d '{"pizza": "Margherita", "velicina": "srednja"}'
+→ curl -X POST http://localhost:3000/naruci -d '{"pizza": "Margherita", "velicina": "srednja"}'
 ```
 
 Kako ćemo sada u našoj Express aplikaciji dohvatiti podatke koje je korisnik poslao u tijelu zahtjeva?
@@ -419,7 +419,7 @@ Pokušajte ponovo. Vidjet ćete da podaci i dalje ne dolaze kada šaljemo kroz `
 Zaglavlja možemo specificirati pomoću opcije `-H`, a dodat ćemo zaglavlje `Content-Type: application/json`:
 
 ```bash
-curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{"pizza": "Margherita", "velicina": "srednja"}'
+→ curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{"pizza": "Margherita", "velicina": "srednja"}'
 ```
 
 Ako ste upisali točno naredbu, trebali biste vidjeti ispis u konzoli:
@@ -459,13 +459,13 @@ app.post('/naruci', (req, res) => {
 Sada kada pošaljemo zahtjev bez podataka:
 
 ```bash
-curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{}'
+→ curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{}'
 ```
 
 Ili s pogrešnim podacima:
 
 ```bash
-curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{"pizza": "Margherita", "cijena": 6.5}'
+→ curl -X POST http://localhost:3000/naruci -H "Content-Type: application/json" -d '{"pizza": "Margherita", "cijena": 6.5}'
 ```
 
 ### 2.2.1 Kako slati `POST` zahtjeve jednostavnije?
@@ -641,7 +641,7 @@ const pizze = [
 Zahtjev bi dakle izgledao ovako:
 
 ```bash
-curl -X PUT http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"id": 1, "naziv": "Margherita", "cijena": 7.0}'
+→ curl -X PUT http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"id": 1, "naziv": "Margherita", "cijena": 7.0}'
 ```
 
 Primijetite da smo ažurirali samo cijenu Margherite, ali smo morali poslati sve podatke o pizzi.
@@ -651,7 +651,7 @@ Rekli smo da možemo koristiti `PUT` metodu i za stvaranje novog resursa, s obzi
 Primjer:
 
 ```bash
-curl -X PUT http://localhost:3000/pizze/6 -H "Content-Type: application/json" -d '{"id": 6, "naziv": "Quattro stagioni", "cijena": 8.0}'
+→ curl -X PUT http://localhost:3000/pizze/6 -H "Content-Type: application/json" -d '{"id": 6, "naziv": "Quattro stagioni", "cijena": 8.0}'
 ```
 
 Ako možemo koristiti `PUT` metodu za stvaranje novog resursa, zašto onda koristimo `POST` metodu? 🤔
@@ -663,7 +663,7 @@ U pravilu želimo koristiti `POST` metodu za stvaranje novog resursa. Zašto? Ia
 Kako bi izgledao `POST` zahtjev za dodavanje nove pizze u naš jelovnik? Uočite da ne šaljemo `id` pizze, već samo `naziv` i `cijenu`. Također pogledajte `URI` zahtjeva.
 
 ```bash
-curl -X POST http://localhost:3000/pizze -H "Content-Type: application/json" -d '{"naziv": "Quattro stagioni", "cijena": 8.0}'
+→ curl -X POST http://localhost:3000/pizze -H "Content-Type: application/json" -d '{"naziv": "Quattro stagioni", "cijena": 8.0}'
 ```
 
 U Expressu možemo jednostavno definirati `PUT` rutu sljedećom sintaksom:
@@ -702,7 +702,7 @@ app.put('/pizze/:id', (req, res) => {
 Primjer: Ako želimo ažurirati samo cijenu pizze s `id`-om 1, koristit ćemo `PATCH` metodu:
 
 ```bash
-curl -X PATCH http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"cijena": 7.0}'
+→ curl -X PATCH http://localhost:3000/pizze/1 -H "Content-Type: application/json" -d '{"cijena": 7.0}'
 ```
 
 Metodu `PATCH` ne želimo koristiti za stvaranje novog resursa, jer ne želimo stvoriti resurs s nepotpunim podacima. Primjerice, ako korisnik pošalje `PATCH` zahtjev na `/pizze/6`, a zaboravi poslati `naziv` pizze, ne želimo stvoriti novu pizzu s nepotpunim podacima.
@@ -749,7 +749,7 @@ Metoda `DELETE` se koristi za **brisanje resursa** na poslužitelju. Kada klijen
 _Primjer:_ Ako želimo obrisati pizzu s `id`-om 1, koristit ćemo `DELETE` metodu:
 
 ```bash
-curl -X DELETE http://localhost:3000/pizze/1
+→ curl -X DELETE http://localhost:3000/pizze/1
 ```
 
 U Expressu možemo definirati `DELETE` rutu na sljedeći način:

@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 28.10.2025.**
+**🆙 Posljednje ažurirano: 12.9.2026.**
 
 ## Sadržaj
 
@@ -27,8 +27,8 @@
     - [2.1 Node.js](#21-nodejs)
     - [2.2 VS Code](#22-vs-code)
     - [2.3 Git](#23-git)
-- [3. Kako započeti novi projekt?](#3-kako-započeti-novi-projekt)
-  - [3.1 Inicijalizacija novog repozitorija](#31-inicijalizacija-novog-repozitorija)
+- [3. Kako započeti novi Node projekt?](#3-kako-započeti-novi-node-projekt)
+  - [3.1 Inicijalizacija novog GitHub repozitorija](#31-inicijalizacija-novog-github-repozitorija)
   - [3.2 Izrada Node projekta](#32-izrada-node-projekta)
 - [4. Postavljanje osnovnog Express poslužitelja](#4-postavljanje-osnovnog-express-poslužitelja)
   - [4.1 Instalacija Express.js](#41-instalacija-expressjs)
@@ -79,7 +79,7 @@ Međutim, 2009. godine na tržište izlazi novi revolucionarni alat koji je prom
 
 Mi ćemo se na ovom kolegiju fokusirati upravo na taj poslužiteljski sloj web aplikacija, koristeći Node.js, odnosno biblioteku **Express.js** za izradu poslužiteljskog dijela web aplikacija.
 <a href="https://nodejs.org/en" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/800px-Node.js_logo.svg.png" style="width:20%;"></img>
+<img src="./screenshots/nodejs-icon.svg" style="width:20%;"></img>
 </a>
 
 A za one koji žele više, proučite [**Deno**](https://deno.com/) - novi JavaScript _runtime environment_ koji brzo dobiva na popularnosti, a razvija ga isti programer koji je razvio Node.js!
@@ -95,7 +95,7 @@ Preporuka je preuzeti verziju LTS 20+.
 Nakon što ste uspješno instalirali Node.js, možete provjeriti je li instalacija uspješna tako da otvorite terminal i upišete sljedeću naredbu:
 
 ```bash
-node -v
+→ node -v
 ```
 
 Ako je instalacija uspješna, trebali biste vidjeti verziju Node.js-a koju ste instalirali. Na primjer:
@@ -107,7 +107,11 @@ v22.9.0
 Instalacijom Node-a dobivate i `npm` (_Node Package Manager_) koji koristimo za instalaciju paketa i modula potrebnih za razvoj web aplikacija.
 
 ```bash
-npm -v
+→ npm -v
+
+# ili pomoću dulje zastavice :)
+
+→ npm --version
 ```
 
 ### 2.2 VS Code
@@ -117,13 +121,17 @@ npm -v
 Nakon što ste uspješno instalirali Visual Studio Code, možete provjeriti je li instalacija uspješna tako da otvorite terminal i upišete sljedeću naredbu:
 
 ```bash
-code --version
+→ code --version
 ```
 
 Možete pokrenuti Visual Studio Code tako da upišete sljedeću naredbu:
 
 ```bash
-code
+→ code
+
+# ili navođenjem relativne/apsolutne putanje do direktorija gdje se nalazi vaš projekt
+
+→ code <putanja/do/direktorija>
 ```
 
 ili jednostavno pokrenite kroz grafičko sučelje.
@@ -137,7 +145,7 @@ Iako nije nužan za sam razvoj web aplikacija, Git je koristan alat koji ćemo �
 Nakon što ste uspješno instalirali Git, možete provjeriti je li instalacija uspješna tako da otvorite terminal i upišete sljedeću naredbu:
 
 ```bash
-git --version
+→ git --version
 ```
 
 Ako je instalacija uspješna, trebali biste vidjeti verziju Git-a koju ste instalirali. Na primjer:
@@ -148,11 +156,11 @@ git version 2.47.0
 
 Ako još uvijek nemate, svakako morate izraditi i [Github](https://github.com/) račun. GitHub je vrlo popularna platforma gdje developeri mogu pohranjivati, dijeliti te surađivati na kodu i projektima, a bazira se na Gitu, kao pozadinskom sustavu za verzioniranje koda.
 
-# 3. Kako započeti novi projekt?
+# 3. Kako započeti novi Node projekt?
 
 Nakon što ste uspješno instalirali Node.js, Visual Studio Code i Git, možete započeti raditi na novom projektu.
 
-## 3.1 Inicijalizacija novog repozitorija
+## 3.1 Inicijalizacija novog GitHub repozitorija
 
 Prvi korak je definiranje strukture projekta, budući da smo odlučili verzionirati izvorni kod, koristit ćemo Git za inicijalizaciju novog repozitorija. Međutim krenut ćemo od GitHuba: idemo na [Github izraditi novi repozitorij](https://github.com/new), a zatim ćemo ga klonirati na naše računalo. Klonirati (eng. _clone_) znači preuzeti udaljeni repozitorij na naše računalo (lokalno).
 
@@ -167,9 +175,9 @@ Nakon što ste izradili repozitorij, kopirajte URL repozitorija, npr. https://gi
 Otvorite terminal i navigirajte do direktorija u kojem želite spremiti projekt. Zatim upišite sljedeću naredbu:
 
 ```bash
-cd putanja/do/direktorija
+→ cd putanja/do/direktorija
 
-git clone <URL>
+→ git clone <URL>
 ```
 
 Na primjer, ako se direktorij nalazi na radnoj površini, naredba bi mogla izgledati ovako:
@@ -177,19 +185,19 @@ Na primjer, ako se direktorij nalazi na radnoj površini, naredba bi mogla izgle
 Windows:
 
 ```bash
-cd C:\Users\<VAŠ USERNAME>\Desktop
+→ cd C:\Users\<VAŠ USERNAME>\Desktop
 ```
 
 macOS/linux:
 
 ```bash
-cd Desktop
+→ cd Desktop
 ```
 
 Zamijenite `<URL>` s URL-om repozitorija koji ste prethodno kopirali. Na primjer:
 
 ```bash
-git clone https://github.com/lukablaskovic/wa-vjezbe-01.git
+→ git clone https://github.com/lukablaskovic/wa-vjezbe-01.git
 ```
 
 Kako biste se uvjerili da ste u pravom direktoriju, upišite naredbu:
@@ -197,19 +205,19 @@ Kako biste se uvjerili da ste u pravom direktoriju, upišite naredbu:
 Windows:
 
 ```bash
-ls
+→ ls
 ```
 
 ili
 
 ```bash
-dir
+→ dir
 ```
 
 macOS/linux:
 
 ```bash
-ls
+→ ls
 ```
 
 Ove naredbe će vam ispisati popis datoteka i direktorija u trenutnom direktoriju.
@@ -222,7 +230,7 @@ Ako vam ne radi, uvjerite se da imate instaliran Git i da je dostupan u PATH-u. 
 Možete se uvjeriti da je Git dostupan u PATH-u tako da otvorite terminal i upišete:
 
 ```bash
-git --version
+→ git --version
 ```
 
 Ako nije, dobit ćete grešku neovisno o okruženju u kojem otvarate terminal. U tom slučaju, potrebno je reinstalirati Git kroz instalacijski program i odabrati opciju koja dodaje Git u PATH.
@@ -240,7 +248,7 @@ Jednom kad ste uspješno klonirali repozitorij, možete započeti s izradom Node
 Otvorite terminal i navigirajte do direktorija projekta. Zatim upišite sljedeću naredbu:
 
 ```bash
-code .
+→ code .
 ```
 
 ili otvorite Visual Studio Code i navigirajte do direktorija projekta.
@@ -252,14 +260,14 @@ Kada ste otvorili projekt u Visual Studio Codeu, otvorite novi terminal: `Termin
 Zatim upišite sljedeću naredbu:
 
 ```bash
-npm init
+→ npm init
 ```
 
 Ova naredba pokreće inicijalizaciju novog Node projekta. Slijedite upute i unesite podatke o projektu. Ako želite preskočiti neko polje, jednostavno pritisnite `Enter`.
 Ako želite preskočiti cijeli upitnik i koristiti zadane postavke, dodajte `-y` opciju:
 
 ```bash
-npm init -y
+→ npm init -y
 ```
 
 Wohoo! Uspješno ste inicijalizirali novi Node projekt! 🎉
@@ -292,7 +300,7 @@ Express.js je popularni web okvir za Node.js koji omogućava brzu izradu web apl
 Kako instalirati Express.js? U terminalu upišite sljedeću naredbu:
 
 ```bash
-npm install express
+→ npm install express
 ```
 
 Naredba `npm install` koristi se za instalaciju paketa i modula iz Node paketnog registra. U ovom slučaju, instalirali smo [**Express.js**](https://www.npmjs.com/package/express) paket.
@@ -327,7 +335,7 @@ Mi ćemo koristiti `index.js`.
 Dodajte datoteku ručno, desni klik na direktorij projekta -> `New File` -> `index.js`. Ili ako želite biti terminal ninja🥷🏻, upišite:
 
 ```bash
-touch index.js
+→ touch index.js
 ```
 
 Osnovni Express.js poslužitelj možemo definirati u svega nekoliko linija koda:
@@ -365,7 +373,7 @@ app.listen(PORT);
 Spremite datoteku i pokrenite Express.js poslužitelj tako da u terminalu upišete:
 
 ```bash
-node index.js
+→ node index.js
 ```
 
 Što se dogodilo? 🤔
@@ -379,7 +387,7 @@ Da bi bili sigurni da se naša aplikacija "vrti" možemo dodati `callback` funkc
 
 ```javascript
 app.listen(PORT, function () {
-  console.log(`Server je pokrenut na http://localhost:${PORT}`);
+    console.log(`Server je pokrenut na http://localhost:${PORT}`);
 });
 ```
 
@@ -388,11 +396,11 @@ Možemo ju zapisati i kao `arrow callback`:
 
 ```javascript
 app.listen(PORT, error => {
-  if (error) {
-    console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
-  } else {
-    console.log(`Server je pokrenut na http://localhost:${PORT}`);
-  }
+    if (error) {
+        console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
+    } else {
+        console.log(`Server je pokrenut na http://localhost:${PORT}`);
+    }
 });
 ```
 
@@ -432,7 +440,7 @@ Osnovna metoda `res` objekta je `send` koja služi za slanje jednostavnog odgovo
 
 ```javascript
 app.get('/', function (req, res) {
-  res.send('Hello, world!');
+    res.send('Hello, world!');
 });
 ```
 
@@ -440,7 +448,7 @@ ili `arrow callback`:
 
 ```javascript
 app.get('/', (req, res) => {
-  res.send('Hello, world!'); // šaljemo odgovor korisniku
+    res.send('Hello, world!'); // šaljemo odgovor korisniku
 });
 ```
 
@@ -455,15 +463,15 @@ const app = express();
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+    res.send('Hello, world!');
 });
 
 app.listen(PORT, error => {
-  if (error) {
-    console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
-  } else {
-    console.log(`Server je pokrenut na http://localhost:${PORT}`);
-  }
+    if (error) {
+        console.error(`Greška prilikom pokretanja poslužitelja: ${error.message}`);
+    } else {
+        console.log(`Server je pokrenut na http://localhost:${PORT}`);
+    }
 });
 ```
 
@@ -473,10 +481,10 @@ Međutim, što smo ustvari dobili nazad? Otvorimo konzolu u pregledniku (F12) i 
 
 ```html
 <html>
-  <head></head>
-  <body>
-    <text>Hello, world!</text>
-  </body>
+    <head></head>
+    <body>
+        <text>Hello, world!</text>
+    </body>
 </html>
 ```
 
@@ -489,7 +497,7 @@ Primijetite da je potrebno svaki put ručno zaustaviti i ponovno pokrenuti Expre
 Kako instalirati `nodemon` kroz `npm`?
 
 ```bash
-npm install -g nodemon
+→ npm install -g nodemon
 ```
 
 Opcija `-g` označava globalnu instalaciju, što znači da će `nodemon` biti dostupan u cijelom sustavu (našem računalu). Ovo je korisno jer možemo koristiti `nodemon` za pokretanje bilo koje Node.js aplikacije, a ne samo Express.js aplikacija. Ako vam `nodemon` ne radi globalno nakon instalacije, pokušajte restartirati računalo.
@@ -497,36 +505,36 @@ Opcija `-g` označava globalnu instalaciju, što znači da će `nodemon` biti do
 Rekli smo da u `package.json` datoteci definiramo aplikacije koje naš paket koristi. Kako naša aplikacija nema direktne koristi od `nodemon` paketa, već samo mi kao developeri, možemo koristiti `--save-dev` opciju prilikom instalacije koja će dodati `nodemon` paket u `devDependencies` dio `package.json` datoteke (odnosno pakete koji su potrebni samo prilikom razvoja aplikacije).
 
 ```bash
-npm install --save-dev nodemon
+→ npm install --save-dev nodemon
 ```
 
 Vaša `package.json` datoteka sada bi trebala izgledati ovako:
 
 ```json
 {
-  "name": "wa_vjezbe_01",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "express": "^4.21.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
-  }
+    "name": "wa_vjezbe_01",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "express": "^4.21.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.7"
+    }
 }
 ```
 
 Kako koristiti `nodemon`? Umjesto `node` naredbe, koristimo `nodemon` naredbu. Simple as that! 🚀
 
 ```bash
-nodemon index.js
+→ nodemon index.js
 ```
 
 Sada kada napravimo promjene u kodu, `nodemon` će automatski prepoznati promjene i ponovno pokrenuti Express.js aplikaciju. To nam štedi vrijeme i olakšava razvoj aplikacije.
@@ -570,7 +578,7 @@ Sada smo spremni napraviti naš prvi `commit`!
 Prvo provjerimo stanje indeksa:
 
 ```bash
-git status
+→ git status
 ```
 
 Ova naredba će ispisati sve promjene u projektu. Za sada nismo definirali što dodajemo u indeks, pa će nas tražiti da dodajemo datoteke s naredbom `git add`.
@@ -578,13 +586,13 @@ Ova naredba će ispisati sve promjene u projektu. Za sada nismo definirali što 
 Možemo dodati sve datoteke u indeks tako da kao argument navedemo `.`:
 
 ```bash
-git add .
+→ git add .
 ```
 
 Pozvat ćemo opet `git status` kako bismo provjerili jesu li sve datoteke dodane u indeks:
 
 ```bash
-git status
+→ git status
 ```
 
 Uvjerite se da nema datoteke `node_modules` u popisu datoteka koje će se dodati u indeks.
@@ -602,7 +610,7 @@ Sada možemo pohraniti promjene kroz `commit` naredbu:
 Dodajemo obaveznu poruku uz `-m` opciju:
 
 ```bash
-git commit -m "Inicijalni commit"
+→ git commit -m "Inicijalni commit"
 ```
 
 Ako je sve prošlo u redu, dobit ćete poruku s popisom promjena:
@@ -619,7 +627,7 @@ Ako je sve prošlo u redu, dobit ćete poruku s popisom promjena:
 Ono što još trebamo napraviti je pohraniti promjene na udaljeni repozitorij. Ovo radimo kroz `push` naredbu:
 
 ```bash
-git push
+→ git push
 ```
 
 **2. Način (kroz VS Code):**
@@ -678,7 +686,7 @@ Idemo demonstrirati programom `curl` kako izgleda najjednostavniji HTTP zahtjev.
 **Sintaksa naredbe `curl`:**
 
 ```
-curl [options] [URL]
+→ curl [options] [URL]
 ```
 
 - gdje opcije predstavljaju bilo koju opciju osim **Host Header**.
@@ -694,13 +702,13 @@ Međutim, ima ih još mnogo, a sve ih možete vidjeti u [dokumentaciji](https://
 Idemo poslati najjednostavniji mogući HTTP zahtjev prema `http://www.google.com`:
 
 ```bash
-curl http://www.google.com
+→ curl http://www.google.com
 ```
 
 Uočite što smo dobili - HTML stranicu koja definira Googleovu početnu stranicu. `curl` je automatski odabrao `GET` metodu, ali metodu možemo navesti i eksplicitno opcijom `-X`:
 
 ```bash
-curl -X GET http://www.google.com
+→ curl -X GET http://www.google.com
 ```
 
 Koji smo **URI** (_eng. Uniform Resource Identifier_) dohvatili u ovom slučaju? URI **predstavlja jedinstveni identifikator elektroničkog resursa na internetu**. URI se često koristi kao sinonim za URL (_eng. Uniform Resource Locator_), međutim URI je općenitiji pojam koji uključuje i URL i URN (_eng. Uniform Resource Name_). Točnije, URL i URN su podskup URI-a.
@@ -724,7 +732,7 @@ Dakle što je ovdje URI? `http://www.google.com`
 Sve navedeno, ali što onda dohvaćamo? Odgovor je osnovni endpoint definiran putanjom `/`. Vidimo da je Google definirao osnovni endpoint kao početnu stranicu, to je jasno, ali sad već možemo i pretpostaviti kako se zove datoteka koju dohvaćamo - `index.html`. Endpoint ili ruta `/` je u pravilu početna stranica web stranice, a datoteka `index.html` je osnovna HTML stranica koja se prikazuje korisniku.
 
 ```bash
-curl -X GET http://www.google.com/index.html
+→ curl -X GET http://www.google.com/index.html
 ```
 
 Radi! 🎉
@@ -732,7 +740,7 @@ Radi! 🎉
 Što ako probamo dohvatiti nešto što ne postoji? Na primjer, `http://www.google.com/about_me.html`
 
 ```bash
-curl -X GET http://www.google.com/about_me.html
+→ curl -X GET http://www.google.com/about_me.html
 ```
 
 Vidimo da kao odgovor dobivamo HTML stranicu s porukom `"404. That’s an error. The requested URL was not found on this server. That’s all we know."`. Ako otvorimo u web pregledniku, ona izgleda ovako:
@@ -770,9 +778,9 @@ Kako ćemo definirati tijelo zahtjeva iznad kao JSON?
 
 ```json
 {
-  "korisniko_ime": "pero_peric",
-  "lozinka": "password123",
-  "email": "pperic@gmail.com"
+    "korisniko_ime": "pero_peric",
+    "lozinka": "password123",
+    "email": "pperic@gmail.com"
 }
 ```
 
@@ -781,7 +789,7 @@ Recimo da naš poslužitelj ima definirani endpoint `/registracija` koji očekuj
 Koristeći `curl` program, možemo poslati tijelo zahtjeva kroz opciju `-d`:
 
 ```bash
-curl -X POST http://www.nas-super-server.com/registracija -d '{"korisniko_ime": "pero_peric", "lozinka": "password123", "email": "pperic@gmail.com"}'
+→ curl -X POST http://www.nas-super-server.com/registracija -d '{"korisniko_ime": "pero_peric", "lozinka": "password123", "email": "pperic@gmail.com"}'
 ```
 
 Naravno, ovo neće raditi.
@@ -835,7 +843,7 @@ Osim obaveznih dijelova HTTP odgovora, postoje i opcionalni dijelovi koji se kor
 Pošaljite ponovo zahtjev programom `curl` na Express poslužitelj koji smo definirali.
 
 ```bash
-curl http://localhost:3000
+→ curl http://localhost:3000
 ```
 
 Kao odgovor dobili smo tijelo s porukom `"Hello, world!"`. Koji statusni kod očekujete? 🤔
@@ -843,7 +851,7 @@ Kao odgovor dobili smo tijelo s porukom `"Hello, world!"`. Koji statusni kod oč
 Provjerit ćemo obavezna zaglavlja i statusni kod koji smo dobili kao odgovor kako bi vidjeli što Express radi u pozadini. Možemo koristiti opciju `-i` kako bismo vidjeli ukupan HTTP odgovor:
 
 ```bash
-curl -i http://localhost:3000
+→ curl -i http://localhost:3000
 ```
 
 Možemo vidjeti da cijeli HTTP odgovor ustvari izgleda ovako:

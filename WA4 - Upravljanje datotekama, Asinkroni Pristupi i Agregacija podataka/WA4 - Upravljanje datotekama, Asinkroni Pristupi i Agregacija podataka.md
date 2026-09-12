@@ -1123,7 +1123,7 @@ Vidimo da smo dobili dosta zapetljan kôd, gdje moramo prvo čitati, a nakon tog
 Modul `fs-extra` možemo instalirati kroz npm:
 
 ```bash
-npm install fs-extra
+→ npm install fs-extra
 ```
 
 Iskoristit ćemo funkcije `readJson()` i `writeJson()` koje su dostupne u `fs-extra` modulu te napisati istu `PUT` metodu:
