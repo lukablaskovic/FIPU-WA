@@ -59,7 +59,7 @@ Odredište: [Web aplikacije (WA)](https://drive.google.com/drive/folders/1hiWvS3
 
 Workflow preskače nepromijenjen sadržaj i provjerava kontrolni zbroj svakog prijenosa. Postojeće datoteke ažurira uz zadržavanje poveznica, nove dodaje, a datoteke na Driveu ne briše. Prijenosi se izvršavaju jedan po jedan i koriste trenutačni `main`. Greške su vidljive u zapisniku GitHub Actions; nakon otklanjanja ponovno pokrenite workflow.
 
-Workflow zahtijeva repository secret **`GOOGLE_DRIVE_TOKEN_JSON`** za Google autorizaciju. Sadrži OAuth client ID, client secret i refresh token; nije dio repozitorija. Ako Google opozove pristup, obnovite lokalnu prijavu i zamijenite secret. OAuth dozvola obuhvaća cijeli Drive; izbor 14 datoteka ograničenje je programa. Prijašnja automatska sinkronizacija pri macOS prijavi je isključena.
+Workflow zahtijeva repository secret **`GOOGLE_DRIVE_TOKEN_JSON`** za Google autorizaciju. Sadrži OAuth client ID, client secret i refresh token; nije dio repozitorija. Ako Google opozove pristup, obnovite lokalnu prijavu i zamijenite secret. OAuth dozvola obuhvaća cijeli Drive; izbor 14 datoteka ograničenje je programa.
 
 Za lokalnu provjeru ili jednokratni prijenos:
 
