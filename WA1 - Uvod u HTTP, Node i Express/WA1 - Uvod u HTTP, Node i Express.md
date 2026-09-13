@@ -10,12 +10,12 @@
 
 # (1) Uvod u HTTP, Node i Express
 
-<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/main/wa-icons/WA_1.png?v=d780d52e" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/main/wa-icons/WA_1.png?v=20260913" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;"> Web aplikacije su sofisticirana programska rješenja koja se pokreću na web poslužitelju, a korisnici im pristupaju putem web preglednika. Njihova najveća prednost je široka dostupnost na gotovo svim platformama i uređajima, bez potrebe za lokalnom instalacijom. Ovaj kolegij usmjeren je na dizajn i razvoj web aplikacija korištenjem modernih tehnologija i alata. Za razliku od kolegija Programsko inženjerstvo, ovdje ćete naučiti kako implementirati poslužiteljski sloj web aplikacije – ključni dio koji možemo zamisliti kao "mozak" aplikacije, zadužen za logiku i obradu podataka.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 12.9.2026.**
+**🆙 Posljednje ažurirano: 13.9.2026.**
 
 ## Sadržaj
 
